@@ -1,0 +1,1 @@
+This area contains save data for the Beyonder clan. Please do not edit the files, as they are auto-generated. They may be deleted, if desired, but doing so could cause problems for an active run, or for viewing previous runs in your run history.

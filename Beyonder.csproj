@@ -1,0 +1,476 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>$(AssemblyName)</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutDir>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\1102190\Beyonder Dev\plugins</OutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Monsters\Microaggression.cs~RF11533842.TMP" />
+    <None Remove="Monsters\Vexation.cs~RF25c748a.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\1102190\2187468759\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\1102190\2187468759\BepInEx\core\BepInEx.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx.Harmony">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\1102190\2187468759\BepInEx\core\BepInEx.Harmony.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="Ink-Runtime">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\Ink-Runtime.dll</HintPath>
+		<Private>false</Private>
+		<CopyLocal>False</CopyLocal>
+	</Reference>
+	  <Reference Include="UnityEngine.JSONSerializeModule">
+		  <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+		  <Private>false</Private>
+		  <CopyLocal>False</CopyLocal>
+	  </Reference>
+	  <Reference Include="TrainworksModdingTools">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\1102190\2205086946\plugins\TrainworksModdingTools.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\Unity.Addressables.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\Unity.ResourceManager.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+	</Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+	</Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+	</Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.UI.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Monster Train\MonsterTrain_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+		<Private>False</Private>
+		<CopyLocal>False</CopyLocal>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Artifacts\TearInReality.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ArtifactAssets\BadEggs.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\BedMonster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\BlackLight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\BloodyTentacle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\BrainBleach.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\BrainClamps.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\EYEvoryEYEdol.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\FasciatedKernels.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\GenIMP.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\LingeringChaos.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\LivingEntropy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\MalickasGift.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\MemoryJewel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\Preservatives.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\PurloinedHeavensSeal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\RadioactiveWaste.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\ScourgeMagnet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\ShadowPuppeteer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\ShallowGraves.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\TearInReality.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\UnseeingEye.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\UnstableEnergy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\VialOfBlackEyedBlood.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderClanSprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderLogo_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderLogo_56.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderLogo_89.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderLogo_92.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\BeyonderLogo_Silhouette.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Beyonder_Disabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Beyonder_Enabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Beyonder_Frozen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Beyonder_VisitedDisabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\chronic.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\EpidemialSprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\formless.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Icon_CardBack_Beyonder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\jitters.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\LocoMotiveSprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\ManiaMeterBase.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\ManiaMeterNeurosis.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\ManiaMeterPanic.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\MareALee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\MSK_Map_Clan_CBeyonder_01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\mutated.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\OnAnxiety.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\OnHysteria.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\panic.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Riftstone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Sanitystone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\selection_outlines.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\shock.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\soundless.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\sounsless.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\spell-cardframe-Beyonder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\unit-cardframe-Beyonder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\Veilstone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ClanAssets\VoidStone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Localization\InfiniteVoid.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="modimage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="modmanifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\ApostleoftheVoid_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\ApostleoftheVoid_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Chutzpah_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Chutzpah_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Deathwood_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Deathwood_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Epidemial_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Epidemial_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\FormlessHorror_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\FormlessHorror_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\FurryBeholder_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\FurryBeholder_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\HairyPotty_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\HairyPotty_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Loco_Motive_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Loco_Motive_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Malevolence_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Malevolence_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Microaggression_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Microaggression_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\SoundlessSwarm_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\SoundlessSwarm_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\ThreeEyedFish_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\ThreeEyedFish_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Vexation_Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Monsters\Assets\Vexation_Monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mutators\Sprite\MTR_FirstLaugh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SaveData\CurrentRun\Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SaveData\Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\BasketCase.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\CerebralDetonation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\CopingMechanism.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\DarkRecipe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\DesperateSearch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\DisembodiedMaw.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\EmbraceTheMadness.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\EntropicStorm.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\ExistentialDread.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\EyeballsForDays.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\HeebieJeebies.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\IntoTheBeyond.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\LookingStars.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\MassHysteria.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\MentalDisorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\MentalScar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\MouthInMouth.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\OcularInfection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\PacingRut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\Paranoia.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\phleghmbuyoancy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\PostItNoteOfForbiddenKnowledge.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\PrimordialSoup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\Seizure.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\Sociopath.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\SpikeFromBeyond.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\SuctionCups.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\SupplementalDeadBrain.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SpellCards\Assets\SurvivalInstinct.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

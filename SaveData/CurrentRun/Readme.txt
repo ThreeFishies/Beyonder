@@ -1,0 +1,1 @@
+These are temporary files generated to ensure that the random elements of a run remain consistent between exiting and loading. This run data will also be used to populate the log book, until overwritten by a new run.

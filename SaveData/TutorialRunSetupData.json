@@ -1,0 +1,41 @@
+{
+    "RunID": "bf372947-ef07-4874-a63a-3eb198a138dd",
+    "ForceSeed": true,
+    "BeyonderVersion": "0.8.1",
+    "LocoMotiveConductorPath": 0,
+    "LocoMotiveHorrorPath": 0,
+    "LocoMotiveFormlessPath": 0,
+    "EpidemialInnumerablePath": 0,
+    "EpidemialContagiousPath": 0,
+    "EpidemialSoundlessPath": 0,
+    "VboonIndexes": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+    "VbaneIndexes": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+    "UboonIndexes": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+    "UbaneIndexes": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+    "StartingConditions": {
+        "seed": 666,
+        "isBattleMode": false,
+        "isFtueRun": false,
+        "battleModeStartTime": "",
+        "battleModeTimerScalar": 0.0,
+        "battleWarmup": 0,
+        "version": "12923",
+        "mainClassInfo": {
+            "className": "55bcaaa0-6e62-4b91-81c9-c44e93f9b0e6",
+            "classLevel": 1,
+            "championIndex": 0,
+            "random": false
+        },
+        "subclassInfo": {
+            "className": "fd119fcf-c2cf-469e-8a5a-e9b0f265560d",
+            "classLevel": 1,
+            "championIndex": 0,
+            "random": false
+        },
+        "ascensionLevel": 1,
+        "spChallengeId": "",
+        "covenants": [ "a498b6c7-a094-48c4-8f99-8e3a2d2cc35b" ],
+        "mutators": [ "mod.beyonder.clan.monstertrain_FirstLaugh" ],
+        "enabledDlcs": [ ]
+    }
+}
