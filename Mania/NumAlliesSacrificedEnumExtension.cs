@@ -63,7 +63,7 @@ namespace Void.Mania
 
             if (statValueData.trackedValue == Beyonder.trackAlliesSacrificed.GetEnum())
             {
-                __result = CustomCardEffectScaleDamageBySacrificeAllies.NumAlliesSacrificed;
+                __result = CustomCardEffectScaleDamageBySacrificeAllies.GetNumAlliesSacrificed();
 
                 //Beyonder.Log($"Tracking Sacrificed Allies Result: {__result}.");
 

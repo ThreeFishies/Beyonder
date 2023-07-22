@@ -22,7 +22,7 @@ namespace CustomEffects
                 yield break;
             }
 
-            int num = ManiaManager.GetCurrentMania();
+            int num = ManiaManager.GetCurrentMania(cardEffectParams.playedCard);
             num *= paramInt;
             num *= paramBool ? 1 : -1;
 

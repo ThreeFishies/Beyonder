@@ -43,6 +43,18 @@ namespace Void.Mania
 
         public static void Init(BattleHud hud)
         {
+            ManiaManager.Mania = 0;
+            ManiaManager.maniaLevel = ManiaLevel.Default;
+            for (int ii = ManiaManager.coroutines.Count - 1; ii > -1; ii--)
+            {
+                ManiaManager.coroutines[ii] = null;
+            }
+            ManiaManager.coroutines.Clear();
+            ManiaManager.triggerQueueDatas.Clear();
+            ManiaManager.chutzpahAssociatedTriggers.Clear();
+            ManiaManager.chutzpahCounts.Clear();
+            ManiaManager.chutzpahTargets.Clear();
+
             if (maniaSane == null)
             {
                 maniaSane = CustomAssetManager.LoadSpriteFromPath(Path.Combine(Beyonder.BasePath, "ClanAssets/ManiaMeterBase.png"));
@@ -109,7 +121,15 @@ namespace Void.Mania
             UpdateUI();
 
             image.SetNativeSize();
-            image.rectTransform.AdjustPosition((-95.0f+102.64f),(-20.0f+53.39f),(0.0f));
+
+            if (Trainworks.Managers.PluginManager.GetAllPluginGUIDs().Contains("rawsome.modster-train.move-battle-ui"))
+            {
+                image.rectTransform.AdjustPosition((-95.0f + 102.64f + 27.0f), (-20.0f + 53.39f - 9.0f), (0.0f));
+            }
+            else
+            {
+                image.rectTransform.AdjustPosition((-95.0f + 102.64f), (-20.0f + 53.39f), (0.0f));
+            }
         }
 
         public static void UpdateUI()
@@ -120,6 +140,15 @@ namespace Void.Mania
                 UI.gameObject.SetActive(false);
                 ManiaManager.Mania = 0;
                 ManiaManager.maniaLevel = ManiaLevel.Default;
+                for (int ii = ManiaManager.coroutines.Count - 1; ii > -1; ii--)
+                {
+                    ManiaManager.coroutines[ii] = null;
+                }
+                ManiaManager.coroutines.Clear();
+                ManiaManager.triggerQueueDatas.Clear();
+                ManiaManager.chutzpahAssociatedTriggers.Clear();
+                ManiaManager.chutzpahCounts.Clear();
+                ManiaManager.chutzpahTargets.Clear();
                 return;
             }
 

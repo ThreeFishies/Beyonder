@@ -25,7 +25,7 @@ namespace Void.Status
         public static StatusEffectData data;
         public const string statusId = "beyonder_chronic";
         //public static int healthPerStack = 3;
-        public static List<CardState> cardsTriggeredOn = new List<CardState>() { };
+        //public static List<CardState> cardsTriggeredOn = new List<CardState>() { };
 
         //Associated Text keys:
         //StatusEffect_beyonder_chronic_CardText
@@ -59,6 +59,13 @@ namespace Void.Status
 
         protected override IEnumerator OnTriggered(StatusEffectState.InputTriggerParams inputTriggerParams, StatusEffectState.OutputTriggerParams outputTriggerParams)
         {
+            //Sometimes Chronic isn't adding the correct value. I suspect it's being triggered early in preview mode which 'locks in' a lower value than expected.
+            //Try disabling in preview mode.
+            if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode) 
+            {
+                yield break;
+            }
+
             //outputTriggerParams.count = 0;
             CharacterState characterState = inputTriggerParams.fromEaten ? inputTriggerParams.associatedCharacter : inputTriggerParams.attacked;
             if (characterState == null)
@@ -80,7 +87,7 @@ namespace Void.Status
 
                     if (BloodyTentacles.HasIt()) 
                     {
-                        andDamage = "[attack]";
+                        andDamage = "StatusEffect_beyonder_chronic_AndDamage".Localize();
                     }
 
                     characterState.ShowNotification(string.Format("StatusEffect_beyonder_chronic_NotificationText".Localize(null), GetEffectMagnitude(numStacks), andDamage), PopupNotificationUI.Source.General, null);
@@ -89,17 +96,17 @@ namespace Void.Status
                     //outputTriggerParams.count = numStacks;
                     //spawnerCard.GetTemporaryCardStateModifiers().AddUpgrade(GetCardUpgradeState(numStacks));
 
-                    if (!cardsTriggeredOn.Contains(spawnerCard))
-                    {
+                    //if (!cardsTriggeredOn.Contains(spawnerCard))
+                    //{
                         spawnerCard.GetTemporaryCardStateModifiers().AddUpgrade(GetCardUpgradeState(numStacks));
 
                         //Made things worse by allowing upgrade to get duplicated
                         //Try adding a preview check to see if this helps protect against sacrifice fail.
                         //if (!ProviderManager.SaveManager.PreviewMode)
                         //{ 
-                            cardsTriggeredOn.Add(spawnerCard);
+                    //        cardsTriggeredOn.Add(spawnerCard);
                         //}
-                    }
+                    //}
                 }
             }
             yield break;
@@ -142,12 +149,12 @@ namespace Void.Status
         }
     }
 
-    [HarmonyPatch(typeof(CardState), "ClearRemoveFromStandByPileOverride")]
-    public static class ResetChronicState 
-    {
-        public static void Postfix(ref CardState __instance) 
-        { 
-            StatusEffectChronic.cardsTriggeredOn.Remove(__instance);
-        }
-    }
+    //[HarmonyPatch(typeof(CardState), "ClearRemoveFromStandByPileOverride")]
+    //public static class ResetChronicState 
+    //{
+    //    public static void Postfix(ref CardState __instance) 
+    //    { 
+    //        StatusEffectChronic.cardsTriggeredOn.Remove(__instance);
+    //    }
+    //}
 }

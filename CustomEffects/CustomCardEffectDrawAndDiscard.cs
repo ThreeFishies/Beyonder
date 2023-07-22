@@ -12,6 +12,8 @@ namespace CustomEffects
     // Token: 0x020000DD RID: 221
     public sealed class CustomCardTraitScalingAddCardsAndDropThem : CardTraitState
     {
+        private int lastKnownSelectedRoom;
+
         // Token: 0x06000852 RID: 2130 RVA: 0x00023E8E File Offset: 0x0002208E
         public override IEnumerator OnCardDiscarded(CardManager.DiscardCardParams discardCardParams, CardManager cardManager, RelicManager relicManager, CombatManager combatManager, RoomManager roomManager, SaveManager saveManager)
         {
@@ -19,15 +21,36 @@ namespace CustomEffects
             {
                 yield break;
             }
-            int additionalCards = this.GetAdditionalCards(cardManager.GetCardStatistics(), false);
 
-            //int maxHand = ProviderManager.SaveManager.GetBalanceData().GetMaxHandSize();
+            lastKnownSelectedRoom = -1;
+
+            if (ManiaManager.SetSelectedRoomFlag == false)
+            {
+                lastKnownSelectedRoom = ManiaManager.SelectedRoomIndex;
+            }
+            else if (roomManager != null)
+            {
+                lastKnownSelectedRoom = roomManager.GetSelectedRoom();
+            }
+
+            int additionalCards = this.GetAdditionalCards(cardManager.GetCardStatistics(), false);
 
             while (additionalCards > 0)
             {
                 cardManager.DrawCards(1, discardCardParams.discardCard, CardType.Invalid);
                 yield return new WaitForSeconds(0.5f);
-                yield return AdjustMania(cardManager.GetLastDrawnCard());
+                if (cardManager.GetLastDrawnCard().HasTrait(typeof(CardTraitTreasure)))
+                {
+                    if (roomManager != null && lastKnownSelectedRoom != -1)
+                    {
+                        yield return roomManager.GetRoomUI().SetSelectedRoom(lastKnownSelectedRoom);
+                    }
+                }
+                else 
+                {
+                    yield return AdjustMania(cardManager.GetLastDrawnCard());
+                }
+
                 yield return cardManager.DiscardCard(new CardManager.DiscardCardParams 
                 { 
                     discardCard = cardManager.GetLastDrawnCard(),
@@ -49,6 +72,7 @@ namespace CustomEffects
         {
             //Beyonder.Log("Dropping Card: " + droppedCard.GetTitleKey().Localize());
             bool flag = false;
+
 
             if (droppedCard.HasTrait(typeof(BeyonderCardTraitCompulsive))) 
             {
@@ -76,7 +100,7 @@ namespace CustomEffects
             if (!flag) { yield break; }
 
             CustomTriggerManager.RunTriggerQueueRemote();
-
+            
             if (ProviderManager.CombatManager != null)
             {
                 do

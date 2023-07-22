@@ -97,7 +97,8 @@ namespace Void.Mania
                 //__result = ManiaManager.GetAnxietyScalingValue(ProviderManager.SaveManager.PreviewMode);
                 __result = ManiaManager.GetCurrentMania();
 
-                if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0) 
+                //if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0) 
+                if (statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0) 
                 {
                     foreach (CardTraitData cardTrait in statValueData.cardState.GetTraits())
                     {
@@ -127,7 +128,8 @@ namespace Void.Mania
                 //__result = ManiaManager.GetHysteriaScalingValue(ProviderManager.SaveManager.PreviewMode);
                 __result = ManiaManager.GetCurrentMania();
 
-                if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
+                //if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
+                if (statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
                 {
                     foreach (CardTraitData cardTrait in statValueData.cardState.GetTraits())
                     {

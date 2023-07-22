@@ -9,14 +9,15 @@ public sealed class BeyonderCardTraitAfflictive : CardTraitState
 	// Token: 0x0600081C RID: 2076 RVA: 0x000239E2 File Offset: 0x00021BE2
 	public override IEnumerator OnPreCardPlayed(CardState cardState, CardManager cardManager, RoomManager roomManager, CombatManager combatManager, RelicManager relicManager)
 	{
-		int maniaPerTrait = base.GetParamInt();
+		//int maniaPerTrait = base.GetParamInt();
 
 		if (!ProviderManager.SaveManager.PreviewMode) 
 		{
             AddTrackManicCardsPlayed.cardCount++;
         }
 
-		yield return ManiaManager.Affliction(maniaPerTrait);
+		//yield return ManiaManager.Affliction(maniaPerTrait);
+		yield return CustomCardEffectManic.AssertCardManic(cardState);
 		yield break;
 	}
 

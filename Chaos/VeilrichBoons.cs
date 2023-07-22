@@ -29,7 +29,7 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder 
             { 
                 UpgradeTitleKey = "Veilritch_Boon_00",
-                BonusDamage = 18,
+                BonusDamage = 12,
                 StatusEffectUpgrades = new List<StatusEffectStackData> 
                 { 
                     new StatusEffectStackData
@@ -89,7 +89,7 @@ namespace Void.Chaos
             }.Build());
             */
 
-            //Boon 05 (Hysteria: +4 attack.)
+            //Boon 05 (Hysteria: +6 attack.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeTitleKey = "Veilritch_Boon_05",
@@ -140,7 +140,7 @@ namespace Void.Chaos
                                     new StatusEffectStackData
                                     { 
                                         statusId = StatusEffectJitters.statusId,
-                                        count = 10
+                                        count = 18
                                     }
                                 }
                             }

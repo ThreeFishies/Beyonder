@@ -15,6 +15,7 @@ using Void.Unit;
 using Void.Triggers;
 using Void.Status;
 using Void.Chaos;
+using Void.Builders;
 using UnityEngine.Rendering;
 
 namespace Void.Monsters
@@ -60,7 +61,43 @@ namespace Void.Monsters
                             }
                         }
                     }
-                }
+                },
+
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                {
+                    name = "MalevolenceChatterData",
+                    gender = CharacterChatterData.Gender.Neutral,
+
+                    characterAddedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Added_0",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Added_1",
+                    },
+                    characterIdleExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_0",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_1",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_2",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_3",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_4",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_5",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_6",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Idle_7"
+                    },
+                    characterSlayedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Slay_0",
+                        "Beyonder_Unit_Malevolence_Chatter_Key_Slay_1",
+                    },
+                    characterTriggerExpressionKeys = new List<CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys> 
+                    { 
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        { 
+                            Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                            Key = "Beyonder_Unit_Malevolence_Chatter_Key_Hysteria_0",
+                        }
+                    }
+                }.Build(),
             }.BuildAndRegister();
 
             Card = new CardDataBuilder

@@ -10,6 +10,8 @@ using Void.Spells;
 using Void.Artifacts;
 using static UnityEngine.GraphicsBuffer;
 using Trainworks.Builders;
+using Trainworks.Managers;
+using HarmonyLib;
 
 namespace CustomEffects
 {
@@ -22,10 +24,10 @@ namespace CustomEffects
 		public override bool TestEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
 		{
 			return cardEffectParams.targets.Count > 0;
-		}
+        }
 
-		// Token: 0x060006BC RID: 1724 RVA: 0x000210A4 File Offset: 0x0001F2A4
-		public override IEnumerator ApplyEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
+        // Token: 0x060006BC RID: 1724 RVA: 0x000210A4 File Offset: 0x0001F2A4
+        public override IEnumerator ApplyEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
 		{
 			//Disable in preview mode
 			if (cardEffectParams.saveManager.PreviewMode)
@@ -37,7 +39,7 @@ namespace CustomEffects
 
 				if (cardEffectParams.playedCard.GetCardDataID() == MouthInMouth.Card.GetID()) 
 				{
-					if ((ManiaManager.PreviewHysteria && ManiaManager.Mania >= 0 ) || ((ManiaManager.PreviewAnxiety && ManiaManager.Mania <= 0) && BlackLight.HasIt())) 
+					if ((cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitAfflictive)) && ManiaManager.Mania >= 0 ) || ((cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitCompulsive)) && ManiaManager.Mania <= 0) && BlackLight.HasIt())) 
 					{
                         CardUpgradeState upgradeState = new CardUpgradeState();
                         upgradeState.Setup(this.MouthInMouthPreviewEffect, false);
@@ -51,7 +53,7 @@ namespace CustomEffects
 
 				if (cardEffectParams.playedCard.GetCardDataID() == SuctionCups.Card.GetID()) 
 				{
-                    if ((ManiaManager.PreviewAnxiety && ManiaManager.Mania <= 0) || ((ManiaManager.PreviewHysteria && ManiaManager.Mania >= 0) && BlackLight.HasIt()))
+                    if ((cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitCompulsive)) && ManiaManager.Mania <= 0) || ((cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitAfflictive)) && ManiaManager.Mania >= 0) && BlackLight.HasIt()))
                     {
                         foreach (CharacterState target in cardEffectParams.targets)
                         {
@@ -151,7 +153,78 @@ namespace CustomEffects
 				}
 				upgradeState = null;
 				//target = null;
-			}
+
+				/*
+				//This won't be needed if afflictive/compulsive are delayed until after card effect takes place.
+				if (cardEffectState.GetParamBool()) 
+				{
+					bool doHysteria = false;
+					bool doAnxiety = false;
+
+					List<CardEffectData> shouldHysteria = new List<CardEffectData> { };
+					List<CardEffectData> shouldAnxiety = new List<CardEffectData> { };
+
+					if (cardEffectState.GetParamCardUpgradeData() != null) 
+					{
+						if (!cardEffectState.GetParamCardUpgradeData().GetTriggerUpgrades().IsNullOrEmpty()) 
+						{
+							foreach (CharacterTriggerData triggerData in cardEffectState.GetParamCardUpgradeData().GetTriggerUpgrades()) 
+							{
+								if (triggerData.GetTrigger() == Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum()) 
+								{
+									shouldHysteria.AddRange(triggerData.GetEffects());
+								}
+                                if (triggerData.GetTrigger() == Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum())
+                                {
+                                    shouldAnxiety.AddRange(triggerData.GetEffects());
+                                }
+                            }
+                        }
+					}
+
+					if (cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitAfflictive)) && ManiaManager.GetCurrentMania() > 0) 
+					{
+						doHysteria = true;
+						if (BlackLight.HasIt()) { doAnxiety = true; }
+					}
+                    if (cardEffectParams.playedCard.HasTrait(typeof(BeyonderCardTraitCompulsive)) && ManiaManager.GetCurrentMania() < 0)
+                    {
+                        doAnxiety = true;
+                        if (BlackLight.HasIt()) { doHysteria = true; }
+                    }
+
+					if (doHysteria && shouldHysteria.Count > 0) 
+					{
+						List<CardEffectState> cardEffectStates = new List<CardEffectState>();
+
+						foreach (CardEffectData data in shouldHysteria) 
+						{
+							cardEffectStates.Add(new CardEffectState());
+							cardEffectStates[cardEffectStates.Count - 1].Setup(data, null);
+						}
+
+						//ManiaManager.IgnoreOnce = true;
+
+						yield return ProviderManager.CombatManager.ApplyEffects(cardEffectStates, target.GetCurrentRoomIndex(), null, true, null, target, target.GetSpawnPoint(), true, null, null, false, target, 1, null, true, Trigger_Beyonder_OnHysteria.OnHysteriaCardTrigger.GetEnum());
+					}
+
+                    if (doAnxiety && shouldAnxiety.Count > 0)
+                    {
+                        List<CardEffectState> cardEffectStates = new List<CardEffectState>();
+
+                        foreach (CardEffectData data in shouldAnxiety)
+                        {
+                            cardEffectStates.Add(new CardEffectState());
+                            cardEffectStates[cardEffectStates.Count - 1].Setup(data, null);
+                        }
+
+                        //ManiaManager.IgnoreOnce = true;
+
+                        yield return ProviderManager.CombatManager.ApplyEffects(cardEffectStates, target.GetCurrentRoomIndex(), null, true, null, target, target.GetSpawnPoint(), true, null, null, false, target, 1, null, true, Trigger_Beyonder_OnAnxiety.OnAnxietyCardTrigger.GetEnum());
+                    }
+                }
+				*/
+            }
 			//List<CharacterState>.Enumerator enumerator = default(List<CharacterState>.Enumerator);
 			yield break;
 		}
@@ -208,7 +281,7 @@ namespace CustomEffects
 		{
 			MouthInMouthPreviewEffect = new CardUpgradeDataBuilder 
 			{ 
-				UpgradeTitleKey = "MouthInMuthPreviewEffect",
+				UpgradeTitleKey = "MouthInMouthPreviewEffect",
 				BonusDamage = 6,
 				BonusHP = -1,
 			}.Build();

@@ -107,6 +107,10 @@ namespace Void.Artifacts
                 },
             }.BuildAndRegister();
 
+            CardUpgradeData upgrade = Artifact.GetEffects()[0].GetParamCardUpgradeData();
+            AccessTools.Field(typeof(CardUpgradeData), "isUnique").SetValue(upgrade, true);
+            AccessTools.Field(typeof(RelicEffectData), "paramCardUpgradeData").SetValue(Artifact.GetEffects()[0], upgrade);
+
             return Artifact;
         }
     }

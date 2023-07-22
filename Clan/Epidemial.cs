@@ -18,6 +18,7 @@ using Void.Clan;
 using Void.Status;
 using Void.Init;
 using Void.Triggers;
+using Void.Builders;
 using CustomEffects;
 using RunHistory;
 using Malee;
@@ -69,9 +70,44 @@ namespace Void.Champions
                 Health = 1,
                 Size = 1,
                 CharacterID = CharID,
-
-                //CharacterChatterData = null,
                 AssetPath = "Monsters/Assets/Epidemial_Monster.png",
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                { 
+                    name = "EpidemialChatterData",
+                    gender = CharacterChatterData.Gender.Neutral,
+
+                    characterAddedExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Added_0",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Added_1"
+                    },
+                    characterIdleExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_0",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_1",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_2",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_3",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_4",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_5",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_6",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_7",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Idle_8"
+                    },
+                    characterSlayedExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Slay_0",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Slay_1"
+                    },
+                    characterTriggerExpressionKeys = new List<CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys> 
+                    { 
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        { 
+                            Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                            Key = "Beyonder_Champ_Epidemial_Chatter_Key_Anxiety_0"
+                        }
+                    }
+                    
+                }.Build(),
 
                 //ProjectilePrefab = CustomCharacterManager.GetCharacterDataByID(VanillaCharacterIDs.Morselmaster).GetProjectilePrefab()
             };
@@ -120,6 +156,16 @@ namespace Void.Champions
                     }
                 }
             }.BuildAndRegister(1);
+
+            CardEffectData Noise = new CardEffectDataBuilder
+            {
+                EffectStateName = typeof(CustomCardEffectPlaySoundCue).AssemblyQualifiedName,
+                ParamStr = "Multiplayer_Emote_Hmm",
+            }.Build();
+
+            List<CardEffectData> effectDatas = card.GetEffects();
+            effectDatas.Add(Noise);
+            AccessTools.Field(typeof(CardData), "effects").SetValue(card, effectDatas);
 
             ReorderableArray<CardData> pool = AccessTools.Field(typeof(CardPool), "cardDataList").GetValue(SelfPool) as ReorderableArray<CardData>;
             pool.Add(card);
@@ -285,6 +331,18 @@ namespace Void.Champions
                     BonusHP = 14 + (upgradeLevel * 15) + (upgradeLevel > 1 ? 15 : 0),
                     UpgradeTitleKey = $"Beyonder_Champ_Epidemial_Innumerable_{upgradeLevel}_TitleKey",
 
+                    TraitDataUpgradeBuilders = new List<CardTraitDataBuilder> 
+                    { 
+                        new CardTraitDataBuilder
+                        { 
+                            TraitStateName = (upgradeLevel < 2) ? "CardTraitDummy" : typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName,
+                        },
+                        //new CardTraitDataBuilder  //This trait is not working properly for this usage.
+                        //{
+                        //    TraitStateName = "CardTraitShowCardTargets",
+                        //}
+                    },
+
                     TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                     {
                         new CharacterTriggerDataBuilder
@@ -299,7 +357,7 @@ namespace Void.Champions
                                     EffectStateName = typeof(CustomCardEffectAddSpawnerBattleCard).AssemblyQualifiedName,
                                     TargetMode = TargetMode.DrawPile,
                                     TargetTeamType = Team.Type.Monsters,
-                                    ParamInt = (int)CardPile.DeckPileTop,
+                                    ParamInt = (int)CardPile.DiscardPile,
                                     AdditionalParamInt = 1, //one copy
                                     ParamCardPool = SelfPool,
                                     CopyModifiersFromSource = true,
@@ -308,7 +366,23 @@ namespace Void.Champions
                                 }
                             }
                         },
+                        new CharacterTriggerDataBuilder 
+                        {
+                            Trigger = CharacterTriggerData.Trigger.OnSpawn,
+                            DescriptionKey = $"Beyonder_Champ_Epidemial_Innumerable_A{upgradeLevel}_Key",
+                            EffectBuilders = new List<CardEffectDataBuilder>
+                            {
+                                new CardEffectDataBuilder
+                                {
+                                    EffectStateName = "CardEffectDrawType",
+                                    ParamInt = 1 + (upgradeLevel > 0 ? 1 : 0),
+                                    TargetCardType = CardType.Spell,
+                                    TargetMode = TargetMode.DrawPile,
+                                }
+                            }
+                        },
                     },
+                    /*
                     RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder> 
                     { 
                         new RoomModifierDataBuilder
@@ -320,7 +394,8 @@ namespace Void.Champions
                             ExtraTooltipBodyKey = "Beyonder_Champ_Epidemial_Innumerable_A_DescriptionKey",
                             ParamInt = 1,
                         }
-                    }
+                    }*/
+
                 };
             }
 
@@ -333,6 +408,14 @@ namespace Void.Champions
                     BonusHP = 14 + (upgradeLevel * 15) + (upgradeLevel > 1 ? 15 : 0),
                     UpgradeTitleKey = $"Beyonder_Champ_Epidemial_Innumerable_{upgradeLevel}_TitleKey",
 
+                    TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
+                    {
+                        new CardTraitDataBuilder
+                        {
+                            TraitStateName = (upgradeLevel < 2) ? "CardTraitDummy" : typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName,
+                        }
+                    },
+
                     TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                     {
                         new CharacterTriggerDataBuilder
@@ -347,7 +430,7 @@ namespace Void.Champions
                                     EffectStateName = typeof(CustomCardEffectAddSpawnerBattleCard).AssemblyQualifiedName,
                                     TargetMode = TargetMode.DrawPile,
                                     TargetTeamType = Team.Type.Monsters,
-                                    ParamInt = (int)CardPile.DeckPileTop,
+                                    ParamInt = (int)CardPile.DiscardPile,
                                     AdditionalParamInt = 1, //one copy
                                     ParamCardPool = SelfPool,
                                     CopyModifiersFromSource = true,
@@ -356,7 +439,23 @@ namespace Void.Champions
                                 }
                             }
                         },
+                        new CharacterTriggerDataBuilder
+                        {
+                            Trigger = CharacterTriggerData.Trigger.OnSpawn,
+                            DescriptionKey = $"Beyonder_Champ_Epidemial_Innumerable_B_Key",
+                            EffectBuilders = new List<CardEffectDataBuilder>
+                            {
+                                new CardEffectDataBuilder
+                                {
+                                    EffectStateName = "CardEffectGainEnergy",
+                                    ParamInt = 2 + (upgradeLevel > 0 ? 1 : 0),
+                                    TargetMode = TargetMode.Self,
+                                    TargetTeamType = Team.Type.Monsters,
+                                }
+                            }
+                        }
                     },
+                    /*
                     RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
                     {
                         new RoomModifierDataBuilder
@@ -369,10 +468,11 @@ namespace Void.Champions
                             ParamInt = 1,
                         }
                     }
+                    */
                 };
             }
 
-            //variant C {Respawn}
+            //variant C {Duplicator}
             if (InnumerableTreeRngPath == 2)
             {
                 return new CardUpgradeDataBuilder
@@ -380,6 +480,14 @@ namespace Void.Champions
                     BonusDamage = 0,
                     BonusHP = 14 + (upgradeLevel * 15) + (upgradeLevel > 1 ? 15 : 0),
                     UpgradeTitleKey = $"Beyonder_Champ_Epidemial_Innumerable_{upgradeLevel}_TitleKey",
+
+                    TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
+                    {
+                        new CardTraitDataBuilder
+                        {
+                            TraitStateName = (upgradeLevel < 2) ? "CardTraitDummy" : typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName,
+                        }
+                    },
 
                     TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                     {
@@ -395,7 +503,7 @@ namespace Void.Champions
                                     EffectStateName = typeof(CustomCardEffectAddSpawnerBattleCard).AssemblyQualifiedName,
                                     TargetMode = TargetMode.DrawPile,
                                     TargetTeamType = Team.Type.Monsters,
-                                    ParamInt = (int)CardPile.DeckPileTop,
+                                    ParamInt = (int)CardPile.DiscardPile,
                                     AdditionalParamInt = 1, //one copy
                                     ParamCardPool = SelfPool,
                                     CopyModifiersFromSource = true,
@@ -415,7 +523,7 @@ namespace Void.Champions
                                     EffectStateName = typeof(CustomCardEffectCopyUnitsAndApplyUpgrade).AssemblyQualifiedName,
                                     TargetMode = TargetMode.Room,
                                     TargetTeamType = Team.Type.Monsters,
-                                    ParamInt = 1 + (upgradeLevel == 2 ? 1 : 0),
+                                    ParamInt = 1, //+ (upgradeLevel == 2 ? 1 : 0),
                                 }
                             }
                         }
@@ -473,7 +581,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 6 + (6 * upgradeLevel) + (upgradeLevel > 1 ? 6 : 0),
+                                            count = 6 + (3 * upgradeLevel),
                                         }
                                     }
                                 },
@@ -533,7 +641,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 2 + (2 * upgradeLevel) + (upgradeLevel > 1 ? 2 : 0),
+                                            count = 2 + (1 * upgradeLevel),
                                         }
                                     }
                                 },
@@ -584,7 +692,7 @@ namespace Void.Champions
                     {
                         new CharacterTriggerDataBuilder
                         {
-                            Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                            Trigger = CharacterTriggerData.Trigger.CardSpellPlayed,
                             DescriptionKey = "Beyonder_Champ_Epidemial_Contagious_C0_DescriptionKey",
                             EffectBuilders = new List<CardEffectDataBuilder>
                             {

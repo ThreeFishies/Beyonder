@@ -25,6 +25,7 @@ using Void.Tutorial;
 using ShinyShoe;
 using UnityEngine.SceneManagement;
 using CustomEffects;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Void.Mania
 {
@@ -46,18 +47,19 @@ namespace Void.Mania
         public static ManiaLevel maniaLevel = ManiaLevel.Default;
         public static int InsanityMultiplier = 2;
         public static int InsanityThreshold = 3;
-        public static int BlackoutThreshold = 10;
+        public static int BlackoutThreshold = 10; //This is unused for the most part, but there is a change of the text color.
         public static bool PreviewHysteria = false;
         public static bool PreviewAnxiety = false;
         public static bool PreviewSanity = false;
         public static bool SetSelectedRoomFlag = true;
+        //public static bool IgnoreOnce = false;
         public static int SelectedRoomIndex = -1;
         public static List<CombatManager.TriggerQueueData> triggerQueueDatas = new List<CombatManager.TriggerQueueData>();
         public static List<CharacterState> chutzpahTargets = new List<CharacterState>();
         public static List<int> chutzpahCounts = new List<int>();
         public static List<CharacterTriggerData.Trigger> chutzpahAssociatedTriggers = new List<CharacterTriggerData.Trigger>();
         //public static CardManager.OnCardPlayedEvent OnCardPlayed = new CardManager.OnCardPlayedEvent(OnPlayedCard);
-        public static Coroutine coroutine = null;
+        public static List<Coroutine> coroutines = new List<Coroutine> { };
 
         /*
         public static void OnPlayedCard(CardState cardState, int roomIndex, SpawnPoint dropLocation, bool fromPlayedCard, CombatManager.ApplyPreEffectsVfxAction onPreEffectsFiredVfx, CombatManager.ApplyEffectsAction onEffectsFired) 
@@ -75,21 +77,16 @@ namespace Void.Mania
 
         //This is called after a played card's effects are resolved.
         //Testing to see if delaying manic triggers fixes artifact issues.
+        /*
         public static void RunTriggerQueue(CardState playedCard) 
         {
             //Beyonder.Log("Flushing queue after card: " + playedCard.GetTitle());
 
-            if (coroutine == null)
-            {
-                coroutine = GlobalMonoBehavior.Inst.StartCoroutine(OnPlayedCardCouroutine());
-            }
-            else
-            {
-                Beyonder.Log("Attempted to run trigger queue while it was already running");
-            }
+            coroutines.Add(GlobalMonoBehavior.Inst.StartCoroutine(OnPlayedCardCouroutine()));
         }
 
-        public static IEnumerator OnPlayedCardCouroutine() 
+        //This is no longer used.
+        public static IEnumerator OnPlayedCardCouroutine()
         {
             int aa = triggerQueueDatas.Count;
             int bb = chutzpahTargets.Count;
@@ -108,18 +105,27 @@ namespace Void.Mania
 
                 for (int ii = 0; ii < aa; ii++)
                 {
+                    int jj = 0;
 
-                    if (triggerQueueDatas[0].character.GetCurrentRoomIndex() != roomManager.GetSelectedRoom()) 
+                    IL_420:
+
+                    if (triggerQueueDatas[0].character != null && triggerQueueDatas[0].character.GetCurrentRoomIndex() != -1 && triggerQueueDatas[0].character.GetCurrentRoomIndex() != roomManager.GetSelectedRoom() && HasTrigger(triggerQueueDatas[0].character, triggerQueueDatas[0].trigger))
                     {
                         roomManager.GetRoomUI().EnableScrolling();
+                        yield return roomManager.GetRoomUI().SetSelectedRoom(triggerQueueDatas[0].character.GetCurrentRoomIndex());
+                        roomManager.GetRoomUI().DisableScrolling();
+
+                        if (triggerQueueDatas[0].character.GetCurrentRoomIndex() != roomManager.GetSelectedRoom() && jj < 100)
+                        {
+                            jj++;
+                            Beyonder.Log("Something went wrong when attempting to change selected room. Attempt: " + jj);
+                            goto IL_420;
+                        }
                     }
                     //Beyonder.Log($"Character: {triggerQueueDatas[0].character.GetName()} Trigger: {triggerQueueDatas[0].trigger.ToString()} Count: {triggerQueueDatas[0].triggerCount}");
 
-                    //ProviderManager.CombatManager.QueueTrigger(triggerQueueDatas[0]);
-                    //CustomTriggerManager.QueueAndRunTrigger(triggerQueueDatas[0].trigger, triggerQueueDatas[0].character, triggerQueueDatas[0].canAttackOrHeal, triggerQueueDatas[0].canFireTriggers, triggerQueueDatas[0].fireTriggersData, triggerQueueDatas[0].triggerCount);
                     yield return triggerQueueDatas[0].character.FireTriggers(triggerQueueDatas[0].trigger, triggerQueueDatas[0].canAttackOrHeal, triggerQueueDatas[0].canFireTriggers, triggerQueueDatas[0].fireTriggersData, triggerQueueDatas[0].triggerCount, true);
                     ApplyChutzpahCardTrigger(chutzpahTargets[0], chutzpahCounts[0], chutzpahAssociatedTriggers[0]);
-                    roomManager.GetRoomUI().DisableScrolling();
 
                     triggerQueueDatas.RemoveAt(0);
                     chutzpahTargets.RemoveAt(0);
@@ -144,8 +150,6 @@ namespace Void.Mania
             chutzpahCounts.Clear();
             chutzpahAssociatedTriggers.Clear();
 
-            coroutine = null;
-
             if (!SetSelectedRoomFlag && SelectedRoomIndex != -1)
             {
                 SetSelectedRoomFlag = true;
@@ -155,7 +159,55 @@ namespace Void.Mania
                 }
             }
 
+            //if (coroutines.Count > index)
+            //{
+            //    coroutines[index] = null;
+            //}
+            //else 
+            //{
+            //    Beyonder.Log("Failed to release coroutine: " + index);
+            //}
+
             yield break;
+        }
+        */
+
+        public static bool HasTrigger(CharacterState unit, CharacterTriggerData.Trigger trigger) 
+        {
+            if (unit.HasEffectTrigger(trigger)) 
+            {
+                return true;
+            }
+
+            bool hasAnxietyCardTrigger = false;
+            bool hasHysteriaCardTrigger = false;
+
+            if ((unit.GetSpawnerCard() != null) && (unit.GetSpawnerCard().GetCardTriggers().Count > 0))
+            {
+                foreach (CardTriggerEffectData cardTrigger1 in unit.GetSpawnerCard().GetCardTriggers())
+                {
+                    if (cardTrigger1.GetTrigger() == Trigger_Beyonder_OnAnxiety.OnAnxietyCardTrigger.GetEnum())
+                    {
+                        hasAnxietyCardTrigger = true;
+                    }
+                    if (cardTrigger1.GetTrigger() == Trigger_Beyonder_OnHysteria.OnHysteriaCardTrigger.GetEnum()) 
+                    {
+                        hasHysteriaCardTrigger = true;
+                    }
+                }
+            }
+
+            if (trigger == Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum() && hasAnxietyCardTrigger) 
+            {
+                return true;
+            }
+
+            if (trigger == Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum() && hasHysteriaCardTrigger) 
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static int GetInsanityThreshold() 
@@ -181,9 +233,40 @@ namespace Void.Mania
             return InsanityMultiplier;
         }
 
-        public static int GetCurrentMania() 
-        { 
-            return (PreviewSanity ? 0 : (Mania + (PreviewAnxiety ? -1 : 0) + (PreviewHysteria ? 1 : 0)));
+        public static int GetCurrentMania(CardState PlayedCard = null)
+        {
+            if (PlayedCard == null || (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode))
+            {
+                return (PreviewSanity ? 0 : (Mania + (PreviewAnxiety ? -1 : 0) + (PreviewHysteria ? 1 : 0)));
+            }
+
+            int AdjustAffliction = 0;
+            int AdjustCompulsion = 0;
+            int TherapeuticFactor = 1;
+
+            if (PlayedCard != null) 
+            {
+                if (PlayedCard.GetTraitStates().Count > 0) 
+                {
+                    foreach (CardTraitState cardTrait in PlayedCard.GetTraitStates()) 
+                    {
+                        if (cardTrait is BeyonderCardTraitAfflictive) 
+                        {
+                            AdjustAffliction = cardTrait.GetParamInt();
+                        }
+                        if (cardTrait is BeyonderCardTraitCompulsive)
+                        {
+                            AdjustCompulsion = cardTrait.GetParamInt();
+                        }
+                        if (cardTrait is BeyonderCardTraitTherapeutic) 
+                        {
+                            TherapeuticFactor = 0;
+                        }
+                    }
+                }
+            }
+
+            return (Mania + AdjustAffliction - AdjustCompulsion) * TherapeuticFactor;
         }
 
         public static ManiaLevel GetCurrentManiaLevel(bool UseCurrentMania = true, int ForMania = 0)
@@ -336,20 +419,28 @@ namespace Void.Mania
 
             if (cardManager.cardPlayedSignal.Count < expectedNumListeners)
             {
-                cardManager.cardPlayedSignal.AddListener(new Action<CardState>(RunTriggerQueue));
+                //cardManager.cardPlayedSignal.AddListener(new Action<CardState>(RunTriggerQueue));
             }
 
             iiisiiinit = true;
         }
-        
 
         public static void Init()
         {
             //relicManager = ProviderManager.SaveManager.RelicManager;
+            //if (coroutine == null)
+            //{
+            for (int ii = coroutines.Count - 1; ii > -1; ii--)
+            {
+                coroutines[ii] = null;
+            }
+            coroutines.Clear();
+
             triggerQueueDatas.Clear();
             chutzpahTargets.Clear();
             chutzpahCounts.Clear();
             chutzpahAssociatedTriggers.Clear();
+            //}
 
             //RegisterTriggers();
             //SetupCrazyStick();
@@ -363,7 +454,7 @@ namespace Void.Mania
         //    Anxiety = new CharacterTrigger("Beyonder_Anxiety");
         //}
 
-        public static IEnumerator EnqueueAllPossibleTargets(CharacterTriggerData.Trigger trigger, int count, bool applynow = false)
+        public static IEnumerator EnqueueAllPossibleTargets(CharacterTriggerData.Trigger trigger, int count, int startingRoom, bool applynow = false, bool hasBlackLight = false, CharacterTriggerData.Trigger blackLightTrigger = CharacterTriggerData.Trigger.OnDeath)
         {
             if (!ProviderManager.TryGetProvider<RoomManager>(out RoomManager roomManager))
             {
@@ -375,24 +466,27 @@ namespace Void.Mania
                 yield break;
             }
 
-            triggerQueueDatas.Clear();
-            chutzpahTargets.Clear();
-            chutzpahCounts.Clear();
-            chutzpahAssociatedTriggers.Clear();
+            //if (coroutine == null)
+            //{
+            //    triggerQueueDatas.Clear();
+            //    chutzpahTargets.Clear();
+            //    chutzpahCounts.Clear();
+            //    chutzpahAssociatedTriggers.Clear();
+            //}
 
             List<CharacterState> allTargets = new List<CharacterState>();
 
             //Run the selected room first
-            roomManager.GetRoom(SelectedRoomIndex).AddCharactersToList(allTargets, Team.Type.Heroes);
-            yield return ProcessListToQueue(allTargets, trigger, count, applynow);
-            roomManager.GetRoom(SelectedRoomIndex).AddCharactersToList(allTargets, Team.Type.Monsters);
-            yield return ProcessListToQueue(allTargets, trigger, count, applynow);
+            roomManager.GetRoom(startingRoom).AddCharactersToList(allTargets, Team.Type.Heroes);
+            yield return ProcessListToQueue(allTargets, trigger, count, applynow, hasBlackLight, blackLightTrigger);
+            roomManager.GetRoom(startingRoom).AddCharactersToList(allTargets, Team.Type.Monsters);
+            yield return ProcessListToQueue(allTargets, trigger, count, applynow, hasBlackLight, blackLightTrigger);
 
             //Then rooms from top to bottom.
             for (int ii = roomManager.GetNumRooms() - 1; ii >= 0; ii--)
             {
                 //skipping selected room so it isn't run twice
-                if (ii == SelectedRoomIndex) 
+                if (ii == startingRoom) 
                 {
                     continue;
                 }
@@ -400,7 +494,7 @@ namespace Void.Mania
                 //and other floors in prieview mode because they simply trigger instead of previewing
                 if (ProviderManager.SaveManager.PreviewMode) 
                 {
-                    if (ii != SelectedRoomIndex) 
+                    if (ii != startingRoom) 
                     {
                         continue;
                     }
@@ -411,26 +505,55 @@ namespace Void.Mania
                 if (roomManager.GetRoom(ii).GetIsPyreRoom())
                 {
                     roomManager.GetRoom(ii).AddCharactersToList(allTargets, Team.Type.Heroes);
-                    yield return ProcessListToQueue(allTargets, trigger, count, applynow);
+                    yield return ProcessListToQueue(allTargets, trigger, count, applynow, hasBlackLight, blackLightTrigger);
                 }
                 else
                 {
                     roomManager.GetRoom(ii).AddCharactersToList(allTargets, Team.Type.Heroes);
-                    yield return ProcessListToQueue(allTargets, trigger, count, applynow);
+                    yield return ProcessListToQueue(allTargets, trigger, count, applynow, hasBlackLight, blackLightTrigger);
                     roomManager.GetRoom(ii).AddCharactersToList(allTargets, Team.Type.Monsters);
-                    yield return ProcessListToQueue(allTargets, trigger, count, applynow);
+                    yield return ProcessListToQueue(allTargets, trigger, count, applynow, hasBlackLight, blackLightTrigger);
                 }
             }
 
-            if (applynow && SelectedRoomIndex != -1 && !SetSelectedRoomFlag) 
+            if (!ProviderManager.CombatManager.IsRunningTriggerQueue)
             {
-                yield return roomManager.GetRoomUI().SetSelectedRoom(SelectedRoomIndex);
+                //Beyonder.Log("Mania Manager line 489: Manually starting trigger queue.");
+                yield return ProviderManager.CombatManager.RunTriggerQueue();
+            }
+            else 
+            {
+                //Beyonder.Log("Mania Manager line 494: Tried to start trigger queue but it was already running.");
+            }
+
+            int num = 0;
+            while (ProviderManager.CombatManager.IsRunningTriggerQueue) 
+            {
+                if (num < 1000)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+                else 
+                {
+                    Beyonder.Log("Mania Manager line 506: Exceeded 100 seconds waiting for trigger queue to empty. Moving on.");
+                    break;
+                }
+
+                num++;
+            }
+
+            if ((applynow || true) && startingRoom != -1) 
+            {
+                yield return roomManager.GetRoomUI().SetSelectedRoom(startingRoom);
+
+                SetSelectedRoomFlag = true;
+                SelectedRoomIndex = -1;
             }
 
             yield break;
         }
 
-        private static IEnumerator ProcessListToQueue(List<CharacterState> allTargets, CharacterTriggerData.Trigger trigger, int count, bool applynow = false) 
+        private static IEnumerator ProcessListToQueue(List<CharacterState> allTargets, CharacterTriggerData.Trigger trigger, int count, bool applynow = false, bool hasBlackLight = false, CharacterTriggerData.Trigger blackLightTrigger = CharacterTriggerData.Trigger.OnDeath)
         {
             foreach (CharacterState character in allTargets)
             {
@@ -444,7 +567,24 @@ namespace Void.Mania
                     character = character
                 };
 
-                if (ProviderManager.SaveManager.PreviewMode || applynow)
+                CombatManager.TriggerQueueData triggerQueueData2 = new CombatManager.TriggerQueueData()
+                {
+                    trigger = blackLightTrigger,
+                    canAttackOrHeal = true,
+                    canFireTriggers = true,
+                    triggerCount = count,
+                    fireTriggersData = null,
+                    character = character
+                };
+
+                //It was causing too many problems to delay the unit triggers until after card effects.
+                // 1: Triggers were being played in slow motion.
+                // 2: Combat previews were calculating incorrectly.
+                //Thus, added 'true' here to disable the delay.
+                //More testing will be needed to see if Wurmkin corruption is being applied correctly. Changing floors has caused it to mess up before. The order in which the card traits activate may make a difference, along with whether the card has extract.
+                //Traits tend to fire before card effects are applied. Wurmkin also has card effects that adjust corruption as well.
+
+                if (ProviderManager.SaveManager.PreviewMode || applynow || true)
                 {
                     //immediate before card effect ..?
                     //yield return ProviderManager.CombatManager.QueueAndRunTrigger(character, trigger, true, true, null, count);
@@ -452,6 +592,12 @@ namespace Void.Mania
 
                     ProviderManager.CombatManager.QueueTrigger(triggerQueueData);
                     ApplyChutzpahCardTrigger(character, count, trigger);
+
+                    if (hasBlackLight) 
+                    {
+                        ProviderManager.CombatManager.QueueTrigger(triggerQueueData2);
+                        ApplyChutzpahCardTrigger(character, count, blackLightTrigger);
+                    }
                 }
                 else 
                 { 
@@ -505,6 +651,12 @@ namespace Void.Mania
         {
             if (paramInt == 0) { yield break; }
 
+            //if (IgnoreOnce)
+            //{
+            //    IgnoreOnce = false;
+            //    yield break;
+            //}
+
             if (ProviderManager.SaveManager.PreviewMode) 
             {
                 PreviewAnxiety = true;
@@ -546,12 +698,12 @@ namespace Void.Mania
                 //yield return null;
                 //yield return null;
 
-                yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(), numTriggers, applynow);
+                yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(), numTriggers, SelectedRoomIndex, applynow, BlackLight.HasIt(), Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum());
 
-                if (BlackLight.HasIt()) 
-                {
-                    yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(), numTriggers, applynow);
-                }
+                //if (BlackLight.HasIt()) 
+                //{
+                //    yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(), numTriggers, applynow);
+                //}
 
                 maniaLevel = ManiaLevel.Low;
             }
@@ -606,6 +758,12 @@ namespace Void.Mania
         {
             if (paramInt == 0) { yield break; }
 
+            //if (IgnoreOnce)
+            //{
+            //    IgnoreOnce = false;
+            //    yield break;
+            //}
+
             if (ProviderManager.SaveManager.PreviewMode)
             {
                 PreviewAnxiety = false;
@@ -646,12 +804,12 @@ namespace Void.Mania
                 //yield return null;
                 //yield return null;
 
-                yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(), numTriggers, applynow);
+                yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(), numTriggers, SelectedRoomIndex, applynow, BlackLight.HasIt(), Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum());
 
-                if (BlackLight.HasIt())
-                {
-                    yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(), numTriggers, applynow);
-                }
+                //if (BlackLight.HasIt())
+                //{
+                //    yield return EnqueueAllPossibleTargets(Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(), numTriggers, applynow);
+                //}
 
                 maniaLevel = ManiaLevel.High;
             }

@@ -65,10 +65,12 @@ namespace Void.Enhancers
                     {
                         new CardUpgradeMaskDataBuilder
                         {
+                            UpgradeDisabledReason = CardState.UpgradeDisabledReason.NotEligible,
                             ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
                             ExcludedCardTraits = new List<string>
                             {
-                                "CardTraitUnplayable"
+                                "CardTraitUnplayable",
+                                typeof(BeyonderCardTraitTherapeutic).AssemblyQualifiedName
                             },
                             DisallowedCardPools = new List<CardPool> 
                             {
@@ -110,17 +112,17 @@ namespace Void.Enhancers
                     titleKey = "BeyonderCardTraitCompulsive_CardText",
                     descriptionKey = "BeyonderCardTraitCompulsive_TooltipText",
                 },
-                new AdditionalTooltipData
-                {
-                    style = TooltipDesigner.TooltipDesignType.Keyword,
-                    isStatusTooltip = false,
-                    statusId = "",
-                    isTipTooltip = false,
-                    isTriggerTooltip = false,
-                    trigger = CharacterTriggerData.Trigger.OnDeath,
-                    titleKey = "BeyonderCardTraitTherapeutic_CardText",
-                    descriptionKey = "BeyonderCardTraitTherapeutic_TooltipText",
-                },
+                //new AdditionalTooltipData
+                //{
+                //    style = TooltipDesigner.TooltipDesignType.Keyword,
+                //    isStatusTooltip = false,
+                //    statusId = "",
+                //    isTipTooltip = false,
+                //    isTriggerTooltip = false,
+                //    trigger = CharacterTriggerData.Trigger.OnDeath,
+                //    titleKey = "BeyonderCardTraitTherapeutic_CardText",
+                //    descriptionKey = "BeyonderCardTraitTherapeutic_TooltipText",
+                //},
                 new AdditionalTooltipData
                 {
                     style = TooltipDesigner.TooltipDesignType.Default,

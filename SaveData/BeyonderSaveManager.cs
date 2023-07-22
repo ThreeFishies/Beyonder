@@ -280,6 +280,105 @@ namespace Void.Init
             return IsOkay;
         }
 
+        public static bool ImportFromFile(string path, out RunSetupData setupData)
+        {
+            setupData = new RunSetupData { };
+            bool IsOkay = true;
+
+            if (File.Exists(path))
+            {
+                try
+                {
+                    string data = File.ReadAllText(path);
+                    setupData = JsonUtility.FromJson<RunSetupData>(data);
+                }
+                catch
+                {
+                    IsOkay = false;
+                }
+            }
+            else 
+            {
+                return false;
+            }
+
+            IsOkay &= setupData.VbaneIndexes.Count == ChaosManager.VBanesData.Count;
+            foreach (int index in setupData.VbaneIndexes) 
+            {
+                IsOkay &= (index >= 0 && index < ChaosManager.VBoonsData.Count);
+            }
+            IsOkay &= setupData.VboonIndexes.Count == ChaosManager.VBoonsData.Count;
+            foreach (int index in setupData.VboonIndexes)
+            {
+                IsOkay &= (index >= 0 && index < ChaosManager.VBoonsData.Count);
+            }
+            IsOkay &= setupData.UbaneIndexes.Count == ChaosManager.UBanesData.Count;
+            foreach (int index in setupData.UbaneIndexes)
+            {
+                IsOkay &= (index >= 0 && index < ChaosManager.UBanesData.Count);
+            }
+            IsOkay &= setupData.UboonIndexes.Count == ChaosManager.UBoonsData.Count;
+            foreach (int index in setupData.UboonIndexes)
+            {
+                IsOkay &= (index >= 0 && index < ChaosManager.UBoonsData.Count);
+            }
+            IsOkay &= setupData.EpidemialContagiousPath >= 0;
+            IsOkay &= setupData.EpidemialContagiousPath < 3;
+            IsOkay &= setupData.EpidemialInnumerablePath >= 0;
+            IsOkay &= setupData.EpidemialInnumerablePath < 3;
+            IsOkay &= setupData.EpidemialSoundlessPath >= 0;
+            IsOkay &= setupData.EpidemialSoundlessPath < 3;
+            IsOkay &= setupData.LocoMotiveConductorPath >= 0;
+            IsOkay &= setupData.LocoMotiveConductorPath < 3;
+            IsOkay &= setupData.LocoMotiveFormlessPath >= 0;
+            IsOkay &= setupData.LocoMotiveFormlessPath < 3;
+            IsOkay &= setupData.LocoMotiveHorrorPath >= 0;
+            IsOkay &= setupData.LocoMotiveHorrorPath < 3;
+            //IsOkay &= setupData.StartingConditions.IsFtueRun != true;
+            IsOkay &= setupData.StartingConditions.AscensionLevel == setupData.StartingConditions.Covenants.Count;
+            IsOkay &= setupData.StartingConditions.AscensionLevel <= ProviderManager.SaveManager.GetMetagameSave().GetMaxAscensionLevel();
+            IsOkay &= setupData.StartingConditions.AscensionLevel >= 0;
+            //IsOkay &= setupData.StartingConditions.IsBattleMode != true;
+            IsOkay &= setupData.StartingConditions.Seed > 0;
+            IsOkay &= CustomClassManager.GetClassDataByID(setupData.StartingConditions.Class) != null;
+            if (IsOkay)
+            {
+                IsOkay &= ProviderManager.SaveManager.GetMetagameSave().GetClassUnlocked(CustomClassManager.GetClassDataByID(setupData.StartingConditions.Class), ProviderManager.SaveManager);
+                IsOkay &= ProviderManager.SaveManager.GetMetagameSave().GetLevel(setupData.StartingConditions.Class) >= setupData.StartingConditions.ClassLevel;
+            }
+            IsOkay &= CustomClassManager.GetClassDataByID(setupData.StartingConditions.Subclass) != null;
+            if (IsOkay)
+            {
+                IsOkay &= ProviderManager.SaveManager.GetMetagameSave().GetClassUnlocked(CustomClassManager.GetClassDataByID(setupData.StartingConditions.Subclass), ProviderManager.SaveManager);
+                IsOkay &= ProviderManager.SaveManager.GetMetagameSave().GetLevel(setupData.StartingConditions.Subclass) >= setupData.StartingConditions.SubclassLevel;
+            }
+            IsOkay &= (setupData.StartingConditions.MainChampionIndex == 0 || setupData.StartingConditions.MainChampionIndex == 1);
+            IsOkay &= (setupData.StartingConditions.SubChampionIndex == 0 || setupData.StartingConditions.SubChampionIndex == 1);
+            if (setupData.StartingConditions.SpChallengeId != string.Empty) 
+            {
+                IsOkay &= ProviderManager.SaveManager.GetAllGameData().FindSpChallengeData(setupData.StartingConditions.SpChallengeId) != null;
+            }
+            if (setupData.StartingConditions.Covenants.Count > 0) 
+            {
+                foreach (string covenant in setupData.StartingConditions.Covenants)
+                { 
+                    IsOkay &= ProviderManager.SaveManager.GetAllGameData().FindCovenantData(covenant) != null;
+                }
+            }
+            if (setupData.StartingConditions.Mutators.Count > 0) 
+            {
+                foreach (string mutator in setupData.StartingConditions.Mutators) 
+                { 
+                    IsOkay &= ProviderManager.SaveManager.GetAllGameData().FindMutatorData(mutator) != null;
+                }            
+            }
+            setupData.ForceSeed = true;
+            setupData.StartingConditions.SetIsBattleMode(false);
+            setupData.StartingConditions.SetFtue(false);
+
+            return IsOkay;
+        }
+
         public static bool LoadDataForRunID(string RunID)
         {
             if (RunID.IsNullOrEmpty() || !RunHistoryData.ContainsKey(RunID)) 

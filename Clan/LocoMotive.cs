@@ -18,6 +18,7 @@ using Void.Clan;
 using Void.Status;
 using Void.Init;
 using Void.Triggers;
+using Void.Builders;
 using CustomEffects;
 using RunHistory;
 using Void.Spells;
@@ -63,9 +64,43 @@ namespace Void.Champions
                 Health = 20,
                 Size = 3,
                 CharacterID = CharID,
-
-                //CharacterChatterData = null,
                 AssetPath = "Monsters/Assets/Loco_Motive_Monster.png",
+
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                {
+                    name = "LocoMotiveChatterData",
+                    gender = CharacterChatterData.Gender.Neutral,
+
+                    characterAddedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Added_0",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Added_1",
+                    },
+                    characterIdleExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_0",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_1",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_2",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_3",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_4",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_5",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_6",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_7",
+                    },
+                    characterSlayedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Slay_0",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Slay_1",
+                    },
+                    characterTriggerExpressionKeys = new List<CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys> 
+                    { 
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        { 
+                            Key = "Beyonder_Champ_LocoMotive_Chatter_Key_Hysteria_0",
+                            Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        }
+                    }
+                }.Build(),
             };
 
             card = new ChampionCardDataBuilder
@@ -112,6 +147,16 @@ namespace Void.Champions
                     }
                 }
             }.BuildAndRegister(0);
+
+            CardEffectData Noise = new CardEffectDataBuilder
+            {
+                EffectStateName = typeof(CustomCardEffectPlaySoundCue).AssemblyQualifiedName,
+                ParamStr = "Multiplayer_Emote_Lol",
+            }.Build();
+
+            List<CardEffectData> effectDatas = card.GetEffects();
+            effectDatas.Add(Noise);
+            AccessTools.Field(typeof(CardData), "effects").SetValue(card, effectDatas);
         }
 
         public static void BuildTreeForNewRun(RngId rngId = RngId.SetupRun, bool ShouldRandomize = true)
@@ -733,7 +778,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 8 + (upgradeLevel * 8) + (upgradeLevel > 1 ? 8 : 0),
+                                            count = 8 + (upgradeLevel * 8), //+ (upgradeLevel > 1 ? 8 : 0),
                                         }
                                     }
                                 },
@@ -816,7 +861,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 3 + (3 * upgradeLevel) + (upgradeLevel > 1 ? 3 : 0),
+                                            count = 3 + (3 * upgradeLevel), // + (upgradeLevel > 1 ? 3 : 0),
                                         }
                                     }
                                 }
@@ -861,7 +906,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 6 + (6 * upgradeLevel) + (upgradeLevel > 1 ? 6 : 0),
+                                            count = 6 + (6 * upgradeLevel), // + (upgradeLevel > 1 ? 6 : 0),
                                         }
                                     }
                                 }

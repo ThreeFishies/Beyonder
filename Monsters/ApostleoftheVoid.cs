@@ -15,6 +15,7 @@ using Void.Unit;
 using Void.Triggers;
 using Void.Status;
 using Void.Chaos;
+using Void.Builders;
 
 namespace Void.Monsters
 {
@@ -43,7 +44,45 @@ namespace Void.Monsters
                 PriorityDraw = true,
                 AssetPath = "Monsters/Assets/ApostleoftheVoid_Monster.png",
                 SubtypeKeys = new List<string> { SubtypeUndretch.Key, SubtypeVeilrich.Key },
-                //CharacterChatterData = null,
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                {
+                    name = "ApostleoftheVoidChatterData",
+                    gender = CharacterChatterData.Gender.Male,
+
+                    characterAddedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Added_0",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Added_1"
+                    },
+                    characterIdleExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_0",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_1",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_2",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_3",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_4",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_5",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_6",
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Idle_7"
+                    },
+                    characterSlayedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Slay_0",
+                    },
+                    characterTriggerExpressionKeys = new List<CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys> 
+                    {
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        {
+                            Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                            Key = "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Anxiety_0"
+                        },
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        {
+                            Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                            Key = "Beyonder_Unit_ApostleoftheVoid_Chatter_Key_Hysteria_0"
+                        }
+                    }
+                }.Build(),
 
                 TriggerBuilders = new List<CharacterTriggerDataBuilder>
                 {

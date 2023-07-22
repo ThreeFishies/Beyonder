@@ -56,6 +56,9 @@ namespace Void.Init
         public static TrackAlliesSacrificed trackAlliesSacrificed { get; private set; }
         public static TrackSacrificedHP trackSacrificedHP { get; private set; }
         public static TrackSacrificedSize trackSacrificedSize { get; private set; }
+        public static EntropicCardSelectionError EntropicCardSelectionError { get; private set; }
+        public static HoldoverCardSelectionError HoldoverCardSelectionError { get; private set; }
+        public static CardNotSpawnerSelectionError CardNotSpawnerSelectionError { get; private set; }
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
@@ -104,6 +107,15 @@ namespace Void.Init
             Beyonder.Log("TrackSacrificedHP Enum");
             trackSacrificedSize = new TrackSacrificedSize("TrackSacrificedSizeKey");
             Beyonder.Log("TrackSacrificedSize Enum");
+            EntropicCardSelectionError = new EntropicCardSelectionError("EntropicCardSelectionErrorKey");
+            EntropicCardSelectionError.Initialize();
+            Beyonder.Log("Entropic Card Selection Error Enum");
+            HoldoverCardSelectionError = new HoldoverCardSelectionError("HoldoverCardSelectionErrorKey");
+            HoldoverCardSelectionError.Initialize();
+            Beyonder.Log("Holdover Card Selection Error Enum");
+            CardNotSpawnerSelectionError = new CardNotSpawnerSelectionError("CardNotSpawnerSelectionErrorKey");
+            CardNotSpawnerSelectionError.Initialize();
+            Beyonder.Log("Card Not Spawner Selection Error Enum");
 
             //Add some dynamic localization keys.
             CustomLocalizationManager.ImportSingleLocalization(typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_TooltipText", "Text", "", "", "", "", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.");
@@ -312,6 +324,9 @@ namespace Void.Init
 
             TutorialManager.LoadProgress();
             Beyonder.Log("Loading tutorial progress.");
+
+            //UpdateRewardCountTest.AwokenHerzalTestReward();
+            //Beyonder.Log("*** Testing more rewards for Awoken banner and Herzal's Hoards. ***");
 
             //Signifies that the clan's data is loaded and ready to use.
             IsInit = true;

@@ -1,0 +1,1 @@
+This directory contains exported runs. Imported runs from other users should be placed here as well.

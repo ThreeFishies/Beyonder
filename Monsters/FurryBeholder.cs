@@ -15,6 +15,7 @@ using Void.Unit;
 using Void.Triggers;
 using Void.Status;
 using Void.Chaos;
+using Void.Builders;
 using UnityEngine.Rendering;
 
 namespace Void.Monsters
@@ -41,6 +42,34 @@ namespace Void.Monsters
                 PriorityDraw = true,
                 AssetPath = "Monsters/Assets/FurryBeholder_Monster.png",
                 SubtypeKeys = new List<string> { SubtypeUndretch.Key },
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                {
+                    name = "FurryBeholderChatterData",
+                    gender = CharacterChatterData.Gender.Female,
+
+                    characterAddedExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Added_0",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Added_1",
+                    },
+                    characterIdleExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_0",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_1",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_2",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_3",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_4",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_5",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_6",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_7",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Idle_8",
+                    },
+                    characterSlayedExpressionKeys = new List<string>() 
+                    {
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Slay_0",
+                        "Beyonder_Unit_FurryBeholder_Chatter_Key_Slay_1",
+                    }
+                }.Build(),
 
                 StartingStatusEffects = new StatusEffectStackData[] 
                 { 

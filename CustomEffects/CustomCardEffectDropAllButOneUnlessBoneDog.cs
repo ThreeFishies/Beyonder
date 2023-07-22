@@ -7,6 +7,7 @@ using Trainworks.Constants;
 using Trainworks.Managers;
 using UnityEngine;
 using static CardManager;
+using Void.Init;
 
 namespace CustomEffects
 {
@@ -70,7 +71,7 @@ namespace CustomEffects
                     descriptionKey = locKey,
                     cardChosenCallback = new HandSelectionUI.CardStateChosenDelegate(this.HandleCardChosen),
                     filterCallback = ((CardState checkCard) => this.CardFilterFunc(checkCard, cardEffectParams.playedCard, cardEffectParams.relicManager)),
-                    selectionErrorType = CardSelectionBehaviour.SelectionError.Invalid,
+                    selectionErrorType = Beyonder.CardNotSpawnerSelectionError.GetEnum(),
                     instantApplyDelay = cardEffectParams.saveManager.GetBalanceData().GetAnimationTimingData().cardDrawAnimationDuration
                 });
 

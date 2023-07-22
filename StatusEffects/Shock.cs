@@ -22,6 +22,8 @@ namespace Void.Status
     {
         public static StatusEffectData data;
         public const string statusId = "beyonder_shock";
+        public bool shouldSilence = false;
+        public StatusEffectData.TriggerStage triggerStage { get; set; }
 
         //Associated Text keys:
         //StatusEffect_beyonder_shock_CardText
@@ -48,6 +50,7 @@ namespace Void.Status
             List<StatusEffectData.TriggerStage> triggerStages = new List<StatusEffectData.TriggerStage>
             {
                 StatusEffectData.TriggerStage.OnCombatTurnDazed,
+                StatusEffectData.TriggerStage.OnPreCharacterTrigger
             };
             AccessTools.Field(typeof(StatusEffectData), "additionalTriggerStages").SetValue(data, triggerStages);
         }
@@ -56,15 +59,23 @@ namespace Void.Status
         {
             outputTriggerParams.count = 1;
 
-            //if (inputTriggerParams.damage > 0)
-            //{
-            //    outputTriggerParams.count = 1;
-            //}
+            if (triggerStage == StatusEffectData.TriggerStage.OnAttacked) 
+            {
+                if (this.GetAssociatedCharacter() != null && this.GetAssociatedCharacter().HasEffectTrigger(CharacterTriggerData.Trigger.OnHit))
+                {
+                    return false;
+                }
+            }
 
-            if (inputTriggerParams.canAttackOrHeal || inputTriggerParams.canFireTriggers)
+            if (shouldSilence)
             {
                 outputTriggerParams.canAttackOrHeal = false;
                 outputTriggerParams.canFireTriggers = false;
+                shouldSilence = false;
+            }
+            else 
+            {
+                return false;
             }
 
             if (inputTriggerParams.attacked != null)
@@ -88,6 +99,35 @@ namespace Void.Status
                 inputTriggerParams.associatedCharacter.ShowNotification("StatusEffect_beyonder_shock_NotificationText".Localize(), PopupNotificationUI.Source.General, null);
             }
             yield break;
+        }
+    }
+
+    [HarmonyPatch(typeof(StatusEffectState), "IsValidTriggerStage")]
+    public static class SetShouldFireTriggersShockState 
+    {
+        public static void Postfix(ref StatusEffectData.TriggerStage testTriggerStage, ref StatusEffectState __instance)
+        {
+            if (!Beyonder.IsInit) { return; }
+
+            if (__instance is StatusEffectShock) 
+            {
+                StatusEffectShock @this = __instance as StatusEffectShock;
+
+                if (@this == null) { return; }
+
+                @this.triggerStage = testTriggerStage;
+
+                if (testTriggerStage == StatusEffectData.TriggerStage.OnAttacked)
+                {
+                    @this.shouldSilence = true;
+                }
+                if (testTriggerStage == StatusEffectData.TriggerStage.OnCombatTurnDazed)
+                {
+                    @this.shouldSilence = true;
+                }
+
+                __instance = @this;
+            }
         }
     }
 }

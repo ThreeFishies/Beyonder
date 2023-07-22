@@ -44,6 +44,12 @@ namespace Void.Status
 
         public override void OnStacksAdded(CharacterState character, int numStacksAdded)
         {
+            if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode)
+            {
+                base.OnStacksAdded(character, numStacksAdded);
+                return;
+            }
+
             if (numStacksAdded > 0)
             {
                 character.AddImmunity("beyonder_panic");
@@ -53,6 +59,12 @@ namespace Void.Status
 
         public override void OnStacksRemoved(CharacterState character, int numStacksRemoved)
         {
+            if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode)
+            {
+                base.OnStacksRemoved(character, numStacksRemoved);
+                return;
+            }
+
             if (numStacksRemoved > 0)
             {
                 character.AssertNotDestroyed();

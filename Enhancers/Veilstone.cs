@@ -81,6 +81,7 @@ namespace Void.Enhancers
                     {
                         new CardUpgradeMaskDataBuilder
                         {
+                            UpgradeDisabledReason = CardState.UpgradeDisabledReason.NotEligible,
                             ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
                             ExcludedCardTraits = new List<string>
                             {

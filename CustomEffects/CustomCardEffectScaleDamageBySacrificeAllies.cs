@@ -19,27 +19,41 @@ namespace CustomEffects
         // Token: 0x060006BB RID: 1723 RVA: 0x00021094 File Offset: 0x0001F294
         public override bool TestEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
+            GetNumAlliesSacrificed(cardEffectState, cardEffectParams);
             return cardEffectParams.targets.Count > 0;
         }
 
-        public CardUpgradeData GenerateParamCardUpgradeData(CardEffectState cardEffectState, CardEffectParams cardEffectParams) 
+        public static int GetNumAlliesSacrificed(CardEffectState cardEffectState = null, CardEffectParams cardEffectParams = null) 
         {
-            int damagePerAlly = cardEffectState.GetParamInt();
+            if (cardEffectParams == null || cardEffectState == null) 
+            { 
+                return NumAlliesSacrificed;
+            }
+
             int room = -1;
             NumAlliesSacrificed = 0;
+
             List<CharacterState> unluckySaps = new List<CharacterState>();
-            if (cardEffectParams.targets != null && cardEffectParams.targets[0] != null)
+            if (!cardEffectParams.targets.IsNullOrEmpty() && cardEffectParams.targets[0] != null)
             {
                 room = cardEffectParams.targets[0].GetCurrentRoomIndex();
-                //NumAlliesSacrificed = cardEffectParams.roomManager.GetRoom(room).GetNumCharacters(cardEffectParams.targets[0].GetTeamType()) - 1;
                 cardEffectParams.roomManager.GetRoom(room).AddCharactersToList(unluckySaps, cardEffectParams.targets[0].GetTeamType());
                 NumAlliesSacrificed = unluckySaps.Count;
-                if (unluckySaps.Contains(cardEffectParams.targets[0])) 
+                if (unluckySaps.Contains(cardEffectParams.targets[0]))
                 {
                     NumAlliesSacrificed--;
                 }
                 LastTarget = cardEffectParams.targets[0];
             }
+
+            return NumAlliesSacrificed;
+        }
+
+        public CardUpgradeData GenerateParamCardUpgradeData(CardEffectState cardEffectState, CardEffectParams cardEffectParams) 
+        {
+            int damagePerAlly = cardEffectState.GetParamInt();
+            NumAlliesSacrificed = GetNumAlliesSacrificed(cardEffectState, cardEffectParams);
+
             CardUpgradeData cardUpgradeData = new CardUpgradeDataBuilder
             {
                 UpgradeTitleKey = "CustomCardEffectScaleDamageBySacrificeAlliesEffect_" + (damagePerAlly * NumAlliesSacrificed),

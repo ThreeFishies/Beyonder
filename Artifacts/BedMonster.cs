@@ -77,6 +77,7 @@ namespace Void.Artifacts
                         }
                     },
                     */
+                    /*
                     new RelicEffectDataBuilder
                     {
                         RelicEffectClassType = typeof(RelicEffectModifyStatusMagnitude),
@@ -92,6 +93,21 @@ namespace Void.Artifacts
                             }
                         }
                     },
+                    */
+                    new RelicEffectDataBuilder
+                    { 
+                        RelicEffectClassName = "RelicEffectAddStatusEffectOnOtherStatusRemoved",
+                        ParamSourceTeam = Team.Type.Monsters,
+                        ParamString = StatusEffectJitters.statusId,
+                        ParamStatusEffects = new StatusEffectStackData[]
+                        { 
+                            new StatusEffectStackData
+                            { 
+                                statusId = VanillaStatusEffectIDs.Rage,
+                                count = 3
+                            }
+                        }
+                    }
                 },
             }.BuildAndRegister();
 

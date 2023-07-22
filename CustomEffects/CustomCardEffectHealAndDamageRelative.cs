@@ -45,6 +45,8 @@ namespace CustomEffects
                             playedCard = cardEffectParams.playedCard,
                             finalEffectInSequence = cardEffectParams.finalEffectInSequence,
                             vfxAtLoc = cardEffectState.GetAppliedVFX(),
+                            relicState = cardEffectParams.sourceRelic,
+                            selfTarget = cardEffectParams.selfTarget,
                             showDamageVfx = cardEffectParams.allowPlayingDamageVfx
                         });
                     }

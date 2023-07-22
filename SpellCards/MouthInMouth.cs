@@ -41,14 +41,14 @@ namespace Void.Spells
                 LinkedClass = Beyonder.BeyonderClanData,
                 UnlockLevel = 0,
 
-                TraitBuilders = new List<CardTraitDataBuilder> 
-                { 
+                TraitBuilders = new List<CardTraitDataBuilder>
+                {
                     new CardTraitDataBuilder
-                    { 
+                    {
                         TraitStateName = "CardTraitExhaustState",
                     },
                     new CardTraitDataBuilder
-                    { 
+                    {
                         TraitStateName = typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName,
                         ParamInt = 1,
                     }
@@ -64,9 +64,9 @@ namespace Void.Spells
                         ShouldTest = true,
 
                         ParamStatusEffects = new StatusEffectStackData[]
-                        { 
+                        {
                             new StatusEffectStackData
-                            { 
+                            {
                                 statusId = StatusEffectMutated.statusId,
                                 count = 1
                             }
@@ -78,6 +78,7 @@ namespace Void.Spells
                         TargetMode = TargetMode.LastTargetedCharacters,
                         TargetTeamType = Team.Type.Heroes | Team.Type.Monsters,
                         ShouldTest = true,
+                        ParamBool = true,
 
                         AdditionalTooltips = new AdditionalTooltipData[]
                         {

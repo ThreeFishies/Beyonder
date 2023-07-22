@@ -78,6 +78,18 @@ namespace Void.Tutorial
 
         public static RunSetupData GetTutorialData() 
         {
+            //int seed = 1091589910;
+            int seed = 1390638784;
+            //if (Trainworks.Managers.PluginManager.GetAllPluginGUIDs().Contains("mod.equestrian.clan.monstertrain"))
+            //{
+            //    seed = 123456;
+            //    Beyonder.Log($"Adjusting tutorial seed for Equestrian clan: {seed}");
+            //}
+            //else 
+            //{
+            //    Beyonder.Log($"Using default tutorial seed: {seed}");
+            //}
+
             RunSetupData runData = new RunSetupData
             {
                 LocoMotiveHorrorPath = 0,
@@ -96,7 +108,7 @@ namespace Void.Tutorial
                 StartingConditions = new StartingConditions { }
             };
 
-            runData.StartingConditions.SetSeed(1091589910);
+            runData.StartingConditions.SetSeed(seed);
             runData.StartingConditions.SetIsBattleMode(false);
             runData.StartingConditions.SetFtue(false);
             runData.StartingConditions.SetBattleModeStartTime(DateTime.Now);
@@ -177,6 +189,8 @@ namespace Void.Tutorial
             {
                 string data = File.ReadAllText(path);
                 CurrentProgress = JsonUtility.FromJson<TutorialProgress>(data);
+                //Shouldn't need setup data if the tutorial has already started.
+                //CurrentProgress.TutorialData = GetTutorialData();
                 isLoaded = true;
             }
             catch
@@ -225,6 +239,7 @@ namespace Void.Tutorial
             }, delegate 
             {
                 CurrentProgress.HasSkippedTutorial = true;
+                dirty = true;
                 SaveTutorialProgress();
                 screenManager.ShowNotificationDialog("Beyonder_Tutorial_Skipped_Message".Localize(), null, Dialog.Anchor.Center);
             }, Dialog.Anchor.Center, false);

@@ -64,7 +64,7 @@ namespace Void.Spells
                     },
                     //new CardTraitDataBuilder
                     //{
-                    //    TraitStateName = typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName,
+                    //    TraitStateName = typeof(BeyonderCardTraitTherapeutic).AssemblyQualifiedName,
                     //    ParamInt = 1,
                     //}
                 },

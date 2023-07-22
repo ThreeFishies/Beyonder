@@ -19,13 +19,13 @@ namespace CustomEffects
             return false;
         }
 
-        public static int GetNumAfflictive(int numCardsToManic) 
+        public static int GetNumAfflictive(int numCardsToManic, CardState playedCard) 
         {
             int afflictiveBase = 2;
             int compulsiveBase = 2;
 
-            int currentMania = ManiaManager.GetCurrentMania();
-            ManiaLevel maniaLevel = ManiaManager.GetCurrentManiaLevel();
+            int currentMania = ManiaManager.GetCurrentMania(playedCard);
+            ManiaLevel maniaLevel = ManiaManager.GetCurrentManiaLevel(false, currentMania);
 
             if (maniaLevel == ManiaLevel.Panic || maniaLevel == ManiaLevel.BlackoutHigh) 
             {
@@ -56,7 +56,7 @@ namespace CustomEffects
             return (int)Math.Round(cardsraw, 0);
         }
 
-        private IEnumerator HandleCards(List<CardState> cards, CardManager cardManager)
+        private IEnumerator HandleCards(List<CardState> cards, CardManager cardManager, CardState playedCard)
         {
             if (cardManager == null) 
             { 
@@ -68,7 +68,7 @@ namespace CustomEffects
                 yield break;
             }
 
-            int cardsToAfflictive = GetNumAfflictive(cards.Count);
+            int cardsToAfflictive = GetNumAfflictive(cards.Count, playedCard);
 
             cards.Shuffle(RngId.Battle);
 
@@ -134,7 +134,7 @@ namespace CustomEffects
 
             if (GatherCardsToManic(cardEffectState, cardEffectParams.cardManager, out List<CardState> cardsToManic)) 
             {
-                yield return HandleCards(cardsToManic, cardEffectParams.cardManager);
+                yield return HandleCards(cardsToManic, cardEffectParams.cardManager, cardEffectParams.playedCard);
             }
 
             cardEffectParams.cardManager.RefreshHandCards();

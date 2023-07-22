@@ -2,6 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using HarmonyLib;
+using Void.Init;
+using Void.Spells;
 
 // Token: 0x020000C3 RID: 195
 namespace CustomEffects
@@ -10,6 +14,7 @@ namespace CustomEffects
     {
         public static int HPofSacrifice = 0;
         public static int SizeofSacrifice = 0;
+        public static bool FocusOverride = false;
         // Token: 0x17000084 RID: 132
         // (get) Token: 0x060007E6 RID: 2022 RVA: 0x0000C623 File Offset: 0x0000A823
         public override bool CanRandomizeTargetMode
@@ -55,6 +60,11 @@ namespace CustomEffects
         // Token: 0x060007E9 RID: 2025 RVA: 0x00023628 File Offset: 0x00021828
         public override bool TestEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
+            if (FocusOverride) 
+            { 
+                return true; 
+            }
+
             this.RecollectTargets(cardEffectState, cardEffectParams);
 
             if (cardEffectParams.targets.Count > 0) 
@@ -128,4 +138,98 @@ namespace CustomEffects
         // Token: 0x04000468 RID: 1128
         private CardEffectState cachedState;
     }
+
+    [HarmonyPatch(typeof(CardSelectionBehaviour), "HighlightDropTarget")]
+    public static class UpdateCerebralDetonationNumbersByTarget 
+    {
+        public static void Postfix(ref CardSelectionBehaviour __instance, ref SpawnPointUI hoveredSpawnPointUI, ref CardManager ___cardManager, ref HandUI ___handUI) 
+        {
+            if (CustomCardEffectSacrificeAssertTarget.FocusOverride) 
+            { 
+                return; 
+            }
+
+            if (hoveredSpawnPointUI == null || hoveredSpawnPointUI.GetParentSpawnPoint() == null) 
+            {
+                return;
+            }
+
+            CharacterState target = hoveredSpawnPointUI.GetParentSpawnPoint().GetCharacterState();
+
+            if (target != null && target.IsAlive)
+            {
+                //Beyonder.Log($"Testing on: {target.GetName()} HP: {target.GetHP()} Size: {target.GetSize()} || SacrificeTargetHP: {CustomCardEffectSacrificeAssertTarget.HPofSacrifice} SacrificeTargetSize: {CustomCardEffectSacrificeAssertTarget.SizeofSacrifice}");
+            }
+            else 
+            {
+                return;
+            }
+
+            CardState ___focusedCardState = __instance.GetFocusedOrSelectedCardState();
+
+            if (___focusedCardState == null || ___cardManager == null || ___focusedCardState.GetCardDataID() != CerebralDetonation.Card.GetID())
+            {
+                //Beyonder.Log("Abort: null detected or focused card is not Cereberal Detonation.");
+                return;
+            }
+
+            //Beyonder.Log($"Testing card {___focusedCardState.GetTitle()} on: {target.GetName()} HP: {target.GetHP()} Size: {target.GetSize()}");
+
+            CardUI cardUI = ___handUI.GetFocusedCardUI(); //___cardManager.GetCardInHand(___focusedCardState);
+            if (cardUI == null)
+            {
+                //Beyonder.Log("Fail_0");
+                return;
+            }
+
+            if (___cardManager.GetCardStatistics() == null) 
+            {
+                //Beyonder.Log("Failed to find Card Statistics.");
+                return;
+            }
+
+            CustomCardEffectSacrificeAssertTarget.FocusOverride = true;
+
+            //Beyonder.Log("Attempting to update card text.");
+
+            //if (!cardUI.IsCardVisible()) 
+            //{
+                //Beyonder.Log("Fail_1");
+            //}
+            //if (!___cardManager.CanSelectCard(__instance.GetFocusedOrSelectedCardIndex()))
+            //{
+                //Beyonder.Log("Fail_2");
+            //}
+            //if (__instance.GetFocusedOrSelectedCardState() == null)
+            //{
+                //Beyonder.Log("Fail_3");
+            //}
+
+            if (cardUI.IsCardVisible() && ___cardManager.CanSelectCard(__instance.GetFocusedOrSelectedCardIndex()) && __instance.GetFocusedOrSelectedCardState() != null)
+            {
+                ___handUI.UpdateCardUI(cardUI, __instance.GetFocusedOrSelectedCardState(), true, false);
+                cardUI.UpdateTextContent(__instance.GetFocusedOrSelectedCardState(), ___cardManager.GetCardStatistics(), false);
+            }
+            else 
+            {
+                //Beyonder.Log("Failed to update card text.");
+            }
+
+            CustomCardEffectSacrificeAssertTarget.FocusOverride = false;
+        }
+    }
+
+    /*
+    [HarmonyPatch(typeof(CardTraitState), "GetCurrentEffectText")]
+    public static class DebugTextPreview 
+    {
+        public static void Postfix(ref CardTraitState __instance, ref string __result) 
+        {
+            if (__instance is CardTraitScalingAddStatusEffect && CustomCardEffectSacrificeAssertTarget.FocusOverride)
+            {
+                Beyonder.Log("CardTraitScalingAddStatusEffect returned value: " + __result);
+            }
+        }
+    }
+    */
 }

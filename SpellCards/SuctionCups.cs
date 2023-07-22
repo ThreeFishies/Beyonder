@@ -78,6 +78,7 @@ namespace Void.Spells
                         TargetMode = TargetMode.LastTargetedCharacters,
                         TargetTeamType = Team.Type.Heroes | Team.Type.Monsters,
                         ShouldTest = true,
+                        ParamBool = true,
 
                         AdditionalTooltips = new AdditionalTooltipData[]
                         {

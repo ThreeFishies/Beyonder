@@ -56,6 +56,7 @@ namespace Void.Spells
 
                 EffectBuilders = new List<CardEffectDataBuilder>
                 {
+                    /*
                     new CardEffectDataBuilder
                     {
                         EffectStateName = "CardEffectAddStatusEffect",
@@ -71,11 +72,11 @@ namespace Void.Spells
                                 count = 1
                             }
                         }
-                    },
+                    },*/
                     new CardEffectDataBuilder
-                    { 
+                    {
                         EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
-                        TargetMode = TargetMode.LastTargetedCharacters,
+                        TargetMode = TargetMode.DropTargetCharacter,
                         TargetTeamType = Team.Type.Heroes | Team.Type.Monsters,
                         ShouldTest = true,
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
@@ -107,6 +108,20 @@ namespace Void.Spells
                                 },
                             }
                         }.Build(),
+                        AdditionalTooltips = new AdditionalTooltipData[]
+                        { 
+                            new AdditionalTooltipData
+                            { 
+                                titleKey = "Beyonder_Spell_SupplementalDeadBrain_Tip_Title_Key",
+                                descriptionKey = "Beyonder_Spell_SupplementalDeadBrain_Tip_Body_Key",
+                                isStatusTooltip = false,
+                                statusId = "",
+                                isTriggerTooltip = false,
+                                trigger = CharacterTriggerData.Trigger.OnDeath,
+                                isTipTooltip = true,
+                                style = TooltipDesigner.TooltipDesignType.Default
+                            }
+                        }
                     }
                 }
             }.BuildAndRegister();

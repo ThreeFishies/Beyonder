@@ -14,6 +14,7 @@ using Void.Clan;
 using Void.Unit;
 using Void.Triggers;
 using Void.Status;
+using Void.Builders;
 
 namespace Void.Monsters
 {
@@ -37,7 +38,30 @@ namespace Void.Monsters
                 PriorityDraw = false,
                 AssetPath = "Monsters/Assets/ThreeEyedFish_Monster.png",
                 SubtypeKeys = new List<string> { SubtypeUndretch.Key },
-                //CharacterChatterData = null,
+                CharacterChatterData = new CharacterChatterDataBuilder 
+                {
+                    name = "ThreeEyedFishChatterData",
+                    gender = CharacterChatterData.Gender.Male,
+
+                    characterAddedExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_ThreeEyedFish_Chatter_Key_Added_0",
+                    },
+                    characterIdleExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_ThreeEyedFish_Chatter_Key_Idle_0",
+                        "Beyonder_Unit_ThreeEyedFish_Chatter_Key_Idle_1",
+                        "Beyonder_Unit_ThreeEyedFish_Chatter_Key_Idle_2",
+                    },
+                    characterTriggerExpressionKeys = new List<CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys> 
+                    {
+                        new CharacterChatterDataBuilder.CharacterTriggerDataChatterExpressionKeys
+                        {
+                            Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                            Key = "Beyonder_Unit_ThreeEyedFish_Chatter_Key_Anxiety_0",
+                        }
+                    }
+                }.Build(),
 
                 StartingStatusEffects = new StatusEffectStackData[]
                 {
@@ -132,6 +156,7 @@ namespace Void.Monsters
             Synthesis = new CardUpgradeDataBuilder
             {
                 UpgradeTitle = "ThreeEyedFishEssence",
+                BonusHP = 5,
                 SourceSynthesisUnit = Character,
                 UpgradeDescriptionKey = "Beyonder_Unit_ThreeEyedFish_Essence_Key",
                 StatusEffectUpgrades = new List<StatusEffectStackData> 

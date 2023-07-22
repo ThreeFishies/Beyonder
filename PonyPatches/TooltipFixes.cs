@@ -46,21 +46,25 @@ namespace Equestrian.HarmonyPatches
         {
             if (!Beyonder.IsInit) { return; }
 
-            if (__instance.GetCardDataID() == Epidemial.card.GetID())
-            {
-                generatedText = generatedText.Replace(": When played, add a copy to the top of your draw pile.", "When played, add a copy to the top of your draw pile.");
-            
-                //Beyonder.Log(generatedText);
-            }
-
             if (generatedText.Contains("<upgradeHighlight>:</upgradeHighlight> "))
             {
                 generatedText = generatedText.Replace("<upgradeHighlight>:</upgradeHighlight> ", "");
             }
 
+            if (generatedText.Contains("<tempUpgradeHighlight>:</tempUpgradeHighlight> ")) 
+            {
+                generatedText = generatedText.Replace("<tempUpgradeHighlight>:</tempUpgradeHighlight> ", "");
+            }
+
             if (generatedText.StartsWith(": "))
             {
                 generatedText = generatedText.Substring(2);
+            }
+
+            if (__instance.GetCardDataID() == Epidemial.card.GetID())
+            {
+                generatedText = generatedText.Replace(": When played, add a copy to your discard pile.", "When played, add a copy to your discard pile.");
+                Beyonder.Log(generatedText);
             }
         }
     }

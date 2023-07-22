@@ -38,6 +38,26 @@ namespace CustomEffects
             return true;
         }
 
+        public CardSelectionBehaviour.SelectionError GetSelectionError() 
+        {
+            if (cardTraits.Count > 0)
+            {
+                if (cardTraits[0] != null) 
+                {
+                    if (cardTraits[0].GetTraitStateName() == "CardTraitRetain") 
+                    {
+                        return Beyonder.HoldoverCardSelectionError.GetEnum();
+                    }
+                    if (cardTraits[0].GetTraitStateName() == typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName) 
+                    {
+                        return Beyonder.EntropicCardSelectionError.GetEnum();
+                    }
+                }
+            }
+
+            return CardSelectionBehaviour.SelectionError.Invalid;
+        }
+
         // Token: 0x06000767 RID: 1895 RVA: 0x000226D2 File Offset: 0x000208D2
         public override IEnumerator ApplyEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
@@ -50,7 +70,7 @@ namespace CustomEffects
                         descriptionKey = locKey,
                         cardChosenCallback = new HandSelectionUI.CardStateChosenDelegate(this.HandleCardChosen),
                         filterCallback = ((CardState checkCard) => this.CardFilterFunc(checkCard, cardEffectParams.playedCard, cardEffectParams.relicManager)),
-                        selectionErrorType = CardSelectionBehaviour.SelectionError.Invalid,
+                        selectionErrorType = GetSelectionError(),
                         instantApplyDelay = cardEffectParams.saveManager.GetBalanceData().GetAnimationTimingData().cardDrawAnimationDuration
                     });
                 }

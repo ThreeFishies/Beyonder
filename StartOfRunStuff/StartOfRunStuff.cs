@@ -43,10 +43,10 @@ namespace Void.Chaos.NewRun
 
             StartNewRunFromRunHistory.replayedRun = false;
 
-            if (StatusEffectChronic.cardsTriggeredOn != null)
-            {
-                StatusEffectChronic.cardsTriggeredOn.Clear();
-            }
+            //if (StatusEffectChronic.cardsTriggeredOn != null)
+            //{
+            //    StatusEffectChronic.cardsTriggeredOn.Clear();
+            //}
         }
 
         public static void Postfix(SaveManager __instance)

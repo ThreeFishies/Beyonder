@@ -35,7 +35,7 @@ namespace Void.Spells
                 UnlockLevel = 5,
                 CardType = CardType.Spell,
                 CostType = CardData.CostType.Default,
-                Cost = 1,
+                Cost = 0,
                 TargetsRoom = true,
                 Targetless = true,
                 CardLoreTooltipKeys = new List<string> { "Beyonder_Spell_EyeballsForDays_Lore_Key" },

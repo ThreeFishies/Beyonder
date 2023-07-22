@@ -82,7 +82,8 @@ namespace Void.Enhancers
                     FiltersBuilders = new List<CardUpgradeMaskDataBuilder> 
                     { 
                         new CardUpgradeMaskDataBuilder
-                        { 
+                        {
+                            UpgradeDisabledReason = CardState.UpgradeDisabledReason.NotEligible,
                             ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
                             ExcludedCardTraits = new List<string>
                             {
@@ -104,11 +105,11 @@ namespace Void.Enhancers
             EnhancerPool relicPool = AccessTools.Field(typeof(EnhancerPoolRewardData), "relicPool").GetValue(spellCostReductionPool) as EnhancerPool;
             ReorderableArray<EnhancerData> data = AccessTools.Field(typeof(EnhancerPool), "relicDataList").GetValue(relicPool) as ReorderableArray<EnhancerData>;
 
-            if (data.Count == 1) 
-            {
+            //if (data.Count == 1) 
+            //{
                 data.Add(data[0]);
-                Beyonder.Log($"Added extra cpy of -1 cost upgrade to {relicPool.name}.");
-            }
+                Beyonder.Log($"Added extra copy of -1 cost upgrade to {relicPool.name}.");
+            //}
 
             //If we can add a lore key, why not?
             List<string> LoreKeys = new List<string> { "Beyonder_Enhancer_Voidstone_Lore_Key" };

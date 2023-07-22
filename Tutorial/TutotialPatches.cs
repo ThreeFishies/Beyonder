@@ -125,4 +125,21 @@ namespace Void.Tutorial
             }
         }
     }
+
+    /*
+    [HarmonyPatch(typeof(SaveManager), "GetClassLevel")]
+    public static class TestTutorialPatch 
+    {
+        public static void Postfix(ref int __result, string classID) 
+        {
+            if (!Beyonder.IsInit) { return; }
+            if (Beyonder.BeyonderClanData.GetID() != classID) { return; }
+
+            Beyonder.Log("Setting clan level to 1 for testing purposes.");
+            __result = 1;
+
+            return;
+        }
+    }
+    */
 }

@@ -14,7 +14,8 @@ public sealed class BeyonderCardTraitTherapeutic : CardTraitState
             AddTrackManicCardsPlayed.cardCount++;
         }
 
-        yield return ManiaManager.Therapy();
+        yield return CustomCardEffectManic.AssertCardManic(cardState);
+        //yield return ManiaManager.Therapy();
         yield break;
     }
 

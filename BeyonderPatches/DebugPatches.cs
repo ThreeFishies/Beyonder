@@ -1,4 +1,4 @@
-/*
+
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -19,6 +19,23 @@ namespace Void.Patches
     //Testing: targetsRoom => true on effeted cards
     //Fixed. targetsRoom and targetless should never both be false or index will be set to -1 on play. Preview pulls the index from the target of the individual card effects instead.
 
+    /*
+    public static class UpdateRewardCountTest 
+    { 
+        public static void AwokenHerzalTestReward() 
+        {
+            //This adds an additional option to the Awoken Banner and Herzal's Hoard. Testing was successful.
+
+            DraftRewardData AwokenBannerDraft = ProviderManager.SaveManager.GetAllGameData().FindRewardData("ddc71f3d-e2b2-4abd-8de4-accb646db775") as DraftRewardData;
+            uint newcount = 3U;
+            AccessTools.Field(typeof(DraftRewardData), "draftOptionsCount").SetValue(AwokenBannerDraft, newcount);
+
+            RelicDraftRewardData HerzalsHoardReward = ProviderManager.SaveManager.GetAllGameData().FindRewardData("67f2e2e9-7c55-4c4e-9022-003aa66055de") as RelicDraftRewardData;
+            AccessTools.Field(typeof(RelicDraftRewardData), "draftOptionsCount").SetValue(HerzalsHoardReward, newcount);
+        }
+    }
+    */
+    /*
     [HarmonyPatch(typeof(RelicEffectDamageOnExhaust), "TestCardPlayed")]
     public static class LogTestEffect 
     {
@@ -32,6 +49,7 @@ namespace Void.Patches
             Beyonder.Log($"Target mode: {___targetMode}. Team Type: {___targetTeam}. Room index: {relicEffectParams.roomIndex}. NumTatgets: {___targets.Count}.");
         }
     }
+    */
 
     //This works. Must be issue with targeting then.
     /*
@@ -55,5 +73,5 @@ namespace Void.Patches
             Beyonder.Log($"Testing PlayAnyCard on card: {cardState.GetTitle()}. .");
         }
     }
+    */
 }
-*/
