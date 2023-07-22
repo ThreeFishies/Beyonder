@@ -37,7 +37,11 @@ namespace Void.Init
     [BepInProcess("MonsterTrain.exe")]
     [BepInProcess("MtLinkHandler.exe")]
     [BepInDependency("tools.modding.trainworks", BepInDependency.DependencyFlags.HardDependency)]
+    //Dependencies are unlikely to be needed at this point.
     //[BepInDependency("ca.chronometry.disciple", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("Exas4000", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("com.name.package.succclan-mod", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("mod.equestrian.clan.monstertrain", BepInDependency.DependencyFlags.SoftDependency)]
 
     public class Beyonder : BaseUnityPlugin, IInitializable
     {
@@ -55,7 +59,7 @@ namespace Void.Init
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
-        public const string VERSION = "0.9.0";
+        public const string VERSION = "0.9.1";
 
         public void Initialize()
         {
