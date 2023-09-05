@@ -103,6 +103,20 @@ namespace Void.Chaos
                                     BonusHP = -1,
                                     SourceSynthesisUnit = new CharacterDataBuilder{ CharacterID = "DummyNULL" }.Build(),
                                 }.Build(),
+                                AdditionalTooltips = new AdditionalTooltipData[]
+                                {
+                                    new AdditionalTooltipData
+                                    {
+                                        titleKey = string.Empty,
+                                        descriptionKey = "TipTooltip_CanReduceHealthToZero",
+                                        isStatusTooltip = false,
+                                        statusId = "",
+                                        isTipTooltip = true,
+                                        isTriggerTooltip = false,
+                                        trigger = CharacterTriggerData.Trigger.OnDeath,
+                                        style = TooltipDesigner.TooltipDesignType.Default
+                                    }
+                                }
                             }
                         }
                     }

@@ -112,7 +112,7 @@ namespace Void.Spells
                         { 
                             new AdditionalTooltipData
                             { 
-                                titleKey = "Beyonder_Spell_SupplementalDeadBrain_Tip_Title_Key",
+                                titleKey = string.Empty, // "Beyonder_Spell_SupplementalDeadBrain_Tip_Title_Key",
                                 descriptionKey = "Beyonder_Spell_SupplementalDeadBrain_Tip_Body_Key",
                                 isStatusTooltip = false,
                                 statusId = "",

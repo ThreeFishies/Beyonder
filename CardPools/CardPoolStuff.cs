@@ -55,6 +55,13 @@ namespace Void.CardPools
                 Cards = new List<CardData>
                 {
                     EmbraceTheMadness.Card,
+                    EntropicStorm.Card,
+                    EyeballsForDays.Card,
+                    LookingStars.Card,
+                    MindScar.Card,
+                    OcularInfection.Card,
+                    Paranoia.Card,
+                    Seizure.Card
                 }
             }.Build();
         }

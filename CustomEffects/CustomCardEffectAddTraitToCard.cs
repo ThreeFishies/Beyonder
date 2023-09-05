@@ -99,14 +99,14 @@ namespace CustomEffects
 
         private IEnumerator HandleFilteredCard(CardState card, CardManager cardManager)
         {
-            if (cardTraits.IsNullOrEmpty() || cardTraits.Count < 1)
+            if (cardTraits.IsNullOrEmpty() || cardTraits.Count < 1 || card == null)
             {
                 yield break;
             }
 
             foreach (CardTraitData cardTraitData in cardTraits)
             {
-                cardManager.AddTemporaryTraitToCard(card, cardTraitData, true, false);
+                AddTraitToCardNoDuplicates(cardManager, card, cardTraitData, true, false);
             }
 
             if (cardManager.IsCardInHand(card))
@@ -126,10 +126,32 @@ namespace CustomEffects
 
             foreach (CardTraitData cardTraitData in cardTraits)
             {
-                cardManager.AddTemporaryTraitToCard(chosenCard, cardTraitData, true, false);
+                //cardManager.AddTemporaryTraitToCard(chosenCard, cardTraitData, true, false);
+                AddTraitToCardNoDuplicates(cardManager, chosenCard, cardTraitData, true, false);
             }
             yield return new WaitForSeconds(cardManager.GetHandCardVfxDuration(HandUI.HandVFX.Freeze));
             yield break;
+        }
+
+        private void AddTraitToCardNoDuplicates(CardManager cardManager, CardState card, CardTraitData cardTraitData, bool refreshCard = true, bool ignoreUpgrades = false) 
+        {
+            if (card.GetTraitStates().Count > 0)
+            {
+                for (int ii = 0; ii < card.GetTraitStates().Count; ii++)
+                {
+                    if (card.GetTraitStates()[ii].GetTraitStateName() == cardTraitData.GetTraitStateName())
+                    {
+                        //Beyonder.Log("Skipping duplicate trait: " + cardTraitData.GetTraitStateName());
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                //Beyonder.Log("No card traits detected.");
+            }
+            //Beyonder.Log("Adding trait: " + cardTraitData.GetTraitStateName());
+            cardManager.AddTemporaryTraitToCard(card, cardTraitData, true, false);
         }
 
         // Token: 0x06000769 RID: 1897 RVA: 0x00022700 File Offset: 0x00020900

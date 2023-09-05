@@ -48,6 +48,13 @@ namespace Void.Monsters
                         "Beyonder_Unit_Chutzpah_Chatter_Key_Added_0",
                         "Beyonder_Unit_Chutzpah_Chatter_Key_Added_1"
                     },
+                    characterAttackingExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_Chutzpah_Chatter_Key_Attacking_0",
+                        "Beyonder_Unit_Chutzpah_Chatter_Key_Attacking_1",
+                        "Beyonder_Unit_Chutzpah_Chatter_Key_Attacking_2",
+                        "Beyonder_Unit_Chutzpah_Chatter_Key_Attacking_3",
+                    },
                     characterIdleExpressionKeys = new List<string>() 
                     {
                         "Beyonder_Unit_Chutzpah_Chatter_Key_Idle_0",
@@ -172,9 +179,9 @@ namespace Void.Monsters
                 UpgradeTitle = "ChutzpahEssence",
                 SourceSynthesisUnit = Character,
                 UpgradeDescriptionKey = "Beyonder_Unit_Chutzpah_Essence_Key",
-                BonusDamage = 60,
+                BonusDamage = 100,
                 BonusHP = 0,
-                BonusSize = 0,
+                BonusSize = 1,
                 CardTriggerUpgradeBuilders = new List<CardTriggerEffectDataBuilder>
                 {
                     new CardTriggerEffectDataBuilder
@@ -188,7 +195,7 @@ namespace Void.Monsters
                                 PersistenceMode.SingleRun,
                                 typeof(CustomCardTriggerEffectDebuffCharacterDamage).AssemblyQualifiedName,
                                 "None",
-                                1
+                                2
                             )
                         },
                     }

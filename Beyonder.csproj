@@ -114,6 +114,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ArcadianAnalogs\Assets\BeyonderAnalogBaseCompulsive.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArcadianAnalogs\Assets\BeyonderAnalogExileAfflictive.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ArtifactAssets\BadEggs.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -163,6 +169,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ArtifactAssets\ScourgeMagnet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\SeedOfDoubt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ArtifactAssets\ShadowPuppeteer.png">

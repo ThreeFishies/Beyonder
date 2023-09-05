@@ -85,7 +85,7 @@ namespace Void.Spells
                             },
                             new AdditionalTooltipData
                             {
-                                titleKey = "BeyonderCardTraitEntropic_Tip_TooltipTitle",
+                                titleKey = string.Empty, // "BeyonderCardTraitEntropic_Tip_TooltipTitle",
                                 descriptionKey = "BeyonderCardTraitEntropic_Tip_TooltipText",
                                 isStatusTooltip = false,
                                 statusId = "",
@@ -118,7 +118,7 @@ namespace Void.Spells
                                     ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.And,
                                     ExcludedCardTraits = new List<string>
                                     {
-                                        typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName
+                                        //typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName
                                     },
                                     RequiredCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.And,
 

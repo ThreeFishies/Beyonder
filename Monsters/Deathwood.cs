@@ -32,7 +32,7 @@ namespace Void.Monsters
             {
                 CharacterID = CharID,
                 NameKey = "Beyonder_Unit_Deathwood_Name_Key",
-                Size = 2,
+                Size = 3,
                 Health = 1,
                 AttackDamage = 1,
                 PriorityDraw = true,
@@ -47,6 +47,13 @@ namespace Void.Monsters
                     {
                         "Beyonder_Unit_Deathwood_Chatter_Key_Added_0",
                         "Beyonder_Unit_Deathwood_Chatter_Key_Added_1"
+                    },
+                    characterAttackingExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_Deathwood_Chatter_Key_Attacking_0",
+                        "Beyonder_Unit_Deathwood_Chatter_Key_Attacking_1",
+                        "Beyonder_Unit_Deathwood_Chatter_Key_Attacking_2",
+                        "Beyonder_Unit_Deathwood_Chatter_Key_Attacking_3"
                     },
                     characterIdleExpressionKeys = new List<string>
                     {

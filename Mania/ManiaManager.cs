@@ -1037,7 +1037,14 @@ namespace Void.Mania
 
                 foreach (CharacterState monster in monsters) 
                 {
-                    monster.AddStatusEffect(statusId, count, statusEffectParams);
+                    if (!monster.HasStatusEffect("untouchable"))
+                    {
+                        monster.AddStatusEffect(statusId, count, statusEffectParams);
+                    }
+                    else
+                    {
+                        monster.ShowNotification("StatusEffectImmuneState_Notification".Localize(), PopupNotificationUI.Source.General, null);
+                    }
                 }
             }
 

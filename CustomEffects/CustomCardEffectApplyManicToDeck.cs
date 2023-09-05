@@ -98,7 +98,7 @@ namespace CustomEffects
             yield break;
         }
 
-        private bool GatherCardsToManic(CardEffectState cardEffectState, CardManager cardManager, out List<CardState> cards) 
+        public bool GatherCardsToManic(CardEffectState cardEffectState, CardManager cardManager, out List<CardState> cards) 
         {
             cards = new List<CardState> { };
 

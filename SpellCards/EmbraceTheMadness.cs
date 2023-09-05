@@ -44,6 +44,10 @@ namespace Void.Spells
                     new CardTraitDataBuilder
                     {
                         TraitStateName = "CardTraitExhaustState",
+                    },
+                    new CardTraitDataBuilder
+                    { 
+                        TraitStateName = typeof(CustomCardTraitShowManicTargets).AssemblyQualifiedName,
                     }
                 },
                 EffectBuilders = new List<CardEffectDataBuilder>

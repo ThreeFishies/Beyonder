@@ -131,7 +131,7 @@ namespace Void.Enhancers
                     isTipTooltip = true,
                     isTriggerTooltip = false,
                     trigger = CharacterTriggerData.Trigger.OnDeath,
-                    titleKey = "Beyonder_Enhancer_Tip_Title",
+                    titleKey = string.Empty, //"Beyonder_Enhancer_Tip_Title",
                     descriptionKey = "Beyonder_Enhancer_Tip_Text",
                 }
             };

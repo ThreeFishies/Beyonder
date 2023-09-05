@@ -28,6 +28,7 @@ using Void.CardPools;
 using Void.Patches;
 using Void.Mutators;
 using Void.Tutorial;
+using Void.Arcadian;
 using I2.Loc;
 
 namespace Void.Init
@@ -62,7 +63,7 @@ namespace Void.Init
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
-        public const string VERSION = "0.9.1";
+        public const string VERSION = "0.9.2";
 
         public void Initialize()
         {
@@ -265,18 +266,20 @@ namespace Void.Init
             Beyonder.Log("Radioactive Waste");
             EyevoryEyedol.BuildAndRegister();
             Beyonder.Log("Eyevory Eyedol");
-            UnstableEnergy.BuildAndRegister();
-            Beyonder.Log("Unstable Energy");
+            //UnstableEnergy.BuildAndRegister();
+            //Beyonder.Log("Unstable Energy");
+            SeedOfDoubt.BuildAndRegister();
+            Beyonder.Log("Seed of Doubt");
             BloodyTentacles.BuildAndRegister();
             Beyonder.Log("Bloody Tentacles");
 
             //Malica Other Clan Relics
             BlackLight.BuildAndRegister(); //Beyonder
             Beyonder.Log("Black Light");
-            GenieImp.BuildAndRegister(); //Hellhorned
+            ImpspectorGadget.BuildAndRegister(); //Hellhorned
             Beyonder.Log("Impspector Gadget");
             FasciatedKernels.BuildAndRegister(); //Awoken
-            Beyonder.Log("FasciatedKernels");
+            Beyonder.Log("Fasciated Kernels");
             MalickasGift.BuildAndRegister(); //Stygian
             Beyonder.Log("Malicka's Gift");
             ShallowGraves.BuildAndRegister(); //Melting Remnant
@@ -321,6 +324,8 @@ namespace Void.Init
             Beyonder.Log("Formless Child is Formless now.");
             DoNotDoublestackMutations.JustDont();
             Beyonder.Log("Exclude Mutations from Doublestack.");
+            Beyonder.Log("Checking Arcadian Compatibility.");
+            ArcadianCompatibility.Initialize();
 
             TutorialManager.LoadProgress();
             Beyonder.Log("Loading tutorial progress.");

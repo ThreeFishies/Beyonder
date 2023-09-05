@@ -62,7 +62,6 @@ namespace Void.Artifacts
                 {
                     new RelicEffectDataBuilder
                     {
-                        //RelicEffectClassType = typeof(BeyonderRelicEffectAddManicTraitToAlliedClanStarterCards),
                         RelicEffectClassName = typeof(CustomRelicEffectUnseeingEye).AssemblyQualifiedName,
 
                         AdditionalTooltips = new AdditionalTooltipData[]

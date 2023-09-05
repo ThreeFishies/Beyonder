@@ -59,22 +59,36 @@ namespace Void.Status
 
         protected override IEnumerator OnTriggered(StatusEffectState.InputTriggerParams inputTriggerParams, StatusEffectState.OutputTriggerParams outputTriggerParams)
         {
-            //Sometimes Chronic isn't adding the correct value. I suspect it's being triggered early in preview mode which 'locks in' a lower value than expected.
-            //Try disabling in preview mode.
-            if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode) 
-            {
-                yield break;
-            }
-
-            //outputTriggerParams.count = 0;
             CharacterState characterState = inputTriggerParams.fromEaten ? inputTriggerParams.associatedCharacter : inputTriggerParams.attacked;
+
             if (characterState == null)
             {
                 yield break;
             }
+
             CardState spawnerCard = characterState.GetSpawnerCard();
             int numStacks = characterState.GetStatusEffectStacks(base.GetStatusId());
-            if (spawnerCard != null && !characterState.HasStatusEffect(VanillaStatusEffectIDs.Cardless))
+
+            //Sometimes Chronic isn't adding the correct value. I suspect it's being triggered early in preview mode which 'locks in' a lower value than expected.
+            //Try disabling in preview mode.
+            if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.PreviewMode) 
+            {
+                //A sweep attacked KOed three chronic units and only one respawned. Trying adding back limited functionality in preview mode.
+                if (spawnerCard != null && numStacks == 0 && !characterState.HasStatusEffect(VanillaStatusEffectIDs.Endless)) 
+                {
+                    spawnerCard.ClearRemoveFromStandByPileOverride();
+                }
+                if (spawnerCard != null && numStacks > 0 && !characterState.HasStatusEffect(VanillaStatusEffectIDs.Endless))
+                {
+                    spawnerCard.SetRemoveFromStandByPileOverride(CardPile.DiscardPile);
+                }
+
+                yield break;
+            }
+
+            //outputTriggerParams.count = 0;
+
+            if (spawnerCard != null) // && !characterState.HasStatusEffect(VanillaStatusEffectIDs.Cardless)) Check unnecessary. Cardless units are immune to Chronic.
             {
                 if (numStacks > 0)
                 {
@@ -83,14 +97,14 @@ namespace Void.Status
                         spawnerCard.SetRemoveFromStandByPileOverride(CardPile.DiscardPile);
                     }
 
-                    string andDamage = "";
+                    string notice = "StatusEffect_beyonder_chronic_NotificationText";
 
                     if (BloodyTentacles.HasIt()) 
                     {
-                        andDamage = "StatusEffect_beyonder_chronic_AndDamage".Localize();
+                        notice = "StatusEffect_beyonder_chronic_AndDamage";
                     }
 
-                    characterState.ShowNotification(string.Format("StatusEffect_beyonder_chronic_NotificationText".Localize(null), GetEffectMagnitude(numStacks), andDamage), PopupNotificationUI.Source.General, null);
+                    characterState.ShowNotification(string.Format(notice.Localize(null), GetEffectMagnitude(numStacks)), PopupNotificationUI.Source.General, null);
 
                     //Prevent the buff from being applied multiple times
                     //outputTriggerParams.count = numStacks;
@@ -110,6 +124,19 @@ namespace Void.Status
                 }
             }
             yield break;
+        }
+
+        public override void OnStacksRemoved(CharacterState character, int numStacksRemoved) 
+        {
+            if (character == null || character.GetSpawnerCard() == null)
+            { 
+                return; 
+            }
+
+            if (!character.HasStatusEffect(statusId) && !character.HasStatusEffect(VanillaStatusEffectIDs.Endless))
+            {
+                character.GetSpawnerCard().ClearRemoveFromStandByPileOverride();
+            }
         }
 
         public CardUpgradeState GetCardUpgradeState(int numStacks = 1) 

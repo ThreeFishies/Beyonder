@@ -64,7 +64,7 @@ namespace Equestrian.HarmonyPatches
             if (__instance.GetCardDataID() == Epidemial.card.GetID())
             {
                 generatedText = generatedText.Replace(": When played, add a copy to your discard pile.", "When played, add a copy to your discard pile.");
-                Beyonder.Log(generatedText);
+                //Beyonder.Log(generatedText);
             }
         }
     }

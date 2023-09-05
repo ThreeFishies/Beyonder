@@ -118,7 +118,7 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 06 (Hysteria: +10 Jitters to the front enemy unit.)
+            //Boon 06 (Hysteria: +18 Jitters to the front enemy unit.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeTitleKey = "Veilritch_Boon_06",

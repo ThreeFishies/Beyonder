@@ -89,12 +89,12 @@ namespace Void.Artifacts
                 return false;
             }
 
-            if (cardState.HasTrait(typeof(BeyonderCardTraitAfflictive)) || cardState.HasTrait(typeof(BeyonderCardTraitCompulsive)))
+            if (cardState.HasTrait(typeof(BeyonderCardTraitAfflictive)) || cardState.HasTrait(typeof(BeyonderCardTraitCompulsive)) || cardState.HasTrait(typeof(BeyonderCardTraitTherapeutic)))
             {
                 return false;
             }
 
-            if (cardState.HasTemporaryTrait(typeof(BeyonderCardTraitAfflictive)) || cardState.HasTemporaryTrait(typeof(BeyonderCardTraitCompulsive)))
+            if (cardState.HasTemporaryTrait(typeof(BeyonderCardTraitAfflictive)) || cardState.HasTemporaryTrait(typeof(BeyonderCardTraitCompulsive)) || cardState.HasTemporaryTrait(typeof(BeyonderCardTraitTherapeutic)))
             {
                 return false;
             }

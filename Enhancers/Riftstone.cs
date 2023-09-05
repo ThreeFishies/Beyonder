@@ -10,6 +10,8 @@ using CustomEffects;
 using UnityEngine;
 using HarmonyLib;
 using Void.Clan;
+using Trainworks.Managers;
+using Malee;
 
 namespace Void.Enhancers
 {
@@ -57,6 +59,15 @@ namespace Void.Enhancers
             List<string> LoreKeys = new List<string> { "Beyonder_Enhancer_Riftstone_Lore_Key" };
 
             AccessTools.Field(typeof(RelicData), "relicLoreTooltipKeys").SetValue((RelicData)Enhancer, LoreKeys);
+
+            //Update Capricious Reflection
+            CollectableRelicData capriciousReflection = CustomCollectableRelicManager.GetRelicDataByID("9e0e5d4e-6d16-43f1-8cd4-cc4c2b431afd");
+            EnhancerPool relicPool = capriciousReflection.GetFirstRelicEffectData<RelicEffectAddStartingUpgradeToCardDrafts>().GetParamEnhancerPool();
+            ReorderableArray<EnhancerData> data = AccessTools.Field(typeof(EnhancerPool), "relicDataList").GetValue(relicPool) as ReorderableArray<EnhancerData>;
+            data.Add(Enhancer);
+            data.Add(Enhancer);
+
+            Beyonder.Log("Added Riftstone to Capricious Reflection upgrade pool.");
 
             //AdditionalTooltipData[] additionalTooltips = new AdditionalTooltipData[]
             //{

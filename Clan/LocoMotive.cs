@@ -76,6 +76,13 @@ namespace Void.Champions
                         "Beyonder_Champ_LocoMotive_Chatter_Key_Added_0",
                         "Beyonder_Champ_LocoMotive_Chatter_Key_Added_1",
                     },
+                    characterAttackingExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Attacking_0",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Attacking_1",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Attacking_2",
+                        "Beyonder_Champ_LocoMotive_Chatter_Key_Attacking_3"
+                    },
                     characterIdleExpressionKeys = new List<string> 
                     {
                         "Beyonder_Champ_LocoMotive_Chatter_Key_Idle_0",
@@ -691,6 +698,20 @@ namespace Void.Champions
                                             }
                                         }
                                     }.Build(),
+                                    AdditionalTooltips = new AdditionalTooltipData[]
+                                    {
+                                        new AdditionalTooltipData
+                                        {
+                                            titleKey = string.Empty,
+                                            descriptionKey = "TipTooltip_CanReduceHealthToZero",
+                                            isStatusTooltip = false,
+                                            statusId = "",
+                                            isTipTooltip = true,
+                                            isTriggerTooltip = false,
+                                            trigger = CharacterTriggerData.Trigger.OnDeath,
+                                            style = TooltipDesigner.TooltipDesignType.Default
+                                        }
+                                    }
                                 },
                             }
                         }
@@ -906,7 +927,7 @@ namespace Void.Champions
                                         new StatusEffectStackData
                                         {
                                             statusId = StatusEffectJitters.statusId,
-                                            count = 6 + (6 * upgradeLevel), // + (upgradeLevel > 1 ? 6 : 0),
+                                            count = 5 + (5 * upgradeLevel), // + (upgradeLevel > 1 ? 6 : 0),
                                         }
                                     }
                                 }

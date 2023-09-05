@@ -43,10 +43,13 @@ namespace Void.Clan
 				//	UnSeeingEye.Artifact
 				//},
 				
-				UiColor = new Color(0.49f, 0.325f, 0.776f, 1.0f),
-				UiColorDark = new Color(0.218f, 0.145f, 0.346f, 1.0f)
+				//UiColor = new Color(0.49f, 0.325f, 0.776f, 1.0f),
+				//UiColorDark = new Color(0.218f, 0.145f, 0.346f, 1.0f)
 
-			}.BuildAndRegister();
+                UiColor = new Color(0.875f, 0.376f, 1.0f, 1.0f),
+                UiColorDark = new Color(0.481f, 0.206f, 0.550f, 1.0f)
+
+            }.BuildAndRegister();
 		}
 	}
 

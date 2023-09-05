@@ -22,7 +22,7 @@ using CustomEffects;
 using RunHistory;
 using Void.Spells;
 
-namespace Void.Artifacts
+namespace Void.Unused
 {
     public static class GenieImp
     {

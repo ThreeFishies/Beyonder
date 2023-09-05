@@ -94,39 +94,9 @@ namespace Void.Mania
 
             if (statValueData.trackedValue == Beyonder.ScalingByAnxiety.GetEnum()) 
             {
-                //__result = ManiaManager.GetAnxietyScalingValue(ProviderManager.SaveManager.PreviewMode);
-                __result = ManiaManager.GetCurrentMania();
+                __result = ManiaManager.GetCurrentMania(statValueData.cardState);
 
-                //if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0) 
-                if (statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0) 
-                {
-                    foreach (CardTraitData cardTrait in statValueData.cardState.GetTraits())
-                    {
-                        if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName)
-                        {
-                            __result++;
-                        }
-
-                        if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName) 
-                        {
-                            __result--;
-                        }
-
-                        //if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName)
-                        //{
-                        //    __result *= ManiaManager.GetEntopicScalingValue(false, __result);
-                        //}
-                    }
-                }
-
-                __result = (__result < 0) ? -__result : (BlackLight.HasIt() ? __result : 0);
-
-                return false;
-            }
-            if (statValueData.trackedValue == Beyonder.ScalingByHysteria.GetEnum())
-            {
-                //__result = ManiaManager.GetHysteriaScalingValue(ProviderManager.SaveManager.PreviewMode);
-                __result = ManiaManager.GetCurrentMania();
+                /*
 
                 //if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
                 if (statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
@@ -135,12 +105,12 @@ namespace Void.Mania
                     {
                         if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName)
                         {
-                            __result++;
+                            __result += cardTrait.GetParamInt();
                         }
 
                         if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName)
                         {
-                            __result--;
+                            __result -= cardTrait.GetParamInt();
                         }
 
                         //if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName)
@@ -149,6 +119,39 @@ namespace Void.Mania
                         //}
                     }
                 }
+                */
+                
+                __result = (__result < 0) ? -__result : (BlackLight.HasIt() ? __result : 0);
+
+                return false;
+            }
+            if (statValueData.trackedValue == Beyonder.ScalingByHysteria.GetEnum())
+            {
+                __result = ManiaManager.GetCurrentMania(statValueData.cardState);
+
+                /*
+                //if (statValueData.forPreviewText && statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
+                if (statValueData.cardState != null && statValueData.cardState.GetNumTraits() > 0)
+                {
+                    foreach (CardTraitData cardTrait in statValueData.cardState.GetTraits())
+                    {
+                        if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName)
+                        {
+                            __result += cardTrait.GetParamInt();
+                        }
+
+                        if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName)
+                        {
+                            __result -= cardTrait.GetParamInt();
+                        }
+
+                        //if (cardTrait.GetTraitStateName() == typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName)
+                        //{
+                        //    __result *= ManiaManager.GetEntopicScalingValue(false, __result);
+                        //}
+                    }
+                }
+                */
 
                 __result = (__result > 0) ? __result : (BlackLight.HasIt() ? -__result : 0);
 

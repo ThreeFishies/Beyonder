@@ -70,6 +70,20 @@ namespace Void.Spells
                                 statusId = StatusEffectMutated.statusId,
                                 count = 1
                             }
+                        },
+                        AdditionalTooltips = new AdditionalTooltipData[]
+                        { 
+                            new AdditionalTooltipData
+                            {
+                                titleKey = string.Empty,
+                                descriptionKey = "TipTooltip_CanReduceHealthToZero",
+                                isStatusTooltip = false,
+                                statusId = "",
+                                isTipTooltip = true,
+                                isTriggerTooltip = false,
+                                trigger = CharacterTriggerData.Trigger.OnDeath,
+                                style = TooltipDesigner.TooltipDesignType.Default
+                            }
                         }
                     },
                     new CardEffectDataBuilder

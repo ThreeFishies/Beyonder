@@ -81,6 +81,13 @@ namespace Void.Champions
                         "Beyonder_Champ_Epidemial_Chatter_Key_Added_0",
                         "Beyonder_Champ_Epidemial_Chatter_Key_Added_1"
                     },
+                    characterAttackingExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Attacking_0",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Attacking_1",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Attacking_2",
+                        "Beyonder_Champ_Epidemial_Chatter_Key_Attacking_3"
+                    },
                     characterIdleExpressionKeys = new List<string>() 
                     {
                         "Beyonder_Champ_Epidemial_Chatter_Key_Idle_0",
@@ -849,9 +856,23 @@ namespace Void.Champions
                                     ParamCardUpgradeData = new CardUpgradeDataBuilder
                                     {
                                         UpgradeTitleKey = $"Beyonder_Champ_Epidemial_Soundless_C_{upgradeLevel}_Effect",
-                                        BonusDamage = 0,
+                                        BonusDamage = 1 + (upgradeLevel * 1) + (upgradeLevel > 1 ? 1 : 0),
                                         BonusHP = -5 + (upgradeLevel * -5) + (upgradeLevel > 1 ? -5 : 0),
                                     }.Build(),
+                                    AdditionalTooltips = new AdditionalTooltipData[]
+                                    {
+                                        new AdditionalTooltipData
+                                        {
+                                            titleKey = string.Empty,
+                                            descriptionKey = "TipTooltip_CanReduceHealthToZero",
+                                            isStatusTooltip = false,
+                                            statusId = "",
+                                            isTipTooltip = true,
+                                            isTriggerTooltip = false,
+                                            trigger = CharacterTriggerData.Trigger.OnDeath,
+                                            style = TooltipDesigner.TooltipDesignType.Default
+                                        }
+                                    }
                                 }
                             }
                         }

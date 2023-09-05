@@ -152,4 +152,17 @@ namespace Void.Artifacts
             }
         }
     }
+
+    [HarmonyPatch(typeof(CombatFeederRules), "GetIsFoodUnit")]
+    public static class DoNotEatSilencedMorsels 
+    {
+        public static void Postfix(CharacterState charState, ref bool __result)
+        {
+            if (charState != null && charState.IsAlive && charState.HasStatusEffect(VanillaStatusEffectIDs.Silenced)) 
+            {
+                __result = false;
+            }
+            return;
+        }
+    }
 }

@@ -97,7 +97,7 @@ namespace Void.Artifacts
                         {
                             new AdditionalTooltipData
                             { 
-                                titleKey = "Malicka_Artifact_MemoryJewel_Hint_Title_Key",
+                                titleKey = string.Empty, //"Malicka_Artifact_MemoryJewel_Hint_Title_Key",
                                 descriptionKey = "Malicka_Artifact_MemoryJewel_Hint_Description_Key",
                                 isStatusTooltip = false,
                                 statusId = "",

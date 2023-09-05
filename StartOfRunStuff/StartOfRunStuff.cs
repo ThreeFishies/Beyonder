@@ -20,6 +20,7 @@ using Void.Monsters;
 using Void.Champions;
 using Void.Artifacts;
 using Void.Spells;
+using Void.Arcadian;
 using ShinyShoe.Loading;
 
 namespace Void.Chaos.NewRun
@@ -51,6 +52,8 @@ namespace Void.Chaos.NewRun
 
         public static void Postfix(SaveManager __instance)
         {
+            ArcadianCompatibility.InitRun(__instance);
+
             //__instance.AddCardToDeck(SoundlessSwarm.Card);
             //__instance.AddCardToDeck(Phleghmbuyoancy.Card);
             //__instance.AddCardToDeck(SuctionCups.Card);
@@ -82,12 +85,15 @@ namespace Void.Chaos.NewRun
             //__instance.AddCardToDeck(HeebieJeebies.Card);
             //__instance.AddCardToDeck(DesperateSearch.Card);
             //__instance.AddCardToDeck(CustomCardManager.GetCardDataByID(VanillaCardIDs.BoneDogsFavor));
+            //__instance.AddCardToDeck(CustomCardManager.GetCardDataByID(VanillaCardIDs.SacrificialResurrection));
+            //__instance.AddCardToDeck(CustomCardManager.GetCardDataByID(VanillaCardIDs.FurnaceTap));
             //__instance.AddCardToDeck(BasketCase.Card);
             //__instance.AddCardToDeck(EmbraceTheMadness.Card);
             //__instance.AddCardToDeck(EntropicStorm.Card);
             //__instance.AddCardToDeck(ExistentialDread.Card);
             //__instance.AddCardToDeck(PrimordialSoup.Card);
             //__instance.AddCardToDeck(Sociopathy.Card);
+            //__instance.AddCardToDeck(CustomCardManager.GetCardDataByID("eaaae54e-58ed-4926-b5bb-a0b36404c4b7")); //Eel Gorgon
             //__instance.AddRelic(BrainBleach.Artifact);
             //__instance.AddRelic(BrainClamps.Artifact);
             //__instance.AddRelic(BedMonster.Artifact);
@@ -102,6 +108,7 @@ namespace Void.Chaos.NewRun
             //__instance.AddRelic(BlackLight.Artifact);
             //__instance.AddRelic(CustomCollectableRelicManager.GetRelicDataByID(VanillaCollectableRelicIDs.TheFirstHellpact));
             //__instance.AddRelic(GenieImp.Artifact);
+            //__instance.AddRelic(ImpspectorGadget.Artifact);
             //__instance.AddRelic(FasciatedKernels.Artifact);
             //__instance.AddRelic(MalickasGift.Artifact);
             //__instance.AddRelic(ShallowGraves.Artifact);
@@ -109,6 +116,8 @@ namespace Void.Chaos.NewRun
             //__instance.AddRelic(ShadowPuppeteer.Artifact);
             //__instance.AddRelic(BadEggs.Artifact);
             //__instance.AddRelic(CustomCollectableRelicManager.GetRelicDataByID(VanillaCollectableRelicIDs.TraitorsQuill));
+            //__instance.AddRelic(SeedOfDoubt.Artifact);
+            //__instance.AddRelic(CustomCollectableRelicManager.GetRelicDataByID("9e0e5d4e-6d16-43f1-8cd4-cc4c2b431afd")); //Capricious Reflection
 
             //if (MemoryJewel.Artifact != null) 
             //{ 

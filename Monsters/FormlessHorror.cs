@@ -64,6 +64,13 @@ namespace Void.Monsters
                         "Beyonder_Unit_FormlessHorror_Chatter_Key_Added_0",
                         "Beyonder_Unit_FormlessHorror_Chatter_Key_Added_1"
                     },
+                    characterAttackingExpressionKeys = new List<string> 
+                    {
+                        "Beyonder_Unit_FormlessHorror_Chatter_Key_Attacking_0",
+                        "Beyonder_Unit_FormlessHorror_Chatter_Key_Attacking_1",
+                        "Beyonder_Unit_FormlessHorror_Chatter_Key_Attacking_2",
+                        "Beyonder_Unit_FormlessHorror_Chatter_Key_Attacking_3"
+                    },
                     characterIdleExpressionKeys = new List<string> 
                     {
                         "Beyonder_Unit_FormlessHorror_Chatter_Key_Idle_0",
