@@ -20,6 +20,7 @@ using Void.Init;
 using Void.Triggers;
 using Void.Artifacts;
 using Void.Status;
+using Void.Monsters;
 
 namespace Void.Mania
 {
@@ -31,6 +32,13 @@ namespace Void.Mania
             if (___currentUIState != CardUI.CardUIState.Hand) 
             {
                 return;
+            }
+
+            //Since this unit is not a spell, the default edge glow needs to be set to 'scourge'.
+            if (cardState.GetCardDataID() == CaveofaThousandEyes.Card.GetID()) 
+            {
+                ____positiveReserveEdgeFXTransform.gameObject.SetActive(false);
+                ____reserveEdgeFXTransform.gameObject.SetActive(true);
             }
 
             //Transform afflictive = GameObject.Instantiate<Transform>(____positiveReserveEdgeFXTransform);

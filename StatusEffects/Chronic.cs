@@ -8,7 +8,7 @@ using System.Collections;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2; //Swapping to the new Trainworks builder.
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -17,6 +17,8 @@ using Trainworks.Constants;
 using PubNubAPI;
 using Void.Init;
 using Void.Artifacts;
+using Trainworks.ManagersV2;
+using Trainworks.Utilities;
 
 namespace Void.Status
 {
@@ -38,9 +40,10 @@ namespace Void.Status
         {
             data = new StatusEffectDataBuilder()
             {
-                StatusId = statusId,
+                StatusID = statusId,
                 IsStackable = true,
-                IconPath = "ClanAssets/Chronic.png",
+                IconPath = "ClanAssets/StatusIconsBig/Chronic.png",
+                TooltipIconPath = "ClanAssets/Chronic.png",
                 TriggerStage = StatusEffectData.TriggerStage.OnDeath,
                 DisplayCategory = StatusEffectData.DisplayCategory.Positive,
                 ShowStackCount = true,
@@ -97,11 +100,11 @@ namespace Void.Status
                         spawnerCard.SetRemoveFromStandByPileOverride(CardPile.DiscardPile);
                     }
 
-                    string notice = "StatusEffect_beyonder_chronic_NotificationText";
+                    string notice = "StatusEffect_Beyonder_chronic_NotificationText";
 
                     if (BloodyTentacles.HasIt()) 
                     {
-                        notice = "StatusEffect_beyonder_chronic_AndDamage";
+                        notice = "StatusEffect_Beyonder_chronic_AndDamage";
                     }
 
                     characterState.ShowNotification(string.Format(notice.Localize(null), GetEffectMagnitude(numStacks)), PopupNotificationUI.Source.General, null);
@@ -141,13 +144,21 @@ namespace Void.Status
 
         public CardUpgradeState GetCardUpgradeState(int numStacks = 1) 
         {
-            CardUpgradeData upgrade = new CardUpgradeDataBuilder()
-            {
-                UpgradeTitle = "Beyonder_Chronic_Status_Upgrade",
-                BonusHP = GetEffectMagnitude(numStacks),
-                BonusDamage = GetEffectMagnitude(numStacks) * (BloodyTentacles.HasIt() ? 1 : 0),
-            }.Build();
+            string upgradeID = "Beyonder_Chronic_Status_Upgrade_Triggered_" + numStacks + "_Stacks" + (BloodyTentacles.HasIt() ? "_BloodyTentacles" : "");
+            string key = GUIDGenerator.GenerateDeterministicGUID(upgradeID);
 
+            if (CustomUpgradeManager.CustomUpgradeData.TryGetValue(key, out CardUpgradeData upgrade))
+            {
+            }
+            else
+            {
+                upgrade = new CardUpgradeDataBuilder()
+                {
+                    UpgradeID = upgradeID,
+                    BonusHP = GetEffectMagnitude(numStacks),
+                    BonusDamage = GetEffectMagnitude(numStacks) * (BloodyTentacles.HasIt() ? 1 : 0),
+                }.Build();
+            }
             CardUpgradeState upgradeState = new CardUpgradeState();
             upgradeState.Setup(upgrade);
 

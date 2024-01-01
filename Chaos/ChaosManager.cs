@@ -248,6 +248,8 @@ namespace Void.Chaos
 
             //cache this synthesis data too
             ApostleoftheVoid.GetSynthesis();
+
+            ChaosLocalizationManager.ProcessQueue();
         }
 
         public static void UpdateStartingUpgrades(BoonsBanesData data) 
@@ -275,6 +277,17 @@ namespace Void.Chaos
             //Beyonder.Log("line 194 (ChaosManager)");
             ApostleoftheVoid.GetSynthesis();
             //Beyonder.Log("line 196 (ChaosManager)");
+
+            ChaosLocalizationManager.ProcessQueue();
+        }
+
+        public static bool IsReady() 
+        {
+            bool result = (Beyonder.IsInit) && ((typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_CardText").Localize() == "Stalker");
+
+            //Beyonder.Log("IsReady Result: " + result + "  " + (typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_CardText").Localize());
+
+            return result;
         }
 
         //Not comprehensive. Limited to expected upgrade data.
@@ -326,9 +339,17 @@ namespace Void.Chaos
                 foreach (RoomModifierData data in upgradeData.GetRoomModifierUpgrades()) 
                 {
                     temp = data.GetDescriptionKey() + "_Essence";
-                    temp = temp.Localize();
-                    temp = "'" + temp + "'";
-                    description.Add(temp);
+                    if (IsReady()) //localization should not be called during the initialization process. A workaround is needed.
+                    {
+                        temp = temp.Localize(); 
+                        temp = "'" + temp + "'";
+                        description.Add(temp);
+                    }
+                    else 
+                    {
+                        ChaosLocalizationManager.Failures.Add(DescriptionKey, upgradeData);
+                        return "BEYONDER_FAIL_REDO";
+                    }
                 }
                 temp = string.Empty;
             }
@@ -337,8 +358,16 @@ namespace Void.Chaos
             {
                 foreach (StatusEffectStackData status in upgradeData.GetStatusEffectUpgrades())
                 {
-                    temp = StatusEffectManager.GetLocalizedName(status.statusId, status.count, true, StatusEffectManager.Instance.GetStatusEffectDataById(status.statusId).ShowStackCount(), true);
-                    description.Add(temp);
+                    if (IsReady()) //localization should not be called during the initialization process. A workaround is needed.
+                    {
+                        temp = StatusEffectManager.GetLocalizedName(status.statusId, status.count, true, StatusEffectManager.Instance.GetStatusEffectDataById(status.statusId).ShowStackCount(), true);
+                        description.Add(temp);
+                    }
+                    else
+                    {
+                        ChaosLocalizationManager.Failures.Add(DescriptionKey, upgradeData);
+                        return "BEYONDER_FAIL_REDO";
+                    }
                 }
                 temp = string.Empty;
             }
@@ -352,9 +381,17 @@ namespace Void.Chaos
                     //Beyonder.Log(CardTraitData.GetTraitCardTextLocalizationKey(trait.GetTraitStateName()));
                     //Beyonder.Log("***********************************************************************");
 
-                    temp = CardTraitData.GetTraitCardTextLocalizationKey(trait.GetTraitStateName());
-                    temp = temp.Localize();
-                    description.Add(temp);
+                    if (IsReady()) //localization should not be called during the initialization process. A workaround is needed.
+                    {
+                        temp = CardTraitData.GetTraitCardTextLocalizationKey(trait.GetTraitStateName());
+                        temp = temp.Localize();
+                        description.Add(temp);
+                    }
+                    else
+                    {
+                        ChaosLocalizationManager.Failures.Add(DescriptionKey, upgradeData);
+                        return "BEYONDER_FAIL_REDO";
+                    }
                 }
                 temp = string.Empty;
             }
@@ -363,15 +400,22 @@ namespace Void.Chaos
             {
                 foreach (CharacterTriggerData data in upgradeData.GetTriggerUpgrades())
                 {
-                    temp = data.GetDescriptionKey() + "_Essence";
-                    temp = temp.Localize();
-                    temp = CharacterTriggerData.GetKeywordText(data.GetTrigger(), true) + ": " + temp;
-                    temp = "'" + temp + "'";
-                    description.Add(temp);
+                    if (IsReady()) //localization should not be called during the initialization process. A workaround is needed.
+                    {
+                        temp = data.GetDescriptionKey() + "_Essence";
+                        temp = temp.Localize();
+                        temp = CharacterTriggerData.GetKeywordText(data.GetTrigger(), true) + ": " + temp;
+                        temp = "'" + temp + "'";
+                        description.Add(temp);
+                    }
+                    else
+                    {
+                        ChaosLocalizationManager.Failures.Add(DescriptionKey, upgradeData);
+                        return "BEYONDER_FAIL_REDO";
+                    }
                 }
                 temp = string.Empty;
             }
-
 
             if (description.Count == 0)
             {
@@ -414,7 +458,8 @@ namespace Void.Chaos
 
             if (register)
             {
-                CustomLocalizationManager.ImportSingleLocalization(DescriptionKey, "Text", "", "", "", "", temp, temp, temp, temp, temp, temp);
+                //CustomLocalizationManager.ImportSingleLocalization(DescriptionKey, "Text", "", "", "", "", temp, temp, temp, temp, temp, temp);
+                ChaosLocalizationManager.Queue.Add(DescriptionKey, temp);
             }
 
             return temp;

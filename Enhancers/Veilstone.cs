@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Void.Init;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Constants;
 using Trainworks.Enums;
 using CustomEffects;
@@ -40,10 +40,10 @@ namespace Void.Enhancers
 
             Enhancer = new EnhancerDataBuilder
             {
-                ID = EnhancerID,
-                AssetPath = "ClanAssets/Veilstone.png",
+                EnhancerID = EnhancerID,
+                IconPath = "ClanAssets/Veilstone.png",
                 ClanID = BeyonderClan.ID,
-                LinkedClass = Beyonder.BeyonderClanData,
+                //LinkedClass = Beyonder.BeyonderClanData,
                 NameKey = "Beyonder_Enhancer_Veilstone_Name_Key",
                 DescriptionKey = "Beyonder_Enhancer_Veilstone_Description_Key",
                 EnhancerPoolIDs = { VanillaEnhancerPoolIDs.SpellUpgradePoolCommon }, //Adds this to the pool irregardless of clan. Needs a fix.
@@ -52,9 +52,10 @@ namespace Void.Enhancers
 
                 Upgrade = new CardUpgradeDataBuilder
                 {
+                    UpgradeID = "Beyonder_Enhancer_Veilstone_Upgrade_ID",
                     UpgradeTitleKey = "Beyonder_Enhancer_Veilstone_Name_Key",
                     UpgradeDescriptionKey = "Beyonder_Enhancer_Veilstone_Description_Key",
-                    UpgradeIconPath = "ClanAssets/Veilstone.png",
+                    AssetPath = "ClanAssets/Veilstone.png",
                     HideUpgradeIconOnCard = false,
                     BonusDamage = 10,
                     BonusHeal = 10,
@@ -63,7 +64,7 @@ namespace Void.Enhancers
                     {
                         new CardTraitDataBuilder
                         {
-                            TraitStateName = typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName,
+                            TraitStateType = typeof(BeyonderCardTraitAfflictive),
                             ParamInt = 1
                         }
                     },
@@ -81,6 +82,7 @@ namespace Void.Enhancers
                     {
                         new CardUpgradeMaskDataBuilder
                         {
+                            CardUpgradeMaskID = "Veilstone_FIlter_ID",
                             UpgradeDisabledReason = CardState.UpgradeDisabledReason.NotEligible,
                             ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
                             ExcludedCardTraits = new List<string>
@@ -90,7 +92,7 @@ namespace Void.Enhancers
                             }
                         }
                     }
-                },
+                }.Build(),
 
             }.BuildAndRegister();
 

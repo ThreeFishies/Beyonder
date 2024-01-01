@@ -20,7 +20,7 @@ namespace CustomEffects
         public override bool TestEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
             GetNumAlliesSacrificed(cardEffectState, cardEffectParams);
-            return cardEffectParams.targets.Count > 0;
+            return cardEffectParams.targets.Count > 0 && cardEffectParams.targets[0].GetTeamType() != Team.Type.Heroes;
         }
 
         public static int GetNumAlliesSacrificed(CardEffectState cardEffectState = null, CardEffectParams cardEffectParams = null) 

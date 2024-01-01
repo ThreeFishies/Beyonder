@@ -1,3 +1,6 @@
+//Localization import moved to initialization.
+
+/*
 using System;
 using HarmonyLib;
 using I2.Loc;
@@ -17,3 +20,4 @@ namespace Void.Localization
 		}
 	}
 }
+*/

@@ -1,3 +1,5 @@
+//This patch is no longer needed thanks to an update for Trainworks Modding Tools.
+/*
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -136,4 +138,4 @@ namespace Equestrian.HarmonyPatches
             }
         }
     }
-}
+}*/

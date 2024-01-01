@@ -45,7 +45,7 @@ namespace Void.Spells
                     {
                         TraitStateName = "CardTraitScalingAddDamage",
                         ParamTrackedValue = Beyonder.ScalingByHysteria.GetEnum(),
-                        ParamInt = 30,
+                        ParamInt = 25,
                         ParamFloat = 1.0f,
                         ParamTeamType = Team.Type.None,
                         ParamUseScalingParams = true,

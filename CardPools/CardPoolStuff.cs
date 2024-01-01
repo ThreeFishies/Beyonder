@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -31,6 +31,8 @@ namespace Void.CardPools
     {
         public static CardPool MutationCards;
         public static CardPool UnTherapeutic;
+        public static CardPool MadnessWithinCardPool;
+        public static CardPool CaveStoryCardPool;
 
         public static void BuildCardPools() 
         {
@@ -62,6 +64,26 @@ namespace Void.CardPools
                     OcularInfection.Card,
                     Paranoia.Card,
                     Seizure.Card
+                }
+            }.Build();
+
+            MadnessWithinCardPool = new CardPoolBuilder 
+            {
+                CardPoolID = "MadnessWithinCardPool",
+                Cards = new List<CardData> 
+                { 
+                    PostItNoteOfForbiddenKnowledge.Card,
+                    PostItNoteOfForbiddenKnowledge.Card,
+                    SupplementalDeadBrain.Card
+                }
+            }.Build();
+
+            CaveStoryCardPool = new CardPoolBuilder
+            {
+                CardPoolID = "CaveStoryCardPool",
+                Cards = new List<CardData>
+                {
+                    CaveofaThousandEyes.Card
                 }
             }.Build();
         }

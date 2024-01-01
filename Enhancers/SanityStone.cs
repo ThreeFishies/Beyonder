@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Void.Init;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Constants;
 using Trainworks.Enums;
 using CustomEffects;
@@ -26,10 +26,10 @@ namespace Void.Enhancers
         {
             Enhancer = new EnhancerDataBuilder
             {
-                ID = EnhancerID,
-                AssetPath = "ClanAssets/Sanitystone.png",
+                EnhancerID = EnhancerID,
+                IconPath = "ClanAssets/Sanitystone.png",
                 ClanID = BeyonderClan.ID,
-                LinkedClass = Beyonder.BeyonderClanData,
+                //LinkedClass = Beyonder.BeyonderClanData,
                 NameKey = "Beyonder_Enhancer_Sanitystone_Name_Key",
                 DescriptionKey = "Beyonder_Enhancer_Sanitystone_Description_Key",
                 EnhancerPoolIDs = { VanillaEnhancerPoolIDs.SpellUpgradePool }, //Adds this to the pool irregardless of clan. Needs a fix.
@@ -38,9 +38,10 @@ namespace Void.Enhancers
 
                 Upgrade = new CardUpgradeDataBuilder
                 {
+                    UpgradeID = "Beyonder_Enhancer_Sanitystone_Upgrade_ID",
                     UpgradeTitleKey = "Beyonder_Enhancer_Sanitystone_Name_Key",
                     UpgradeDescriptionKey = "Beyonder_Enhancer_Sanitystone_Description_Key",
-                    UpgradeIconPath = "ClanAssets/Sanitystone.png",
+                    AssetPath = "ClanAssets/Sanitystone.png",
                     HideUpgradeIconOnCard = false,
                     BonusDamage = 0,
                     BonusHeal = 0,
@@ -51,7 +52,7 @@ namespace Void.Enhancers
                     {
                         new CardTraitDataBuilder
                         {
-                            TraitStateName = typeof(BeyonderCardTraitTherapeutic).AssemblyQualifiedName,
+                            TraitStateType = typeof(BeyonderCardTraitTherapeutic),
                         }
                     },
 
@@ -65,6 +66,7 @@ namespace Void.Enhancers
                     {
                         new CardUpgradeMaskDataBuilder
                         {
+                            CardUpgradeMaskID = "Sanity_Stone_Filter_ID",
                             UpgradeDisabledReason = CardState.UpgradeDisabledReason.NotEligible,
                             ExcludedCardTraitsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
                             ExcludedCardTraits = new List<string>
@@ -78,7 +80,7 @@ namespace Void.Enhancers
                             }
                         }
                     }
-                },
+                }.Build(),
 
             }.BuildAndRegister();
 

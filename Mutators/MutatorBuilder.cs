@@ -10,7 +10,7 @@ using UnityEngine;
 using Void.Init;
 using System.IO;
 
-
+//Note: This is now redundant with Trainwork's Mutator builder. Please use that instead of copying this internal builder.
 namespace Void.Builders
 {
     /// <summary>
@@ -68,7 +68,7 @@ namespace Void.Builders
 
         /// <summary>
         /// Tooltip design style for mutators. <br></br>
-        /// Defaults to Equestrian.
+        /// Defaults to Herzal.
         /// </summary>
         public RelicData.RelicLoreTooltipStyle RelicLoreTooltipStyle = RelicData.RelicLoreTooltipStyle.Herzal; //Ponies.PonyRelicTooltip.GetEnum();
 

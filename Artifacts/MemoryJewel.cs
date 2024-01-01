@@ -96,6 +96,17 @@ namespace Void.Artifacts
                         AdditionalTooltips = new AdditionalTooltipData[] 
                         {
                             new AdditionalTooltipData
+                            {
+                                titleKey = "CardTraitFreeze_CardText",
+                                descriptionKey = "CardTraitFreeze_TooltipText",
+                                isStatusTooltip = false,
+                                statusId = "",
+                                isTriggerTooltip = false,
+                                trigger = CharacterTriggerData.Trigger.OnDeath,
+                                isTipTooltip = false,
+                                style = TooltipDesigner.TooltipDesignType.Keyword
+                            },
+                            new AdditionalTooltipData
                             { 
                                 titleKey = string.Empty, //"Malicka_Artifact_MemoryJewel_Hint_Title_Key",
                                 descriptionKey = "Malicka_Artifact_MemoryJewel_Hint_Description_Key",

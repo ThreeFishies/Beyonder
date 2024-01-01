@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Managers;
 using Trainworks.Constants;
 using System.Linq;
@@ -26,22 +26,31 @@ namespace Void.Chaos
         {
             List<CardUpgradeData> boons = new List<CardUpgradeData>();
 
+            CardUpgradeData Undretch_Boon_02_Anxiety_Effect = new CardUpgradeDataBuilder
+            {
+                UpgradeID = "Undretch_Boon_02_Anxiety_Effect",
+                BonusHP = 6,
+            }.Build();
+
+            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Undretch_Boon_02_Anxiety_Effect, true);
+
             //Boon 00 (Anxiety: Heal 5 and damage enemy units equal to amount healed.)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_00",
+                UpgradeID = "Undretch_Boon_00",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Boon_00_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_00_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = typeof(CustomCardEffectHealAndDamageRelative).AssemblyQualifiedName,
+                                EffectStateType = typeof(CustomCardEffectHealAndDamageRelative),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
                                 ParamInt = 5,
@@ -56,7 +65,7 @@ namespace Void.Chaos
             //Boon 00 (-8/-8 and Sweep)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_00",
+                UpgradeID = "Undretch_Boon_00",
                 BonusDamage = -8,
                 BonusHP = -8,
 
@@ -74,7 +83,7 @@ namespace Void.Chaos
             //Boon 01 (Chronic 3)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_01",
+                UpgradeID = "Undretch_Boon_01",
 
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
@@ -89,28 +98,23 @@ namespace Void.Chaos
             //Boon 02 (Anxiety: +4 health)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_02",
+                UpgradeID = "Undretch_Boon_02",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Boon_02_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_02_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
+                                EffectStateType = typeof(CardEffectAddTempCardUpgradeToUnits),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
-
-                                ParamCardUpgradeData = new CardUpgradeDataBuilder
-                                {
-                                    UpgradeTitleKey = "Undretch_Boon_02_Anxiety_Effect",
-                                    BonusHP = 6,
-                                    SourceSynthesisUnit = new CharacterDataBuilder { CharacterID = "DummyNULL" }.Build()
-                                }.Build()
+                                ParamCardUpgradeData = Undretch_Boon_02_Anxiety_Effect
                             }
                         }
                     }
@@ -121,23 +125,24 @@ namespace Void.Chaos
             //Boon 03 (Anxiety: +1 Stealth)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_03",
+                UpgradeID = "Undretch_Boon_03",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Boon_03_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_03_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddStatusEffect",
+                                EffectStateType = typeof(CardEffectAddStatusEffect),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
                                 
-                                ParamStatusEffects = new StatusEffectStackData[]
+                                ParamStatusEffects = new List<StatusEffectStackData>
                                 { 
                                     new StatusEffectStackData
                                     { 
@@ -154,23 +159,24 @@ namespace Void.Chaos
             //Boon 04 (Anxiety: +1 Chronic to friendly units)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_04",
+                UpgradeID = "Undretch_Boon_04",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Boon_04_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_04_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddStatusEffect",
+                                EffectStateType = typeof(CardEffectAddStatusEffect),
                                 TargetMode = TargetMode.Room,
                                 TargetTeamType = Team.Type.Monsters,
 
-                                ParamStatusEffects = new StatusEffectStackData[]
+                                ParamStatusEffects = new List<StatusEffectStackData>
                                 {
                                     new StatusEffectStackData
                                     {
@@ -187,19 +193,20 @@ namespace Void.Chaos
             //Boon 05 (Anxiety: +1 Ember)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_05",
+                UpgradeID = "Undretch_Boon_05",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Boon_05_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_05_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectGainEnergy",
+                                EffectStateType = typeof(CardEffectGainEnergy),
                                 ParamInt = 1,
                             }
                         }
@@ -210,25 +217,26 @@ namespace Void.Chaos
             //Boon 06 (Revenge: Apply Jitters 3 to enemy units for each Mania below 0)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_06",
+                UpgradeID = "Undretch_Boon_06",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = CharacterTriggerData.Trigger.OnHit,
+                        TriggerID = "Undretch_Boon_06_Trigger_ID",
                         DescriptionKey = "Undretch_Boon_06_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = typeof(CustomCardEffectAddStatusEffectPerMania).AssemblyQualifiedName,
+                                EffectStateType = typeof(CustomCardEffectAddStatusEffectPerMania),
                                 TargetMode = TargetMode.Room,
                                 TargetTeamType = Team.Type.Heroes,
                                 ParamInt = 3,
                                 ParamBool = false, //Anxiety
 
-                                ParamStatusEffects = new StatusEffectStackData[]
+                                ParamStatusEffects = new List<StatusEffectStackData>
                                 {
                                     new StatusEffectStackData
                                     {
@@ -245,8 +253,9 @@ namespace Void.Chaos
             //Boon 07 (+1 cost and +16/+35)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_07",
+                UpgradeID = "Undretch_Boon_07",
                 CostReduction = -1,
+                XCostReduction = -1,
                 BonusDamage = 16,
                 BonusHP = 35
             }.Build());
@@ -254,21 +263,22 @@ namespace Void.Chaos
             //Boon 08 (-1 Size)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_08",
+                UpgradeID = "Undretch_Boon_08",
                 BonusSize = -1,
             }.Build());
 
             //Boon 09 (-1 Cost and Stalker)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Boon_09",
+                UpgradeID = "Undretch_Boon_09",
                 CostReduction = 1,
+                XCostReduction = 1,
 
                 TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
                 { 
                     new CardTraitDataBuilder
                     { 
-                        TraitStateName = typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName,
+                        TraitStateType = typeof(BeyonderCardTraitStalkerState),
                     }
                 }
             }.Build());

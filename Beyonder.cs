@@ -29,7 +29,9 @@ using Void.Patches;
 using Void.Mutators;
 using Void.Tutorial;
 using Void.Arcadian;
+using Void.BeyonderStory;
 using I2.Loc;
+using Equestrian.Metagame;
 
 namespace Void.Init
 { 
@@ -63,10 +65,13 @@ namespace Void.Init
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
-        public const string VERSION = "0.9.2";
+        public const string VERSION = "0.9.5";
 
         public void Initialize()
         {
+            //Import localization
+            CustomLocalizationManager.ImportCSV("Localization/InfiniteVoid.csv", ',');
+
             //Unit subtypes
             SubtypeVeilrich.BuildAndRegister();
             Beyonder.Log("Subtype Veilritch");
@@ -119,12 +124,12 @@ namespace Void.Init
             Beyonder.Log("Card Not Spawner Selection Error Enum");
 
             //Add some dynamic localization keys.
-            CustomLocalizationManager.ImportSingleLocalization(typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_TooltipText", "Text", "", "", "", "", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.", "Each turn, this card will be drawn to your hand.");
-            CustomLocalizationManager.ImportSingleLocalization(typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_CardText", "Text", "", "", "", "", "Stalker", "Stalker", "Stalker", "Stalker", "Stalker", "Stalker");
-            CustomLocalizationManager.ImportSingleLocalization("Trigger_" + (int)Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum() + "_CardText", "Text", "", "", "", "", "Hysteria", "Hysteria", "Hysteria", "Hysteria", "Hysteria", "Hysteria");
-            CustomLocalizationManager.ImportSingleLocalization("Trigger_" + (int)Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum() + "_TooltipText", "Text", "", "", "", "", "Triggers when <b>Mania</b> rises above 0.", "Triggers when <b>Mania</b> rises above 0.", "Triggers when <b>Mania</b> rises above 0.", "Triggers when <b>Mania</b> rises above 0.", "Triggers when <b>Mania</b> rises above 0.", "Triggers when <b>Mania</b> rises above 0.");
-            CustomLocalizationManager.ImportSingleLocalization("Trigger_" + (int)Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum() + "_CardText", "Text", "", "", "", "", "Anxiety", "Anxiety", "Anxiety", "Anxiety", "Anxiety", "Anxiety");
-            CustomLocalizationManager.ImportSingleLocalization("Trigger_" + (int)Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum() + "_TooltipText", "Text", "", "", "", "", "Triggers when <b>Mania</b> drops below 0.", "Triggers when <b>Mania</b> drops below 0.", "Triggers when <b>Mania</b> drops below 0.", "Triggers when <b>Mania</b> drops below 0.", "Triggers when <b>Mania</b> drops below 0.", "Triggers when <b>Mania</b> drops below 0.");
+            ChaosLocalizationManager.Queue.Add(typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_TooltipText", "Each turn, this card will be drawn to your hand.");
+            ChaosLocalizationManager.Queue.Add(typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName + "_CardText", "Stalker");
+            ChaosLocalizationManager.Queue.Add("Trigger_" + (int)Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum() + "_CardText", "Hysteria");
+            ChaosLocalizationManager.Queue.Add("Trigger_" + (int)Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum() + "_TooltipText", "Triggers when <b>Mania</b> rises above 0.");
+            ChaosLocalizationManager.Queue.Add("Trigger_" + (int)Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum() + "_CardText", "Anxiety");
+            ChaosLocalizationManager.Queue.Add("Trigger_" + (int)Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum() + "_TooltipText", "Triggers when <b>Mania</b> drops below 0.");
 
             //TestSpellCards.GiveIncantArmor.BuildAndRegister();
             //TestSpellCards.AddOnReserve.BuildAndRegister();
@@ -230,6 +235,8 @@ namespace Void.Init
             Beyonder.Log("Chutzpah");
             ApostleoftheVoid.BuildAndRegister();
             Beyonder.Log("Apostle of the Void");
+            CaveofaThousandEyes.BuildAndRegister(); //for cavern event reward
+            Beyonder.Log("Cave of a Thousand Eyes");
 
             //Card Pools
             BeyonderCardPools.BuildCardPools();
@@ -312,12 +319,28 @@ namespace Void.Init
 
             //Default Unit Synthesis (Units with dynamic synthesis are handled differently.)
             AccessTools.Field(typeof(UnitSynthesisMapping), "_dictionaryMapping").SetValue(ProviderManager.SaveManager.GetBalanceData().SynthesisMapping, null);
-            Trainworks.Patches.AccessUnitSynthesisMapping.FindUnitSynthesisMappingInstanceToStub();
-            Beyonder.Log("Trainworks Unit Synthesis Patch");
+            //Trainworks.Patches.AccessUnitSynthesisMapping.FindUnitSynthesisMappingInstanceToStub();
+            //Beyonder.Log("Trainworks Unit Synthesis Patch");
 
             //Mutators
             FirstLaugh.BuildAndRegister();
             Beyonder.Log("First Laugh Mutator");
+            PettyVengeance.BuildAndRegister();
+            Beyonder.Log("Petty Vengeance Mutator");
+            MadnessWithin.BuildAndRegister();
+            Beyonder.Log("Madness Within Mutator");
+            RestlessBeast.BuildAndRegister();
+            Beyonder.Log("Restless Beast Mutator");
+
+            //Challenges
+            TruestChampion.BuildAndRegister();
+            Beyonder.Log("Truest Champion spChallenge");
+
+            //Cave Story
+            CaveStory.EditMasterStoryFile();
+            Beyonder.Log("Modifying Master Story File");
+            CaveStory.BuildEventData();
+            Beyonder.Log("Registering Event Reward Data");
 
             //Misc stuff
             MakeChildFormless.DoIt();
@@ -326,7 +349,9 @@ namespace Void.Init
             Beyonder.Log("Exclude Mutations from Doublestack.");
             Beyonder.Log("Checking Arcadian Compatibility.");
             ArcadianCompatibility.Initialize();
+            RegisterTMPSprites.SetupSprites();
 
+            PonyMetagame.LoadPonyMetaFile();
             TutorialManager.LoadProgress();
             Beyonder.Log("Loading tutorial progress.");
 
@@ -359,5 +384,5 @@ namespace Void.Init
     }
 }
 
-//Bug list: Consume spells were not properly triggering artifact that deal 30 damage to front unit. Likely related to floor shift on triggered (Hysteria/Anxiety) effects.
+//Bug list: Consume spells were not properly triggering artifact that deal 30 damage to front unit. Likely related to floor shift on triggered (Hysteria/Anxiety) effects. [This was fixed. When defining a spell, 'targetless' and 'targets room' can't both be false.]
 //Found in run: {"RunID":"213bce2c-c1ec-4460-ae00-6489eea4fc7e","ForceSeed":false,"BeyonderVersion":"0.8.1","LocoMotiveConductorPath":2,"LocoMotiveHorrorPath":2,"LocoMotiveFormlessPath":0,"EpidemialInnumerablePath":2,"EpidemialContagiousPath":2,"EpidemialSoundlessPath":0,"VboonIndexes":[2,1,0,3,7,9,6,4,8,5],"VbaneIndexes":[8,2,1,7,0,6,5,9,3,4],"UboonIndexes":[3,8,6,2,9,0,7,1,4,5],"UbaneIndexes":[9,0,5,7,3,2,8,1,6,4],"StartingConditions":{"seed":113526943,"isBattleMode":false,"isFtueRun":false,"battleModeStartTime":"","battleModeTimerScalar":0.0,"battleWarmup":0,"version":"12923","mainClassInfo":{"className":"55bcaaa0-6e62-4b91-81c9-c44e93f9b0e6","classLevel":10,"championIndex":1,"random":false},"subclassInfo":{"className":"fda62ada-520e-42f3-aa88-e4a78549c4a2","classLevel":10,"championIndex":1,"random":true},"ascensionLevel":25,"spChallengeId":"","covenants":["a498b6c7-a094-48c4-8f99-8e3a2d2cc35b","0dd4f35c-010e-4455-bd7a-7d801d128027","cd0cccc6-70d7-4012-8bd4-72f32ee0a444","ac6a3426-b233-44b7-a221-7eedd7a5b046","e13fa3da-6dc0-40a3-942a-1f4c1863a9e4","2d48cc06-c584-4f1a-be83-06831591fe29","10247c18-57e3-40f2-89ac-2048c7b2dfc9","5d03474a-10e7-46db-abc1-90b5e53f400a","19305ab8-a44b-45a9-926f-1ee70912d7d1","bd5841ce-ead5-4d95-ba0c-a4a220b6d245","d639494a-9557-481a-91b7-d5f3822628da","21c51e96-3281-4949-a6f6-72d7d189c232","8c52be61-d238-45cc-b186-291e396f31e5","a0b06fe6-b736-48cd-b5c8-b7f6c892f4e8","f4ca28b4-9321-49fc-b15e-092d17996f29","cfa8ef9e-2a65-4b8d-ad38-41ad90154563","fd1071c8-63d7-4bb4-9b6a-ac4a8090dfbe","15ca2a42-1102-43d9-b438-4281f0ff2c2e","7f35fbac-8dfb-470c-b445-661b0eae3e74","2f17e948-0197-4416-8b42-5c32297f1bb6","bcfedf6f-fe28-4950-a8a2-787bf56df238","f1be8eda-7b00-4322-ac8c-f1ece7601c9e","29019224-00ef-4e32-9136-655375eda84a","54f2540e-1351-41c1-8c44-e26a07199cd7","6ec123f0-9ca5-4bf8-b68c-77f208f3f075"],"mutators":[],"enabledDlcs":[1]}}

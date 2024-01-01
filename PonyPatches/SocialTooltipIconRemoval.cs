@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,20 +24,23 @@ namespace Equestrian.HarmonyPatches
 	{
 		private static void Prefix(ref string title, ref string icon)
 		{
-			string text = StatusEffectManager.GetLocalizedName(StatusEffectChronic.statusId, 1, false, true, false);
-			if (title == text) { icon = ""; }
-			text = StatusEffectManager.GetLocalizedName(StatusEffectFormless.statusId, 1, false, true, false);
-			if (title == text) { icon = ""; }
-			text = StatusEffectManager.GetLocalizedName(StatusEffectJitters.statusId, 1, false, true, false);
-			if (title == text) { icon = ""; }
-			text = StatusEffectManager.GetLocalizedName(StatusEffectMutated.statusId, 1, false, true, false);
-			if (title == text) { icon = ""; }
-			text = StatusEffectManager.GetLocalizedName(StatusEffectPanic.statusId, 1, false, true, false);
-			if (title == text) { icon = ""; }
-            text = StatusEffectManager.GetLocalizedName(StatusEffectSoundless.statusId, 1, false, true, false);
-            if (title == text) { icon = ""; }
-            text = StatusEffectManager.GetLocalizedName(StatusEffectShock.statusId, 1, false, true, false);
-            if (title == text) { icon = ""; }
+			//Status effect icons now display properly thanks to an update to Trainworks Modding tools.
+
+			string text = string.Empty;
+			//text = StatusEffectManager.GetLocalizedName(StatusEffectChronic.statusId, 1, false, true, false);
+			//if (title == text) { icon = ""; }
+			//text = StatusEffectManager.GetLocalizedName(StatusEffectFormless.statusId, 1, false, true, false);
+			//if (title == text) { icon = ""; }
+			//text = StatusEffectManager.GetLocalizedName(StatusEffectJitters.statusId, 1, false, true, false);
+			//if (title == text) { icon = ""; }
+			//text = StatusEffectManager.GetLocalizedName(StatusEffectMutated.statusId, 1, false, true, false);
+			//if (title == text) { icon = ""; }
+			//text = StatusEffectManager.GetLocalizedName(StatusEffectPanic.statusId, 1, false, true, false);
+			//if (title == text) { icon = ""; }
+            //text = StatusEffectManager.GetLocalizedName(StatusEffectSoundless.statusId, 1, false, true, false);
+            //if (title == text) { icon = ""; }
+            //text = StatusEffectManager.GetLocalizedName(StatusEffectShock.statusId, 1, false, true, false);
+            //if (title == text) { icon = ""; }
             text = CharacterTriggerData.GetKeywordText(Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(), false);
             if (title == text) { icon = ""; }
             text = CharacterTriggerData.GetKeywordText(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(), false);
@@ -142,5 +146,5 @@ namespace Equestrian.HarmonyPatches
 			*//*
         }
     }
-	*/
-}
+	*//*
+}*/

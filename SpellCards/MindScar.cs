@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Constants;
 using Trainworks.Enums;
 using Trainworks.Managers;
@@ -26,7 +26,7 @@ namespace Void.Spells
             {
                 CardID = ID,
                 ClanID = Beyonder.BeyonderClanData.GetID(),
-                LinkedClass = Beyonder.BeyonderClanData,
+                //LinkedClass = Beyonder.BeyonderClanData,
                 AssetPath = "SpellCards/Assets/MentalScar.png",
                 CardPoolIDs = new List<string> { },
                 Rarity = CollectableRarity.Common, //Note 'Starter' rarity appears to be unused.
@@ -43,35 +43,39 @@ namespace Void.Spells
                 {
                     new CardTraitDataBuilder
                     {
-                        TraitStateName = "CardTraitScalingAddDamage",
+                        //TraitStateName = "CardTraitScalingAddDamage",
+                        TraitStateType = typeof(CardTraitScalingAddDamage),
                         ParamTrackedValue = Beyonder.ScalingByHysteria.GetEnum(),
                         ParamInt = 8,
                         ParamFloat = 1.0f,
                         ParamTeamType = Team.Type.None,
                         ParamUseScalingParams = true,
                         ParamEntryDuration = CardStatistics.EntryDuration.ThisTurn,
-                        ParamStatusEffects = new StatusEffectStackData[] { },
+                        ParamStatusEffects = new List<StatusEffectStackData> { },
                     },
                     new CardTraitDataBuilder 
                     { 
-                        TraitStateName = typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName,
+                        //TraitStateName = typeof(BeyonderCardTraitAfflictive).AssemblyQualifiedName,
+                        TraitStateType = typeof(BeyonderCardTraitAfflictive),
                         ParamInt = 1,
                     },
                     new CardTraitDataBuilder
                     {
-                        TraitStateName = typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName
+                        //TraitStateName = typeof(BeyonderCardTraitEntropic).AssemblyQualifiedName
+                        TraitStateType = typeof(BeyonderCardTraitEntropic)
                     }
                 },
                 EffectBuilders = new List<CardEffectDataBuilder>
                 {
                     new CardEffectDataBuilder
                     {
-                        EffectStateName = "CardEffectDamage",
+                        //EffectStateName = "CardEffectDamage",
+                        EffectStateType = typeof(CardEffectDamage),
                         TargetMode = TargetMode.FrontInRoom,
                         TargetTeamType = Team.Type.Heroes,
                         ParamInt = 0,
                         
-                        AdditionalTooltips = new AdditionalTooltipData[]
+                        AdditionalTooltips = new List<AdditionalTooltipData>
                         {
                             new AdditionalTooltipData
                             {

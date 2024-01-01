@@ -54,6 +54,8 @@ namespace Void.Init
 
             currentData.RunID = run.GetID();
             currentData.StartingConditions = run.GetStartingConditions();
+            currentData.StartingConditions.SetMainClass(run.GetMainClassID(), run.GetStartingConditionsMainClassLevel(), run.GetMainChampionIndex(), false);
+            currentData.StartingConditions.SetSubclass(run.GetSubClassID(), run.GetStartingConditionsSubClassLevel(), run.GetSubChampionIndex(), false);
 
             setupData = currentData;
 

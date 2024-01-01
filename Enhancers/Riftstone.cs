@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Void.Init;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Constants;
 using Trainworks.Enums;
 using CustomEffects;
@@ -24,10 +24,10 @@ namespace Void.Enhancers
         {
             Enhancer = new EnhancerDataBuilder
             {
-                ID = EnhancerID,
-                AssetPath = "ClanAssets/Riftstone.png",
+                EnhancerID = EnhancerID,
+                IconPath = "ClanAssets/Riftstone.png",
                 ClanID = BeyonderClan.ID,
-                LinkedClass = Beyonder.BeyonderClanData,
+                //LinkedClass = Beyonder.BeyonderClanData,
                 NameKey = "Beyonder_Enhancer_Riftstone_Name_Key",
                 DescriptionKey = "Beyonder_Enhancer_Riftstone_Description_Key",
                 EnhancerPoolIDs = { VanillaEnhancerPoolIDs.UnitUpgradePoolCommon }, //Adds this to the pool irregardless of clan. Needs a fix.
@@ -36,21 +36,22 @@ namespace Void.Enhancers
 
                 Upgrade = new CardUpgradeDataBuilder
                 {
+                    UpgradeID = "Beyonder_Enhancer_Riftstone_Upgrade_ID",
                     UpgradeTitleKey = "Beyonder_Enhancer_Riftstone_Name_Key",
                     UpgradeDescriptionKey = "Beyonder_Enhancer_Riftstone_Description_Key",
-                    UpgradeIconPath = "ClanAssets/Riftstone.png",
+                    AssetPath = "ClanAssets/Riftstone.png",
                     BonusHP = 0,
                     BonusDamage = 0,
                     HideUpgradeIconOnCard = false,
-
+                     
                     TraitDataUpgradeBuilders = new List<CardTraitDataBuilder> 
                     {
                         new CardTraitDataBuilder
                         { 
-                            TraitStateName = typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName,
+                            TraitStateType = typeof(BeyonderCardTraitStalkerState),
                         }
                     },
-                },
+                }.Build(),
             }.BuildAndRegister();
 
             AccessTools.Field(typeof(GameData), "id").SetValue(Enhancer, EnhancerID);

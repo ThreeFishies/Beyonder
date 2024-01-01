@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2; //Swapping to the new Trainworks builder.
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -34,18 +34,31 @@ namespace Void.Status
 
         public static void Build()
         {
+            VfxAtLoc persistent = null;
+            VfxAtLoc added = null;
+
+            if (ProviderManager.TryGetProvider<StatusEffectManager>(out StatusEffectManager statusEffectManager)) 
+            {
+                StatusEffectData dazed = statusEffectManager.GetStatusEffectDataById(VanillaStatusEffectIDs.Dazed);
+                persistent = dazed.GetPersistentVFX();
+                added = dazed.GetOnAddedVFX();
+            };
+
+
             data = new StatusEffectDataBuilder()
             {
-                StatusId = statusId,
+                StatusID = statusId,
                 IsStackable = true,
-                IconPath = "ClanAssets/Shock.png",
+                IconPath = "ClanAssets/StatusIconsBig/Shock.png",
+                TooltipIconPath = "ClanAssets/Shock.png",
                 TriggerStage = StatusEffectData.TriggerStage.OnAttacked,
                 DisplayCategory = StatusEffectData.DisplayCategory.Negative,
                 ShowStackCount = true,
                 StatusEffectStateType = typeof(StatusEffectShock),
                 RemoveStackAtEndOfTurn = false,
                 RemoveWhenTriggered = true,
-                
+                PersistentVFX = persistent,
+                AddedVFX = added
             }.Build();
             List<StatusEffectData.TriggerStage> triggerStages = new List<StatusEffectData.TriggerStage>
             {
@@ -96,7 +109,7 @@ namespace Void.Status
         {
             if (inputTriggerParams != null && inputTriggerParams.associatedCharacter != null)
             {
-                inputTriggerParams.associatedCharacter.ShowNotification("StatusEffect_beyonder_shock_NotificationText".Localize(), PopupNotificationUI.Source.General, null);
+                inputTriggerParams.associatedCharacter.ShowNotification("StatusEffect_Beyonder_shock_NotificationText".Localize(), PopupNotificationUI.Source.General, null);
             }
             yield break;
         }

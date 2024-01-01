@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Managers;
 using Trainworks.Constants;
 using System.Linq;
@@ -26,10 +26,25 @@ namespace Void.Chaos
         {
             List<CardUpgradeData> banes = new List<CardUpgradeData>();
 
+            CardUpgradeData Undretch_Bane_03_Anxiety_Trigger = new CardUpgradeDataBuilder
+            {
+                UpgradeID = "Undretch_Bane_03_Anxiety_Trigger",
+                BonusDamage = -1,
+            }.Build();
+
+            CardUpgradeData Undretch_Bane_04_Hysteria_Trigger = new CardUpgradeDataBuilder
+            {
+                UpgradeID = "Undretch_Bane_04_Hysteria_Trigger",
+                BonusHP = -1,
+            }.Build();
+
+            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Undretch_Bane_03_Anxiety_Trigger, true);
+            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Undretch_Bane_04_Hysteria_Trigger, true);
+
             //Bane 00 (-8/-10)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_00",
+                UpgradeID = "Undretch_Bane_00",
                 BonusDamage = -8,
                 BonusHP = -10
             }.Build());
@@ -37,7 +52,7 @@ namespace Void.Chaos
             //Bane 01 (+1 Size and +16 Health)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_01",
+                UpgradeID = "Undretch_Bane_01",
                 BonusSize = 1,
                 BonusHP = 16
             }.Build());
@@ -45,34 +60,30 @@ namespace Void.Chaos
             //Bane 02 (+1 Cost)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_02",
-                CostReduction = -1
+                UpgradeID = "Undretch_Bane_02",
+                CostReduction = -1,
+                XCostReduction = -1,
             }.Build());
 
             //Bane 03 (Anxiety: -1 Attack)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_03",
+                UpgradeID = "Undretch_Bane_03",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 { 
                     new CharacterTriggerDataBuilder
                     { 
                         Trigger = Trigger_Beyonder_OnAnxiety.OnAnxietyCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Bane_03_Trigger_ID",
                         DescriptionKey = "Undretch_Bane_03_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
+                                EffectStateType = typeof(CardEffectAddTempCardUpgradeToUnits),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
-
-                                ParamCardUpgradeData = new CardUpgradeDataBuilder
-                                { 
-                                    UpgradeTitleKey = "Undretch_Bane_03_Anxiety_Trigger",
-                                    BonusDamage = -1,
-                                    SourceSynthesisUnit = new CharacterDataBuilder{ CharacterID = "DummyNULL" }.Build(),
-                                }.Build(),
+                                ParamCardUpgradeData = Undretch_Bane_03_Anxiety_Trigger
                             }
                         }
                     }
@@ -82,28 +93,24 @@ namespace Void.Chaos
             //Bane 04 (Hysteria: -1 Health)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_04",
+                UpgradeID = "Undretch_Bane_04",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Bane_04_Trigger_ID",
                         DescriptionKey = "Undretch_Bane_04_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
+                                EffectStateType = typeof(CardEffectAddTempCardUpgradeToUnits),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
+                                ParamCardUpgradeData = Undretch_Bane_04_Hysteria_Trigger, 
 
-                                ParamCardUpgradeData = new CardUpgradeDataBuilder
-                                {
-                                    UpgradeTitleKey = "Undretch_Bane_04_Hysteria_Trigger",
-                                    BonusHP = -1,
-                                    SourceSynthesisUnit = new CharacterDataBuilder{ CharacterID = "DummyNULL" }.Build(),
-                                }.Build(),
-                                AdditionalTooltips = new AdditionalTooltipData[]
+                                AdditionalTooltips = new List<AdditionalTooltipData>
                                 {
                                     new AdditionalTooltipData
                                     {
@@ -126,22 +133,23 @@ namespace Void.Chaos
             //Bane 05 (Hysteria: Jitters 1)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_05",
+                UpgradeID = "Undretch_Bane_05",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Bane_05_Trigger_ID",
                         DescriptionKey = "Undretch_Bane_05_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddStatusEffect",
+                                EffectStateType = typeof(CardEffectAddStatusEffect),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
                                 
-                                ParamStatusEffects = new StatusEffectStackData[]
+                                ParamStatusEffects = new List<StatusEffectStackData>
                                 { 
                                     new StatusEffectStackData
                                     { 
@@ -158,18 +166,19 @@ namespace Void.Chaos
             //Bane 06 (Hysteria: Ascend the front enemy unit)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_06",
+                UpgradeID = "Undretch_Bane_06",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID = "Undretch_Bane_06_Trigger_ID",
                         DescriptionKey = "Undretch_Bane_06_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = typeof(CustomCardEffectBumpPreviewConditional).AssemblyQualifiedName,
+                                EffectStateType = typeof(CustomCardEffectBumpPreviewConditional),
                                 TargetMode = TargetMode.FrontInRoom,
                                 TargetTeamType = Team.Type.Heroes,
                                 ParamInt = 1 //up by 1 floor
@@ -182,7 +191,7 @@ namespace Void.Chaos
             //Bane 07 (Mutated)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_07",
+                UpgradeID = "Undretch_Bane_07",
                 StatusEffectUpgrades = new List<StatusEffectStackData> 
                 { 
                     new StatusEffectStackData
@@ -196,7 +205,7 @@ namespace Void.Chaos
             //Bane 08 (Jitters 6)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_08",
+                UpgradeID = "Undretch_Bane_08",
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -210,19 +219,20 @@ namespace Void.Chaos
             //Bane 09 (Summon: -2 draw next turn)
             banes.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Undretch_Bane_09",
+                UpgradeID = "Undretch_Bane_09",
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder> 
                 { 
                     new CharacterTriggerDataBuilder
                     { 
                         Trigger = CharacterTriggerData.Trigger.OnSpawn,
+                        TriggerID = "Undretch_Bane_09_Trigger_ID",
                         DescriptionKey = "Undretch_Bane_09_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             { 
-                                EffectStateName = "CardEffectDrawAdditionalNextTurn",
+                                EffectStateType = typeof(CardEffectDrawAdditionalNextTurn),
                                 ParamInt = -2
                             }
                         }

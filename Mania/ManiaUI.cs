@@ -111,8 +111,8 @@ namespace Void.Mania
             tooltipProvider1.AddTooltip(new TooltipContent("Trigger_Beyonder_OnHysteria_CardText".Localize(), "Trigger_Beyonder_OnHysteria_TooltipText".Localize(), TooltipDesigner.TooltipDesignType.Keyword, "Hysteria"));
             tooltipProvider1.AddTooltip(new TooltipContent("Trigger_Beyonder_OnAnxiety_CardText".Localize(), "Trigger_Beyonder_OnAnxiety_TooltipText".Localize(), TooltipDesigner.TooltipDesignType.Keyword, "Anxiety"));
             tooltipProvider1.AddTooltip(new TooltipContent("Beyonder_Mechanic_Insanity_TooltipKey".Localize(), "Beyonder_Mechanic_Insanity_TooltipText".Localize(), TooltipDesigner.TooltipDesignType.Keyword, "Insanity"));
-            tooltipProvider1.AddTooltip(new TooltipContent("StatusEffect_beyonder_panic_CardText".Localize(), "StatusEffect_beyonder_panic_CardTooltipText".Localize(), TooltipDesigner.TooltipDesignType.Negative, "Panic"));
-            tooltipProvider1.AddTooltip(new TooltipContent("StatusEffect_beyonder_shock_CardText".Localize(), "StatusEffect_beyonder_shock_CardTooltipText".Localize(), TooltipDesigner.TooltipDesignType.Negative, "Neurosis"));
+            tooltipProvider1.AddTooltip(new TooltipContent("StatusEffect_Beyonder_panic_CardText".Localize(), "StatusEffect_Beyonder_panic_CardTooltipText".Localize(), TooltipDesigner.TooltipDesignType.Negative, "Panic"));
+            tooltipProvider1.AddTooltip(new TooltipContent("StatusEffect_Beyonder_shock_CardText".Localize(), "StatusEffect_Beyonder_shock_CardTooltipText".Localize(), TooltipDesigner.TooltipDesignType.Negative, "Neurosis"));
 
             Set_Text();
             Set_Color();
@@ -168,6 +168,11 @@ namespace Void.Mania
 
         public static bool IsBeyonder() 
         {
+            if (Void.Mutators.MadnessWithin.HasIt()) 
+            {
+                return true;
+            }
+
             if (ProviderManager.SaveManager.GetMainClass() != null && ProviderManager.SaveManager.GetMainClass() == Beyonder.BeyonderClanData) 
             {
                 return true;

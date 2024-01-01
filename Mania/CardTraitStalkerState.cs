@@ -20,4 +20,14 @@ public sealed class BeyonderCardTraitStalkerState : CardTraitState
     {
         return base.LocalizeTraitKey("BeyonderCardTraitStalkerState_CardText");
     }
+
+    public override string GetCardTooltipTitle() 
+    {
+        return "BeyonderCardTraitStalkerState_TooltipTitle".Localize(null);
+    }
+
+    public override string GetCardTooltipText() 
+    {
+        return "BeyonderCardTraitStalkerState_TooltipText".Localize(null);
+    }
 }

@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Void.Mania;
 using Void.Init;
+using System.Runtime.CompilerServices;
 
 namespace CustomEffects
 {
     public sealed class CustomCardEffectApplyManicToDeck : CardEffectBase
     {
+        public bool overrideMania = false;
+        public int overrideValue = 0;
+
         public static bool IsCardManic(CardState card) 
         {
             if (card == null) { return false; }
@@ -19,23 +23,31 @@ namespace CustomEffects
             return false;
         }
 
-        public static int GetNumAfflictive(int numCardsToManic, CardState playedCard) 
+        public static int GetNumAfflictive(int numCardsToManic, CardState playedCard, bool overrideMania = false, int overrideValue = 0)
         {
             int afflictiveBase = 2;
             int compulsiveBase = 2;
+            int currentMania = 0;
 
-            int currentMania = ManiaManager.GetCurrentMania(playedCard);
+            if (overrideMania)
+            {
+                currentMania = overrideValue;
+            }
+            else
+            {
+                currentMania = ManiaManager.GetCurrentMania(playedCard);
+            }
             ManiaLevel maniaLevel = ManiaManager.GetCurrentManiaLevel(false, currentMania);
 
             if (maniaLevel == ManiaLevel.Panic || maniaLevel == ManiaLevel.BlackoutHigh) 
             {
-                Beyonder.Log("Insane: All afflictive.");
+                //Beyonder.Log("Insane: All afflictive.");
                 return numCardsToManic;
             }
 
             if (maniaLevel == ManiaLevel.Neurosis || maniaLevel == ManiaLevel.BlackoutLow) 
             {
-                Beyonder.Log("Insane: All compulsive.");
+                //Beyonder.Log("Insane: All compulsive.");
                 return 0;
             }
 
@@ -68,7 +80,7 @@ namespace CustomEffects
                 yield break;
             }
 
-            int cardsToAfflictive = GetNumAfflictive(cards.Count, playedCard);
+            int cardsToAfflictive = GetNumAfflictive(cards.Count, playedCard, this.overrideMania, this.overrideValue);
 
             cards.Shuffle(RngId.Battle);
 
@@ -116,6 +128,15 @@ namespace CustomEffects
 
             foreach (CardState card in allCards) 
             {
+                if (cardEffectState == null) 
+                {
+                    if (!IsCardManic(card)) 
+                    { 
+                        cards.Add(card);
+                    }
+                    continue;
+                }
+
                 if (((cardEffectState.GetTargetCardType() == CardType.Invalid) || (cardEffectState.GetTargetCardType() == card.GetCardType())) && !IsCardManic(card))
                 { 
                     cards.Add(card);
@@ -127,7 +148,7 @@ namespace CustomEffects
 
         public override IEnumerator ApplyEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
-            if (cardEffectParams.saveManager.PreviewMode) 
+            if (cardEffectParams.saveManager.PreviewMode)
             {
                 yield break;
             }

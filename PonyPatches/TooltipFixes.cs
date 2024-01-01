@@ -96,6 +96,13 @@ namespace Equestrian.HarmonyPatches
                 return false;
             }
 
+            if (tooltipId == typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName) 
+            {
+                tooltipId = typeof(BeyonderCardTraitStalkerState).Name;
+            }
+            
+            //Beyonder.Log($"Instantiating tooltip: {tooltipId}.");
+
             return true;
         }
     }

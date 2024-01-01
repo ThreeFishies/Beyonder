@@ -15,7 +15,7 @@ namespace Void.Arcadian
         { 
             if(!ArcadianCompatibility.ArcadianExists) { return; }
 
-            if (__result.championCardData.GetID() == CustomCardManager.GetCardDataByID("SecondDisciple").GetID())
+            if (__result != null && __result.championCardData != null && __result.championCardData.GetID() == CustomCardManager.GetCardDataByID("SecondDisciple").GetID())
             {
                 ArcadianCompatibility.CheckRunStatus();
 

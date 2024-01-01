@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2; //Swapping to the new Trainworks builder.
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -33,18 +33,31 @@ namespace Void.Status
 
         public static void Build()
         {
+            VfxAtLoc persistent = null;
+            VfxAtLoc added = null;
+
+            if (ProviderManager.TryGetProvider<StatusEffectManager>(out StatusEffectManager statusEffectManager))
+            {
+                StatusEffectData heartless = statusEffectManager.GetStatusEffectDataById(VanillaStatusEffectIDs.HealImmunity);
+                persistent = heartless.GetPersistentVFX();
+                added = heartless.GetOnAddedVFX();
+            };
+
             data = new StatusEffectDataBuilder()
             {
-                StatusId = statusId,
+                StatusID = statusId,
                 IsStackable = true,
-                IconPath = "ClanAssets/Jitters.png",
+                IconPath = "ClanAssets/StatusIconsBig/Jitters.png",
+                TooltipIconPath = "ClanAssets/Jitters.png",
                 TriggerStage = StatusEffectData.TriggerStage.OnPreAttackedSpellShield,
                 DisplayCategory = StatusEffectData.DisplayCategory.Negative,
                 ShowStackCount = true,
                 StatusEffectStateType = typeof(StatusEffectJitters),
                 RemoveStackAtEndOfTurn = true,
                 RemoveWhenTriggered = true,
-                ParamInt = 1
+                ParamInt = 1,
+                PersistentVFX = persistent,
+                AddedVFX = added
             }.Build();
         }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using Trainworks.Managers;
 using Trainworks.Constants;
 using System.Linq;
@@ -25,10 +25,18 @@ namespace Void.Chaos
         { 
             List<CardUpgradeData> boons = new List<CardUpgradeData>();
 
+            CardUpgradeData Veilritch_Boon_05_OnHysteria_Effect = new CardUpgradeDataBuilder
+            {
+                UpgradeID = "Veilritch_Boon_05_OnHysteria_Effect",
+                BonusDamage = 6,
+            }.Build();
+
+            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Veilritch_Boon_05_OnHysteria_Effect, true);
+
             //Boon 00 (Quick)
             boons.Add(new CardUpgradeDataBuilder 
             { 
-                UpgradeTitleKey = "Veilritch_Boon_00",
+                UpgradeID = "Veilritch_Boon_00",
                 BonusDamage = 12,
                 StatusEffectUpgrades = new List<StatusEffectStackData> 
                 { 
@@ -43,7 +51,7 @@ namespace Void.Chaos
             //Boon 01 (Multistrike 1)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_01",
+                UpgradeID = "Veilritch_Boon_01",
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -57,7 +65,7 @@ namespace Void.Chaos
             //Boon 02 (Trample)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_02",
+                UpgradeID = "Veilritch_Boon_02",
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -71,10 +79,11 @@ namespace Void.Chaos
             //Boon 03 (+1 cost and +25/+26)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_03",
+                UpgradeID = "Veilritch_Boon_03",
                 BonusDamage = 25,
                 BonusHP = 26,
-                CostReduction = -1
+                CostReduction = -1,
+                XCostReduction = -1,
             }.Build());
 
             //Whoops. Don't need this twice.
@@ -82,7 +91,7 @@ namespace Void.Chaos
             //Boon 04 (+1 cost and +25/+26)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_04",
+                UpgradeID = "Veilritch_Boon_04",
                 BonusDamage = 25,
                 BonusHP = 26,
                 CostReduction = -1
@@ -92,26 +101,22 @@ namespace Void.Chaos
             //Boon 05 (Hysteria: +6 attack.)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_05",
+                UpgradeID = "Veilritch_Boon_05",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder> 
                 { 
                     new CharacterTriggerDataBuilder
                     { 
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID =  "Veilritch_Boon_05_Trigger_ID",
                         DescriptionKey = "Veilritch_Boon_05_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             { 
-                                EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
+                                EffectStateType = typeof(CardEffectAddTempCardUpgradeToUnits),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
-                                ParamCardUpgradeData = new CardUpgradeDataBuilder
-                                { 
-                                    UpgradeTitleKey = "Veilritch_Boon_05_OnHysteria_Effect",
-                                    BonusDamage = 6,
-                                    SourceSynthesisUnit = new CharacterDataBuilder{ CharacterID = "DummyNULL" }.Build(),
-                                }.Build(),
+                                ParamCardUpgradeData = Veilritch_Boon_05_OnHysteria_Effect,
                             }
                         }
                     }
@@ -121,21 +126,22 @@ namespace Void.Chaos
             //Boon 06 (Hysteria: +18 Jitters to the front enemy unit.)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_06",
+                UpgradeID = "Veilritch_Boon_06",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID = "Veilritch_Boon_06_Trigger_ID",
                         DescriptionKey = "Veilritch_Boon_06_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectAddStatusEffect",
+                                EffectStateType = typeof(CardEffectAddStatusEffect),
                                 TargetMode = TargetMode.FrontInRoom,
                                 TargetTeamType = Team.Type.Heroes,
-                                ParamStatusEffects = new StatusEffectStackData[]
+                                ParamStatusEffects = new List<StatusEffectStackData>
                                 { 
                                     new StatusEffectStackData
                                     { 
@@ -152,18 +158,19 @@ namespace Void.Chaos
             //Boon 07 (Hysteria: Deal 30 damage to the front enemy unit.)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_07",
+                UpgradeID = "Veilritch_Boon_07",
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
                         Trigger = Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum(),
+                        TriggerID = "Veilritch_Boon_07_Trigger_ID",
                         DescriptionKey = "Veilritch_Boon_07_Description_Key",
                         EffectBuilders = new List<CardEffectDataBuilder>
                         {
                             new CardEffectDataBuilder
                             {
-                                EffectStateName = "CardEffectDamage",
+                                EffectStateType = typeof(CardEffectDamage),
                                 TargetMode = TargetMode.FrontInRoom,
                                 TargetTeamType = Team.Type.Heroes,
                                 ParamInt = 30
@@ -176,15 +183,16 @@ namespace Void.Chaos
             //Boon 08 (+15 attack per mania above 0.)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_08",
+                UpgradeID = "Veilritch_Boon_08",
 
                 RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
                 {
                     new RoomModifierDataBuilder
                     {
+                        RoomModifierID = "Veilritch_Boon_08_RoomModifier_ID",
                         DescriptionKey = "Veilritch_Boon_08_Description_Key",
-                        ParamStatusEffects = new StatusEffectStackData[] { },
-                        RoomStateModifierClassName = typeof(CustomRoomStateSelfDamagePerMania).AssemblyQualifiedName,
+                        ParamStatusEffects = new List<StatusEffectStackData> { },
+                        RoomModifierClassType = typeof(CustomRoomStateSelfDamagePerMania),
                         ParamInt = 15, //+15 above 0, -15 below 0
                         ExtraTooltipTitleKey = "",
                         ExtraTooltipBodyKey = ""
@@ -197,21 +205,22 @@ namespace Void.Chaos
             //Boon 09 (-1 size)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_09",
+                UpgradeID = "Veilritch_Boon_09",
                 BonusSize = -1
             }.Build());
 
             //Boon 10 (-1 cost and Stalker)
             boons.Add(new CardUpgradeDataBuilder
             {
-                UpgradeTitleKey = "Veilritch_Boon_10",
+                UpgradeID = "Veilritch_Boon_10",
                 CostReduction = 1,
+                XCostReduction = 1,
 
                 TraitDataUpgradeBuilders = new List<CardTraitDataBuilder> 
                 { 
                     new CardTraitDataBuilder
                     { 
-                        TraitStateName = typeof(BeyonderCardTraitStalkerState).AssemblyQualifiedName
+                        TraitStateType = typeof(BeyonderCardTraitStalkerState)
                     }
                 }
             }.Build());

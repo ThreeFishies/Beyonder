@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2; //Swapping to the new Trainworks builder.
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -33,17 +33,30 @@ namespace Void.Status
 
         public static void Build()
         {
+            VfxAtLoc persistent = null;
+            VfxAtLoc added = null;
+
+            if (ProviderManager.TryGetProvider<StatusEffectManager>(out StatusEffectManager statusEffectManager))
+            {
+                StatusEffectData weakness = statusEffectManager.GetStatusEffectDataById(VanillaStatusEffectIDs.MeleeWeakness);
+                persistent = weakness.GetPersistentVFX();
+                added = weakness.GetOnAddedVFX();
+            };
+
             data = new StatusEffectDataBuilder()
             {
-                StatusId = statusId,
+                StatusID = statusId,
                 IsStackable = true,
-                IconPath = "ClanAssets/Panic.png",
+                IconPath = "ClanAssets/StatusIconsBig/Panic.png",
+                TooltipIconPath = "ClanAssets/Panic.png",
                 TriggerStage = StatusEffectData.TriggerStage.OnPreAttacked,
                 DisplayCategory = StatusEffectData.DisplayCategory.Negative,
                 ShowStackCount = true,
                 StatusEffectStateType = typeof(StatusEffectPanic),
                 RemoveStackAtEndOfTurn = true,
                 RemoveWhenTriggered = true,
+                PersistentVFX = persistent,
+                AddedVFX = added,
             }.Build();
             //List<StatusEffectData.TriggerStage> triggerStages = new List<StatusEffectData.TriggerStage>
             //{
