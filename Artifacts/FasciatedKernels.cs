@@ -96,7 +96,7 @@ namespace Void.Artifacts
 
                     if (FasciatedKernels.HasIt())
                     {
-                        AccessTools.Field(typeof(MerchantGoodState), "crystals").SetValue(merchantGoodState, defaultCrystals + defaultCrystals);
+                        AccessTools.Field(typeof(MerchantGoodState), "crystals").SetValue(merchantGoodState, defaultCrystals + 15);
                     }
                     else 
                     {

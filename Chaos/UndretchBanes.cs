@@ -45,8 +45,8 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_00",
-                BonusDamage = -8,
-                BonusHP = -10
+                BonusDamage = -6,
+                BonusHP = -8
             }.Build());
 
             //Bane 01 (+1 Size and +16 Health)
@@ -54,7 +54,7 @@ namespace Void.Chaos
             {
                 UpgradeID = "Undretch_Bane_01",
                 BonusSize = 1,
-                BonusHP = 16
+                BonusHP = 19
             }.Build());
 
             //Bane 02 (+1 Cost)
@@ -63,12 +63,16 @@ namespace Void.Chaos
                 UpgradeID = "Undretch_Bane_02",
                 CostReduction = -1,
                 XCostReduction = -1,
+                BonusDamage = 2,
+                BonusHP = 1
             }.Build());
 
             //Bane 03 (Anxiety: -1 Attack)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_03",
+                BonusHP = 3,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 { 
                     new CharacterTriggerDataBuilder
@@ -94,6 +98,8 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_04",
+                BonusDamage = 3,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
@@ -134,6 +140,9 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_05",
+                BonusDamage = 1,
+                BonusHP = 2,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
@@ -167,6 +176,8 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_06",
+                BonusHP = 10,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
@@ -192,6 +203,9 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_07",
+                BonusDamage = -1,
+                BonusHP = 3,
+
                 StatusEffectUpgrades = new List<StatusEffectStackData> 
                 { 
                     new StatusEffectStackData
@@ -206,6 +220,8 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_08",
+                BonusDamage = 2,
+
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -220,6 +236,8 @@ namespace Void.Chaos
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Bane_09",
+                BonusDamage = 3,
+                BonusHP = 7,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder> 
                 { 

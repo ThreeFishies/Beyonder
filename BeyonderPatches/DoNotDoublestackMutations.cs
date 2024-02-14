@@ -11,6 +11,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using Void.Init;
 using Void.Status;
+using CustomEffects;
 
 namespace Void.Patches
 {
@@ -31,6 +32,12 @@ namespace Void.Patches
                     statusId = StatusEffectMutated.statusId,
                     count = 1
                 });
+
+                //This is for Primordial Soup
+                CardUpgradeMaskData OnlyStatusEffectSetting = JuiceStone.GetEffects()[0].GetParamCardUpgradeData().GetFilters()[0];
+                List<string> requiredCardEffects = AccessTools.Field(typeof(CardUpgradeMaskData), "requiredCardEffects").GetValue(OnlyStatusEffectSetting) as List<string>;
+                requiredCardEffects.Add(typeof(CustomCardEffectAddPersistentStausEffectToUnits).Name);
+                requiredCardEffects.Add(typeof(CustomCardEffectAddPersistentStausEffectToUnits).AssemblyQualifiedName);
             }
             else 
             {

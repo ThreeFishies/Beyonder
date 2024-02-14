@@ -15,12 +15,18 @@ namespace CustomEffects
         public override void Initialize(RoomModifierData roomModifierData, RoomManager roomManager)
         {
             base.Initialize(roomModifierData, roomManager);
-            this.subtype = roomModifierData.GetParamSubtype();
+            this.subtype1 = roomModifierData.GetParamSubtype();
+            this.subtype2 = SubtypeManager.GetSubtypeData("SubtypesData_Chosen");
+
             this.statusEffects = roomModifierData.GetParamStatusEffects();
             if (this.statusEffects.Length > 0)
             {
                 this.statusID = this.statusEffects[0].statusId;
                 this.additionalStrikes = this.statusEffects[0].count;
+            }
+            if (this.statusEffects.Length > 1) 
+            { 
+                this.excludedStatusID = this.statusEffects[1].statusId;
             }
         }
 
@@ -176,7 +182,7 @@ namespace CustomEffects
         public override int GetDynamicInt(CharacterState characterContext)
         {
             //Beyonder.Log("Line 73");
-            if (FloorIsPureUnitsOfType(characterContext))
+            if (FloorIsPureUnitsOfStatusType(characterContext))
             {
                 int Multiplier = 1;
 
@@ -206,7 +212,7 @@ namespace CustomEffects
             return 0;
         }
 
-        private bool FloorIsPureUnitsOfType(CharacterState unit)
+        private bool FloorIsPureUnitsOfStatusType(CharacterState unit)
         {
             //Beyonder.Log("Line 90");
             if (unit != null && unit.GetTeamType() == Team.Type.Monsters && unit.GetSpawnPoint(false) != null && unit.GetRoomStateModifiers().Contains(this))
@@ -222,6 +228,8 @@ namespace CustomEffects
                 if (owner.GetNumCharacters(Team.Type.Monsters) < 2) { return false; }
                 //Beyonder.Log("Line 102");
 
+                bool hasHivemind = false;
+
                 if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.GetMutatorCount() > 0)
                 {
                     //Beyonder.Log("Line 106");
@@ -231,7 +239,7 @@ namespace CustomEffects
                         if (mutator.GetRelicDataID() == "3894bbe3-6ad6-42ed-9f63-6b47371b4583") // Hivemind
                         {
                             //Beyonder.Log("Line 112");
-                            return true;
+                            hasHivemind = true;
                         }
                     }
                 }
@@ -242,6 +250,10 @@ namespace CustomEffects
                 //Beyonder.Log("Line 121");
                 foreach (CharacterState monster in monsters)
                 {
+                    if (monster.HasStatusEffect(this.excludedStatusID))
+                    {
+                        return false;
+                    }
                     //Beyonder.Log("Line 124");
                     if (monster.GetSubtypes().Count > 0)
                     {
@@ -249,17 +261,12 @@ namespace CustomEffects
                         for (int ii = 0; ii < monster.GetSubtypes().Count; ii++)
                         {
                             //Beyonder.Log("Line 130");
-                            if (monster.GetSubtypes()[ii].Key != subtype.Key && monster.GetSubtypes()[ii].Key != "SubtypesData_Chosen")
+                            if (!hasHivemind && (monster.GetSubtypes()[ii].Key == subtype1.Key || monster.GetSubtypes()[ii].Key == subtype2.Key))
                             {
                                 //Beyonder.Log("Line 133");
                                 return false;
                             }
                         }
-                    }
-                    else
-                    {
-                        //Beyonder.Log("Line 140");
-                        return false;
                     }
                 }
                 //Beyonder.Log("Line 144");
@@ -273,9 +280,11 @@ namespace CustomEffects
 
         // Token: 0x04000E64 RID: 3684
         private int additionalStrikes;
-        private SubtypeData subtype;
+        private SubtypeData subtype1;
+        private SubtypeData subtype2;
         private StatusEffectStackData[] statusEffects;
         private string statusID;
+        private string excludedStatusID;
         //private int currentStatusStackCount = 0;
         private bool hasCachedBaseValue = false;
         private int baseValue = 0;

@@ -19,6 +19,7 @@ using static ChampionUpgradeScreen;
 using TMPro;
 using Void.Monsters;
 using System.Dynamic;
+using Void.Champions;
 
 namespace Void.Chaos
 {
@@ -51,6 +52,7 @@ namespace Void.Chaos
         public static List<int> Uboons = new List<int>();
         public static List<int> Ubanes = new List<int>();
         public static bool IsInit = false;
+        public static bool ShouldRefreshLogbook = false;
 
         public static void SetIndex(string list = "Vboons", int indexNumber = 0, int indexValue = 0)
         {
@@ -176,10 +178,10 @@ namespace Void.Chaos
         {
             return new BoonsBanesData
             {
-                VBoons = Vboons,
-                VBanes = Vbanes,
-                UBoons = Uboons,
-                UBanes = Ubanes
+                VBoons = new List<int>(Vboons.ToArray()),
+                VBanes = new List<int>(Vbanes.ToArray()),
+                UBoons = new List<int>(Uboons.ToArray()),
+                UBanes = new List<int>(Ubanes.ToArray())
             };
         }
 
@@ -231,8 +233,50 @@ namespace Void.Chaos
             IsInit = true;
         }
 
+        public static string LogListInt(List<int> list) 
+        {
+            string listbuilder = "[";
+            if (list == null || list.Count == 0) 
+            {
+                return "[Empty]";
+            }
+            for (int ii = 0; ii<list.Count; ii++) 
+            { 
+                listbuilder += $"{list[ii]}, ";
+            }
+            listbuilder = listbuilder.Remove(listbuilder.Length - 2);
+            listbuilder += "]";
+
+            return listbuilder;
+        }
+
+        /// <summary>
+        /// Function added for debug purposes. It will add a current snapshot of the Beyonder setup data to the log file.
+        /// </summary>
+        /// <param name="message"></param>
+        public static void LogChaos(string message = "*****")
+        {
+            Beyonder.Log("-----" + message + "-----");
+            Beyonder.Log("Vboons: " + LogListInt(Vboons));
+            Beyonder.Log("Vbanes: " + LogListInt(Vbanes));
+            Beyonder.Log("Uboons: " + LogListInt(Uboons));
+            Beyonder.Log("Ubanes: " + LogListInt(Ubanes));
+            Beyonder.Log("LocoMotive Formless: " + LocoMotive.FormlessTreeRngPath);
+            Beyonder.Log("LocoMotive Horror: " + LocoMotive.HorrorTreeRngPath);
+            Beyonder.Log("LocoMotive Conductor: " + LocoMotive.ConductorTreeRngPath);
+            Beyonder.Log("Epidemial Innumerable: " + Epidemial.InnumerableTreeRngPath);
+            Beyonder.Log("Epidemial Contagious: " + Epidemial.ContagiousTreeRngPath);
+            Beyonder.Log("Epidemial Soundless: " + Epidemial.SoundlessTreeRngPath);
+            Beyonder.Log("---------------");
+        }
+
         public static void Shuffle(RngId rngId) 
         {
+            Beyonder.Log("Shuffling Unit and Champion upgrades.");
+
+            //LogChaos("PreviousSetup(units)");
+
+            //Quick restart isn't shufling units properly. This part does seem to be working so the problem is elsewhere.
             Vboons.Shuffle(rngId);
             Vbanes.Shuffle(rngId);
             Uboons.Shuffle(rngId);
@@ -250,10 +294,14 @@ namespace Void.Chaos
             ApostleoftheVoid.GetSynthesis();
 
             ChaosLocalizationManager.ProcessQueue();
+
+            //LogChaos("New Setup(units)");
         }
 
         public static void UpdateStartingUpgrades(BoonsBanesData data) 
         {
+            //Beyonder.Log("Updating starting upgrades from data.");
+
             Vboons = data.VBoons;
             Vbanes = data.VBanes;
             Uboons = data.UBoons;
@@ -530,6 +578,11 @@ namespace Void.Chaos
                 UpgradeDescriptionKey = UpgradeDescKey,
                 
             }.Build();
+
+            if (SourceSynthesisUnit != null)
+            {
+                upgradeDataMerged.InternalSetLinkedPactDuplicateRarity(CollectableRarity.Rare);
+            }
 
             return upgradeDataMerged;
         }

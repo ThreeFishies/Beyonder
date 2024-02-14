@@ -12,6 +12,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 using Void.Init;
 using Void.Status;
 
+//This addresses a bug that caused combat to softlock during the fight with Serapth the Dilligent.
 namespace Void.Patches
 {
     [HarmonyPatch(typeof(CardState), "HasTemporaryTrait")]

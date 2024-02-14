@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Trainworks.Builders;
-using Trainworks.Constants;
+using Trainworks.BuildersV2;
+using Trainworks.ConstantsV2;
 using Trainworks.Enums;
 using Trainworks.Managers;
 using CustomEffects;
@@ -38,21 +38,18 @@ namespace Void.Spells
                 {
                     "Beyonder_Spell_PrimordialSoup_Lore_Key"
                 },
-                LinkedClass = Beyonder.BeyonderClanData,
                 UnlockLevel = 0,
 
                 TraitBuilders = new List<CardTraitDataBuilder>
                 {
                     new CardTraitDataBuilder
                     {
-                        TraitStateName = typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName,
+                        TraitStateType = typeof(BeyonderCardTraitCompulsive),
                         ParamInt = 1
                     },
                     new CardTraitDataBuilder
                     {
-                        TraitStateName = "CardTraitExhaustState",
-                        //TraitStateName = typeof(CardTraitExhaustState).AssemblyQualifiedName,
-                        //TraitStateType = typeof(CardTraitExhaustState),
+                        TraitStateType = typeof(CardTraitExhaustState)
                     }
                 },
 
@@ -60,13 +57,13 @@ namespace Void.Spells
                 {
                     new CardEffectDataBuilder
                     {
-                        EffectStateName = "CardEffectAddTempCardUpgradeToUnits",
+                        EffectStateType = typeof(CustomCardEffectAddPersistentStausEffectToUnits),
                         TargetMode = TargetMode.DropTargetCharacter,
                         TargetTeamType = Team.Type.Monsters,
                         ShouldTest = true,
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
                         {
-                            UpgradeTitleKey = "SupplementalDeadBrainPersistentStatusEffects",
+                            UpgradeID = "PrimordialSoupPersistentStatusEffects",
                             BonusDamage = 0,
                             BonusHeal = 0,
                             StatusEffectUpgrades = new List<StatusEffectStackData>
@@ -78,10 +75,41 @@ namespace Void.Spells
                                 },
                             }
                         }.Build(),
+                        ParamStatusEffects = new List<StatusEffectStackData> //This part exists so the card body text can properly show status modifiers from Doublestack, Duality, and Entropic.
+                        {
+                            new StatusEffectStackData
+                            {
+                                statusId = StatusEffectChronic.statusId,
+                                count = 10
+                            },
+                        }
                     },
+                    /*
                     new CardEffectDataBuilder
                     {
-                        EffectStateName = "CardEffectDrawAdditionalNextTurn",
+                        EffectStateType = typeof(CardEffectAddStatusEffect),
+                        TargetMode = TargetMode.DropTargetCharacter,
+                        TargetTeamType = Team.Type.Monsters,
+                        ShouldTest = true,
+                        ParamCardUpgradeData = new CardUpgradeDataBuilder
+                        {
+                            UpgradeID = "PrimordialSoupDummyStatusEffects",
+                            BonusDamage = 0,
+                            BonusHeal = 0,
+                            StatusEffectUpgrades = new List<StatusEffectStackData>
+                            {
+                                new StatusEffectStackData
+                                {
+                                    statusId = StatusEffectChronic.statusId,
+                                    count = 0
+                                },
+                            }
+                        }.Build(),
+                    },
+                    */
+                    new CardEffectDataBuilder
+                    {
+                        EffectStateType = typeof(CardEffectDrawAdditionalNextTurn),
                         TargetMode = TargetMode.LastTargetedCharacters,
                         TargetTeamType = Team.Type.Monsters,
                         ShouldTest = false,

@@ -71,6 +71,8 @@ namespace Void.Champions
                 Size = 1,
                 CharacterID = CharID,
                 AssetPath = "Monsters/Assets/Epidemial_Monster.png",
+                PriorityDraw = false,
+                
                 CharacterChatterData = new CharacterChatterDataBuilder 
                 { 
                     name = "EpidemialChatterData",

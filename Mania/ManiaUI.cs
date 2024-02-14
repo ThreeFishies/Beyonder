@@ -64,7 +64,9 @@ namespace Void.Mania
 
             //Beyonder.Log("Line 55.");
 
-            EnergyUI baseEnergyUI = AccessTools.Field(typeof(BattleHud), "energyUI").GetValue(hud) as EnergyUI;
+            //EnergyUI baseEnergyUI = AccessTools.Field(typeof(BattleHud), "energyUI").GetValue(hud) as EnergyUI;
+            EnergyUI baseEnergyUI = (EnergyUI)AccessTools.Field(typeof(BattleHud), "energyUI").GetValue(hud);
+            Transform left = hud.transform.Find("Left");
 
             //Beyonder.Log("Line 59.");
 
@@ -73,7 +75,9 @@ namespace Void.Mania
                 GameObject.DestroyImmediate(UI);
             }
 
-            UI = GameObject.Instantiate<EnergyUI>(baseEnergyUI, hud.transform);
+            //Note: Attatching the Mania UI to the left side, instead of the HUD in general, should allow it to slide in/out instead of appearing/disappearing.
+            //UI = GameObject.Instantiate<EnergyUI>(baseEnergyUI, hud.transform);
+            UI = GameObject.Instantiate<EnergyUI>(baseEnergyUI, left);
 
             //ParticleSystem source = AccessTools.Field(typeof(EnergyUI), "gainEmberVfx").GetValue(baseEnergyUI) as ParticleSystem;
             //maniaVfx = ParticleSystem.Instantiate(source);

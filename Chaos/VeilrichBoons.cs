@@ -37,7 +37,7 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder 
             { 
                 UpgradeID = "Veilritch_Boon_00",
-                BonusDamage = 12,
+                BonusDamage = 13,
                 StatusEffectUpgrades = new List<StatusEffectStackData> 
                 { 
                     new StatusEffectStackData
@@ -52,6 +52,7 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_01",
+                BonusDamage = -2,
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -66,6 +67,8 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_02",
+                BonusDamage = 4,
+                BonusHP = -1,
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -80,8 +83,8 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_03",
-                BonusDamage = 25,
-                BonusHP = 26,
+                BonusDamage = 28,
+                BonusHP = 24,
                 CostReduction = -1,
                 XCostReduction = -1,
             }.Build());
@@ -98,10 +101,12 @@ namespace Void.Chaos
             }.Build());
             */
 
-            //Boon 05 (Hysteria: +6 attack.)
+            //Boon 04 (Hysteria: +6 attack.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_05",
+                BonusDamage = 6,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder> 
                 { 
                     new CharacterTriggerDataBuilder
@@ -123,10 +128,12 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 06 (Hysteria: +18 Jitters to the front enemy unit.)
+            //Boon 05 (Hysteria: +18 Jitters to the front enemy unit.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_06",
+                BonusDamage = 2,
+                BonusHP = 1,
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
@@ -155,10 +162,11 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 07 (Hysteria: Deal 30 damage to the front enemy unit.)
+            //Boon 06 (Hysteria: Deal 30 damage to the front enemy unit.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_07",
+                BonusHP = 3,
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
@@ -180,10 +188,18 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 08 (+15 attack per mania above 0.)
+            //Boon 07 (+15 attack per mania above 0.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_08",
+                StatusEffectUpgrades = new List<StatusEffectStackData>
+                {
+                    new StatusEffectStackData
+                    {
+                        statusId = StatusEffectFormless.statusId,
+                        count = 1
+                    }
+                },
 
                 RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
                 {
@@ -202,19 +218,20 @@ namespace Void.Chaos
 
             AccessTools.Field(typeof(RoomModifierData), "descriptionKeyInPlay").SetValue(boons[7].GetRoomModifierUpgrades()[0], "Veilritch_Boon_08_Description_Key_In_Play");
 
-            //Boon 09 (-1 size)
+            //Boon 08 (-1 size)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_09",
                 BonusSize = -1
             }.Build());
 
-            //Boon 10 (-1 cost and Stalker)
+            //Boon 09 (-1 cost and Stalker)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Boon_10",
                 CostReduction = 1,
                 XCostReduction = 1,
+                BonusDamage = 3,
 
                 TraitDataUpgradeBuilders = new List<CardTraitDataBuilder> 
                 { 

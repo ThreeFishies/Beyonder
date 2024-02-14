@@ -7,7 +7,7 @@ using Trainworks.Managers;
 using Void.Init;
 
 // Token: 0x0200027C RID: 636
-public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffectBase
+public sealed class CustomRelicEffectAddRoomModifierByStatusTypeExclusive : RelicEffectBase, IStatusEffectRelicEffect
 {
     // Token: 0x170001B8 RID: 440
     // (get) Token: 0x06001627 RID: 5671 RVA: 0x0000C623 File Offset: 0x0000A823
@@ -24,7 +24,8 @@ public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffec
     {
         base.Initialize(relicState, relicData, relicEffectData);
         this.targetTeam = relicEffectData.GetParamSourceTeam();
-        this.characterSubtype = relicEffectData.GetParamCharacterSubtype();
+        this.characterSubtype1 = relicEffectData.GetParamCharacterSubtype();
+        this.characterSubtype2 = SubtypeManager.GetSubtypeData(relicEffectData.GetParamString());
         this.dummyUpgrade = relicEffectData.GetParamCardUpgradeData();
         if (dummyUpgrade.GetRoomModifierUpgrades().Count > 0)
         {
@@ -33,9 +34,17 @@ public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffec
         this.statusEffects = relicEffectData.GetParamStatusEffects();
     }
 
-    private bool IsOfTypeExclusive(CharacterState target) 
+    private bool IsOfTypeStatusExclusive(CharacterState target) 
     {
         if (target == null) { return false; }
+
+        if (this.statusEffects.Length > 1) 
+        {
+            if (target.HasStatusEffect(this.statusEffects[1].statusId)) 
+            {
+                return false;
+            }
+        }
 
         if (ProviderManager.SaveManager != null && ProviderManager.SaveManager.GetMutatorCount() > 0)
         {
@@ -52,7 +61,7 @@ public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffec
 
         foreach (SubtypeData subtype in target.GetSubtypes()) 
         {
-            if ((subtype.Key != this.characterSubtype.Key) && (subtype.Key != "SubtypesData_Chosen")) 
+            if ((subtype.Key == this.characterSubtype1.Key) || (subtype.Key == this.characterSubtype2.Key)) 
             {
                 return false;
             }
@@ -64,13 +73,18 @@ public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffec
     // Token: 0x06001629 RID: 5673 RVA: 0x00058322 File Offset: 0x00056522
     public override IEnumerator OnCharacterAdded(CharacterState character, CardState fromCard, RelicManager relicManager, SaveManager saveManager, PlayerManager playerManager, RoomManager roomManager, CombatManager combatManager, CardManager cardManager)
     {
-        if (this.roomModifier == null || this.targetTeam != Team.Type.Monsters || this.characterSubtype == null) 
+        if (character.GetTeamType() != Team.Type.Monsters) 
+        {
+            yield break;
+        }
+
+        if (this.roomModifier == null || this.targetTeam != Team.Type.Monsters || this.characterSubtype1 == null || this.characterSubtype2 == null)
         {
             Beyonder.Log("Failed to add room modifier data. Please check relic effect data configuration.", BepInEx.Logging.LogLevel.Warning);
             yield break;
         }
 
-        if (IsOfTypeExclusive(character)) 
+        if (IsOfTypeStatusExclusive(character)) 
         {
             List<IRoomStateModifier> roomModifiers = character.GetRoomStateModifiers();
 
@@ -111,11 +125,17 @@ public sealed class CustomRelicEffectAddRoomModifierByTypeExclusive : RelicEffec
         return false;
     }
 
+    public StatusEffectStackData[] GetStatusEffects()
+    {
+        return statusEffects;
+    }
+
     // Token: 0x04000BAC RID: 2988
     private Team.Type targetTeam;
 
     // Token: 0x04000BAE RID: 2990
-    private SubtypeData characterSubtype;
+    private SubtypeData characterSubtype1;
+    private SubtypeData characterSubtype2;
 
     private CardUpgradeData dummyUpgrade;
 

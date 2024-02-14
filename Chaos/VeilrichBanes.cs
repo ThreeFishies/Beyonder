@@ -32,9 +32,9 @@ namespace Void.Chaos
                 BonusHP = -1,
             }.Build();
 
-            CardUpgradeData Veilritch_Bane_05_Hysteria_Effect = new CardUpgradeDataBuilder
+            CardUpgradeData Veilritch_Bane_05_Anxiety_Effect = new CardUpgradeDataBuilder
             {
-                UpgradeID = "Veilritch_Bane_05_Hysteria_Effect",
+                UpgradeID = "Veilritch_Bane_05_Anxiety_Effect",
                 BonusDamage = -1,
             }.Build();
 
@@ -45,22 +45,22 @@ namespace Void.Chaos
             }.Build();
 
             AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Veilritch_Bane_04_Hysteria_Effect, true);
-            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Veilritch_Bane_05_Hysteria_Effect, true);
+            AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Veilritch_Bane_05_Anxiety_Effect, true);
             AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Veilritch_Bane_08_Rally_Effect, true);
 
             //Bane 00 (-10/-8)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_00",
-                BonusDamage = -10,
-                BonusHP = -8
+                BonusDamage = -8,
+                BonusHP = -6
             }.Build());
 
             //Bane 01 (+1 Size and +16 Attack)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_01",
-                BonusDamage = 16,
+                BonusDamage = 19,
                 BonusSize = 1
             }.Build());
 
@@ -75,18 +75,21 @@ namespace Void.Chaos
             }.Build());
             */
 
-            //Bane 03 (+1 Cost)
+            //Bane 02 (+1 Cost)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_03",
                 CostReduction = -1,
                 XCostReduction = -1,
+                BonusDamage = 1,
+                BonusHP = 2
             }.Build());
 
-            //Bane 04 (Hysteria: -1 Health)
+            //Bane 03 (Hysteria: -1 Health)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_04",
+                BonusHP = 3,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder> 
                 { 
@@ -124,10 +127,11 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Bane 05 (Anxiety: -1 Attack)
+            //Bane 04 (Anxiety: -1 Attack)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_05",
+                BonusDamage = 3,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -143,17 +147,19 @@ namespace Void.Chaos
                                 EffectStateType = typeof(CardEffectAddTempCardUpgradeToUnits),
                                 TargetMode = TargetMode.Self,
                                 TargetTeamType = Team.Type.Monsters,
-                                ParamCardUpgradeData = Veilritch_Bane_05_Hysteria_Effect
+                                ParamCardUpgradeData = Veilritch_Bane_05_Anxiety_Effect
                             }
                         }
                     }
                 }
             }.Build());
 
-            //Bane 06 (Anxiety: Jitters 2 to self.)
+            //Bane 05 (Anxiety: Jitters 1 to self.)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_06",
+                BonusDamage = 2,
+                BonusHP = 1,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -184,10 +190,11 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Bane 07 (Anxiety: Stealth 1 to the front enemy unit.)
+            //Bane 06 (Anxiety: Stealth 1 to the front enemy unit.)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_07",
+                BonusDamage = 10,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -255,10 +262,12 @@ namespace Void.Chaos
             }.Build());
             */
 
-            //Bane08 (Revenge: Apply Jitters 1 to friendly units for each Mania below 0.)
+            //Bane07 (Rally: -1 HP to allies.)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_08",
+                BonusDamage = -1,
+                BonusHP = 4,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -295,10 +304,12 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 09 (Jitters 6)
+            //Boon 08 (Jitters 6)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_09",
+                BonusHP = 2,
+
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData
@@ -309,10 +320,12 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 10 (Mutated)
+            //Boon 09 (Mutated)
             banes.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Veilritch_Bane_10",
+                BonusDamage = 2,
+
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
                     new StatusEffectStackData

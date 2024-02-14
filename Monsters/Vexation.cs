@@ -37,7 +37,7 @@ namespace Void.Monsters
                 CharacterID = CharID,
                 NameKey = "Beyonder_Unit_Vexation_Name_Key",
                 Size = 3,
-                Health = 14,
+                Health = 11,
                 AttackDamage = 44,
                 PriorityDraw = true,
                 AssetPath = "Monsters/Assets/Vexation_Monster.png",

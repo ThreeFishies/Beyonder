@@ -21,10 +21,14 @@ namespace ShinyShoe.Loading
             base.StartTask(loadingScreen);
             if (ProviderManager.SaveManager.HasMainClass() && (ProviderManager.SaveManager.GetMainClass() == Beyonder.BeyonderClanData || ProviderManager.SaveManager.GetSubClass() == Beyonder.BeyonderClanData))
             {
+                //ChaosManager.LogChaos("Before new shuffle");
                 ChaosManager.Shuffle(RngId.NonDeterministic);
                 LocoMotive.BuildTreeForNewRun(RngId.NonDeterministic);
                 Epidemial.BuildTreeForNewRun(RngId.NonDeterministic);
+                //ChaosManager.LogChaos("After shuffle");
                 BeyonderSaveManager.SaveData();
+                //ChaosManager.LogChaos("After Saving");
+                ChaosManager.ShouldRefreshLogbook = true;
             }
             base.SetDone();
             loadingScreen.TryToDoNextTask();
@@ -48,6 +52,7 @@ namespace ShinyShoe.Loading
                 ChaosManager.UpdateStartingUpgrades(BeyonderSaveManager.CurrentRunSetupData.BoonsBanesData);
                 LocoMotive.BuildTreeForNewRun(RngId.NonDeterministic, false);
                 Epidemial.BuildTreeForNewRun(RngId.NonDeterministic, false);
+                ChaosManager.ShouldRefreshLogbook = true;
             }
             base.SetDone();
             loadingScreen.TryToDoNextTask();

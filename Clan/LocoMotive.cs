@@ -65,6 +65,7 @@ namespace Void.Champions
                 Size = 3,
                 CharacterID = CharID,
                 AssetPath = "Monsters/Assets/Loco_Motive_Monster.png",
+                PriorityDraw = false,
 
                 CharacterChatterData = new CharacterChatterDataBuilder 
                 {
@@ -561,7 +562,7 @@ namespace Void.Champions
                 //ConductorTreeRngPath = 2;
             }
 
-            Beyonder.Log($"Building Conductor Variant Path: {ConductorTreeRngPath} at upgrade level: {upgradeLevel}.");
+            //Beyonder.Log($"Building Conductor Variant Path: {ConductorTreeRngPath} at upgrade level: {upgradeLevel}.");
 
             //variant A {Mutated and OnHysteria: +Attack, +Jitters}
             if (ConductorTreeRngPath == 0)
@@ -845,7 +846,7 @@ namespace Void.Champions
                 //HorrorTreeRngPath = 2;
             }
 
-            Beyonder.Log($"Building Horror Variant Path: {HorrorTreeRngPath} at upgrade level: {upgradeLevel}.");
+            //Beyonder.Log($"Building Horror Variant Path: {HorrorTreeRngPath} at upgrade level: {upgradeLevel}.");
 
             //variant A {Sweep, OnHysteria: +Jitters}
             if (HorrorTreeRngPath == 0)
@@ -992,25 +993,30 @@ namespace Void.Champions
             //variant C {Sweep, Stalker, Anxiety: Escape}
             if (HorrorTreeRngPath == 2)
             {
+                List<StatusEffectStackData> HorrorVariantCStatusEffectUpgrades = new List<StatusEffectStackData>()
+                {
+                    new StatusEffectStackData
+                    {
+                        statusId = VanillaStatusEffectIDs.Sweep,
+                        count = 1,
+                    }
+                };
+                if (upgradeLevel > 1)
+                {
+                    HorrorVariantCStatusEffectUpgrades.Add(new StatusEffectStackData
+                    {
+                        statusId = VanillaStatusEffectIDs.Quick,
+                        count = 1,
+                    });
+                }
+
                 return new CardUpgradeDataBuilder
                 {
                     BonusDamage = 10 + 10 * upgradeLevel,
                     BonusHP = 10 + 10 * upgradeLevel,
                     UpgradeTitleKey = $"Beyonder_Champ_LocoMotive_Horror_{upgradeLevel}_TitleKey",
 
-                    StatusEffectUpgrades = new List<StatusEffectStackData>
-                    {
-                        new StatusEffectStackData
-                        {
-                            statusId = VanillaStatusEffectIDs.Sweep,
-                            count = 1,
-                        },
-                        new StatusEffectStackData
-                        {
-                            statusId = VanillaStatusEffectIDs.Quick,
-                            count = upgradeLevel > 1 ? 1 : 0,
-                        }
-                    },
+                    StatusEffectUpgrades = HorrorVariantCStatusEffectUpgrades,
                     TraitDataUpgradeBuilders = new List<CardTraitDataBuilder> 
                     { 
                         new CardTraitDataBuilder
@@ -1051,7 +1057,7 @@ namespace Void.Champions
                 FormlessTreeRngPath = list[0];
             }
 
-            Beyonder.Log($"Building Formless Variant Path: {FormlessTreeRngPath} at upgrade level: {upgradeLevel}.");
+            //Beyonder.Log($"Building Formless Variant Path: {FormlessTreeRngPath} at upgrade level: {upgradeLevel}.");
 
             //variant A {+/- Attack}
             if (FormlessTreeRngPath == 0)

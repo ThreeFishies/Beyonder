@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -55,62 +55,99 @@ namespace Void.Artifacts
                 FromStoryEvent = false,
                 IsBossGivenRelic = false,
                 UnlockLevel = 0,
-                LinkedClass = CustomClassManager.GetClassDataByID(VanillaClanIDs.Hellhorned),
                 Rarity = CollectableRarity.Common,
                 RelicActivatedKey = "Malicka_Artifact_ImpspectorGadget_Activated_Key",
+                RelicLoreTooltipStyle = RelicData.RelicLoreTooltipStyle.Malicka,
+                RequiredDLC = ShinyShoe.DLC.Hellforged,
 
                 EffectBuilders = new List<RelicEffectDataBuilder>
                 {
                     new RelicEffectDataBuilder
                     {
-                        RelicEffectClassName = typeof(CustomRelicEffectAddRoomModifierByTypeExclusive).AssemblyQualifiedName, //roomstate modifiers should be added to spawned unit, not the spawner card.
-                        ParamStatusEffects = new StatusEffectStackData[] 
+                        RelicEffectClassType = typeof(CustomRelicEffectAddRoomModifierByStatusTypeExclusive), //roomstate modifiers should be added to spawned unit, not the spawner card.
+                        ParamStatusEffects = new List<StatusEffectStackData> 
                         {
                             new StatusEffectStackData
                             {
                                 statusId = VanillaStatusEffectIDs.Multistrike,
                                 count = 1,
+                            },
+                            new StatusEffectStackData
+                            { 
+                                statusId = VanillaStatusEffectIDs.Cardless, 
+                                count = 1,
                             }
                         },
                         ParamSourceTeam = Team.Type.Monsters,
-                        ParamCharacterSubtype = "SubtypesData_Imp_0f9b989f-15b5-4b16-8378-5d8ed8691e7c",
+                        ParamCharacterSubtype = "SubtypesData_Champion_83f21cbe-9d9b-4566-a2c3-ca559ab8ff34",
+                        ParamString = "SubtypesData_Chosen",
+                        ParamBool = true,
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
                         {
-                            UpgradeTitleKey = "ImpGangRiseUpUpgrade",
+                            UpgradeID = "ImpGangRiseUpUpgrade",
                             RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
                             {
                                 new RoomModifierDataBuilder
                                 {
+                                    RoomModifierID = "Malicka_Artifact_ImpspectorGadget_Room_Modifier_ID",
                                     DescriptionKey = "Malicka_Artifact_ImpspectorGadget_Card_Description_Key",
-                                    RoomStateModifierClassName = typeof(CustomRoomStateImpGangRiseUp).AssemblyQualifiedName,
-                                    ParamStatusEffects = new StatusEffectStackData[]
+                                    RoomModifierClassType = typeof(CustomRoomStateImpGangRiseUp),
+                                    ParamStatusEffects = new List<StatusEffectStackData>
                                     {
                                         new StatusEffectStackData
                                         {
                                             statusId = VanillaStatusEffectIDs.Multistrike,
                                             count = 1,
+                                        },
+                                        new StatusEffectStackData
+                                        {
+                                            statusId = VanillaStatusEffectIDs.Cardless,
+                                            count = 1,
                                         }
                                     },
-                                    ParamSubtype = "SubtypesData_Imp_0f9b989f-15b5-4b16-8378-5d8ed8691e7c",
+                                    ParamSubtype = "SubtypesData_Champion_83f21cbe-9d9b-4566-a2c3-ca559ab8ff34",
                                     ExtraTooltipTitleKey = "",
-                                    ExtraTooltipBodyKey = ""
+                                    ExtraTooltipBodyKey = "",
+                                    DescriptionKeyInPlay = "Malicka_Artifact_ImpspectorGadget_In_Play_Key",
                                 }
                             },
                             FiltersBuilders = new List<CardUpgradeMaskDataBuilder>
                             { 
                                 new CardUpgradeMaskDataBuilder
                                 {
+                                    CardUpgradeMaskID = "Imspector_Gadget_Filter_ID",
                                     CardType = CardType.Monster,
-                                    RequiredSubtypes = new List<string>
+                                    ExcludedSubtypes = new List<string>
                                     {
-                                        "SubtypesData_Imp_0f9b989f-15b5-4b16-8378-5d8ed8691e7c"
+                                        "SubtypesData_Champion_83f21cbe-9d9b-4566-a2c3-ca559ab8ff34",
+                                        "SubtypesData_Chosen"
                                     },
-                                    RequiredSubtypesOperator = CardUpgradeMaskDataBuilder.CompareOperator.And,
+                                    ExcludedSubtypesOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or,
+                                    ExcludedStatusEffects = new List<StatusEffectStackData>
+                                    { 
+                                        new StatusEffectStackData
+                                        { 
+                                            statusId = VanillaStatusEffectIDs.Cardless,
+                                            count = 1,
+                                        }
+                                    },
+                                    ExcludedStatusEffectsOperator = CardUpgradeMaskDataBuilder.CompareOperator.Or
                                 }
                             }
                         }.Build(),
-                        AdditionalTooltips = new AdditionalTooltipData[]
+                        AdditionalTooltips = new List<AdditionalTooltipData>
                         {
+                            new AdditionalTooltipData
+                            {
+                                titleKey = "Malicka_Artifact_ImpspectorGadget_Token_Title_Key",
+                                descriptionKey = "Malicka_Artifact_ImpspectorGadget_Token_Description_Key",
+                                isStatusTooltip = false,
+                                statusId = "",
+                                isTipTooltip = false,
+                                isTriggerTooltip = false,
+                                trigger = CharacterTriggerData.Trigger.OnDeath,
+                                style = TooltipDesigner.TooltipDesignType.Keyword
+                            },
                             new AdditionalTooltipData
                             {
                                 titleKey = string.Empty, //"Malicka_Artifact_ImpspectorGadget_Tip_Title_Key",
@@ -126,10 +163,6 @@ namespace Void.Artifacts
                     }
                 },
             }.BuildAndRegister();
-
-            AccessTools.Field(typeof(RelicData), "relicLoreTooltipStyle").SetValue(Artifact, RelicData.RelicLoreTooltipStyle.Malicka);
-            AccessTools.Field(typeof(CollectableRelicData), "requiredDLC").SetValue(Artifact, ShinyShoe.DLC.Hellforged);
-            AccessTools.Field(typeof(RoomModifierData), "descriptionKeyInPlay").SetValue(Artifact.GetEffects()[0].GetParamCardUpgradeData().GetRoomModifierUpgrades()[0], "Malicka_Artifact_ImpspectorGadget_In_Play_Key");
 
             return Artifact;
         }

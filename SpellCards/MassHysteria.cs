@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Trainworks.Builders;
-using Trainworks.Constants;
 using Trainworks.Enums;
 using Trainworks.Managers;
 using CustomEffects;
@@ -12,6 +11,7 @@ using Void.Mania;
 using Void.Status;
 using Void.Triggers;
 using HarmonyLib;
+using Trainworks.ConstantsV2;
 
 namespace Void.Spells
 {
@@ -123,19 +123,9 @@ namespace Void.Spells
             {
                 return true;
             }
-            //foreach (string statusId in targetModeStatusEffectsFilter)
-            //{
-            //    if (!target.HasStatusEffect(statusId))
-            //    {
-            //        return true;
-            //    }
-            //}
-            if (target.HasEffectTrigger(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum())) 
-            {
-                return true;
-            }
             List<CharacterState.StatusEffectStack> list;
             target.GetStatusEffects(out list, false);
+            bool silenced = false;
             using (List<CharacterState.StatusEffectStack>.Enumerator enumerator2 = list.GetEnumerator())
             {
                 while (enumerator2.MoveNext())
@@ -144,7 +134,15 @@ namespace Void.Spells
                     {
                         return true;
                     }
+                    if (enumerator2.Current.State.GetStatusId() == VanillaStatusEffectIDs.Silenced && enumerator2.Current.Count > 0) 
+                    {
+                        silenced = true;
+                    }
                 }
+            }
+            if (!silenced && (target.HasEffectTrigger(Trigger_Beyonder_OnHysteria.OnHysteriaCharTrigger.GetEnum()) || (target.GetSpawnerCard() != null && target.GetSpawnerCard().HasTriggerType(Trigger_Beyonder_OnHysteria.OnHysteriaCardTrigger.GetEnum())))) 
+            {
+                return true;
             }
             return !TargetHelper.TargetPassesHealthFilter(target, targetModeHealthFilter) || (targetIgnoreBosses && (target.IsMiniboss() || target.IsOuterTrainBoss())) || (targetIgnorePyre && target.IsPyreHeart()) || (targetSubtype != null && !targetSubtype.IsNone && !target.GetCharacterManager().DoesCharacterPassSubtypeCheck(target, targetSubtype));
         }

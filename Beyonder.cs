@@ -65,7 +65,7 @@ namespace Void.Init
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
-        public const string VERSION = "0.9.5";
+        public const string VERSION = "0.9.7";
 
         public void Initialize()
         {

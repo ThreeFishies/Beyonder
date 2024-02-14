@@ -34,10 +34,12 @@ namespace Void.Chaos
 
             AccessTools.Field(typeof(CardUpgradeData), "isUnitSynthesisUpgrade").SetValue(Undretch_Boon_02_Anxiety_Effect, true);
 
-            //Boon 00 (Anxiety: Heal 5 and damage enemy units equal to amount healed.)
+            //Boon 00 (Anxiety: Heal 5 and damage enemy units equal to 2 x amount healed.)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_00",
+                BonusDamage = -2,
+                BonusHP = 5,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -80,10 +82,12 @@ namespace Void.Chaos
             }.Build());
             */
 
-            //Boon 01 (Chronic 3)
+            //Boon 01 (Chronic 5)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_01",
+                BonusDamage = 2,
+                BonusHP = 2,
 
                 StatusEffectUpgrades = new List<StatusEffectStackData>
                 {
@@ -95,10 +99,11 @@ namespace Void.Chaos
                 }
             }.Build());
 
-            //Boon 02 (Anxiety: +4 health)
+            //Boon 02 (Anxiety: +6 health)
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_02",
+                BonusHP = 6,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -126,6 +131,8 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_03",
+                BonusDamage = 4,
+                BonusHP = -2,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -160,6 +167,8 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_04",
+                BonusDamage = 1,
+                BonusHP = 2,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -194,6 +203,7 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_05",
+                BonusHP = 2,
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -218,6 +228,15 @@ namespace Void.Chaos
             boons.Add(new CardUpgradeDataBuilder
             {
                 UpgradeID = "Undretch_Boon_06",
+
+                StatusEffectUpgrades = new List<StatusEffectStackData>
+                {
+                    new StatusEffectStackData
+                    {
+                        statusId = StatusEffectSoundless.statusId,
+                        count = 1
+                    }
+                },
 
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
@@ -257,7 +276,7 @@ namespace Void.Chaos
                 CostReduction = -1,
                 XCostReduction = -1,
                 BonusDamage = 16,
-                BonusHP = 35
+                BonusHP = 36
             }.Build());
 
             //Boon 08 (-1 Size)
@@ -273,6 +292,7 @@ namespace Void.Chaos
                 UpgradeID = "Undretch_Boon_09",
                 CostReduction = 1,
                 XCostReduction = 1,
+                BonusHP = 3,
 
                 TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
                 { 

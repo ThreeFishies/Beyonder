@@ -149,6 +149,8 @@ namespace Void.Init
                 runID = ProviderManager.SaveManager.GetRunId();
             }
 
+            //ChaosManager.LogChaos("Data Gathered for saving.");
+
             return new RunSetupData
             {
                 RunID = runID,

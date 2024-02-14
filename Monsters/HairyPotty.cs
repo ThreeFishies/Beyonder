@@ -38,7 +38,7 @@ namespace Void.Monsters
                 NameKey = "Beyonder_Unit_HairyPotty_Name_Key",
                 Size = 3,
                 Health = 44,
-                AttackDamage = 14,
+                AttackDamage = 11,
                 PriorityDraw = true,
                 AssetPath = "Monsters/Assets/HairyPotty_Monster.png",
                 SubtypeKeys = new List<string> { SubtypeUndretch.Key },

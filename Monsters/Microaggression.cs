@@ -207,6 +207,7 @@ namespace Void.Monsters
                 }
                 */
             }.Build();
+            Synthesis.InternalSetLinkedPactDuplicateRarity(CollectableRarity.Rare);
         }
     }
 }

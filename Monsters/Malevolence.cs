@@ -38,8 +38,8 @@ namespace Void.Monsters
                 CharacterID = CharID,
                 NameKey = "Beyonder_Unit_Malevolence_Name_Key",
                 Size = 2,
-                Health = 14,
-                AttackDamage = 25,
+                Health = 9,
+                AttackDamage = 22,
                 PriorityDraw = true,
                 AssetPath = "Monsters/Assets/Malevolence_Monster.png",
                 SubtypeKeys = new List<string> { SubtypeVeilrich.Key },
@@ -149,6 +149,8 @@ namespace Void.Monsters
                 UpgradeTitle = "MalevolenceEssenceBase",
                 SourceSynthesisUnit = Character,
                 UpgradeDescriptionKey = "Beyonder_Unit_Malevolence_Description_Key",
+                BonusHP = 5,
+
                 TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
