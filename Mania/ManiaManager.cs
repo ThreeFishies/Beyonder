@@ -670,9 +670,25 @@ namespace Void.Mania
                 PreviewSanity = false;
             }
 
-            if (Mania - paramInt < 0) 
+            if (!PreviewAnxiety)
+            {
+                Mania -= paramInt;
+
+                if (ProviderManager.TryGetProvider<CardManager>(out CardManager cardManager))
+                {
+                    cardManager.RefreshHandCards();
+                }
+
+                maniaLevel = GetCurrentManiaLevel(false, Mania);
+            }
+
+            if ((PreviewAnxiety && Mania - paramInt < 0) || (!PreviewAnxiety && Mania < 0)) 
             { 
                 int numTriggers = -Mathf.Max(Mania - paramInt, -paramInt);
+                if (!PreviewAnxiety) 
+                {
+                    numTriggers = -Mathf.Max(Mania, -paramInt);
+                }
 
                 //This only seems to trigger Anxiety on the first unit, then no other triggers activate.
                 //Try something else.
@@ -680,7 +696,7 @@ namespace Void.Mania
 
                 //if (!PreviewAnxiety)
                 //{
-                    SetSelectedRoomFlag = false;
+                SetSelectedRoomFlag = false;
                     if (ProviderManager.TryGetProvider<RoomManager>(out RoomManager roomManager)) 
                     {
                         SelectedRoomIndex = roomManager.GetSelectedRoom();
@@ -706,18 +722,6 @@ namespace Void.Mania
                 //}
 
                 maniaLevel = ManiaLevel.Low;
-            }
-
-            if (!PreviewAnxiety)
-            {
-                Mania -= paramInt;
-
-                if(ProviderManager.TryGetProvider<CardManager>(out CardManager cardManager))
-                {
-                    cardManager.RefreshHandCards();                
-                }
-
-                maniaLevel = GetCurrentManiaLevel(false, Mania);
             }
 
             if (Mania <= -GetInsanityThreshold())
@@ -777,9 +781,26 @@ namespace Void.Mania
                 PreviewSanity = false;
             }
 
-            if (Mania + paramInt > 0)
+            if (!PreviewHysteria)
+            {
+                Mania += paramInt;
+
+                if (ProviderManager.TryGetProvider<CardManager>(out CardManager cardManager))
+                {
+                    cardManager.RefreshHandCards();
+                }
+
+                maniaLevel = GetCurrentManiaLevel(false, Mania);
+            }
+
+            if ((PreviewHysteria && (Mania + paramInt > 0)) || (!PreviewHysteria && Mania > 0))
             {
                 int numTriggers = Mathf.Min(Mania + paramInt, paramInt);
+
+                if (!PreviewHysteria) 
+                { 
+                    numTriggers = Mathf.Min(Mania, paramInt);
+                }
 
                 //This only seems to trigger Hysteria on the first unit, then no other triggers activate.
                 //Try something else.
@@ -812,18 +833,6 @@ namespace Void.Mania
                 //}
 
                 maniaLevel = ManiaLevel.High;
-            }
-
-            if (!PreviewHysteria)
-            {
-                Mania += paramInt;
-
-                if (ProviderManager.TryGetProvider<CardManager>(out CardManager cardManager))
-                {
-                    cardManager.RefreshHandCards();
-                }
-
-                maniaLevel = GetCurrentManiaLevel(false, Mania);
             }
 
             if (Mania >= GetInsanityThreshold())

@@ -720,7 +720,7 @@ namespace Void.Champions
                 };
             }
 
-            //variant C {OnHysteria: Mutate, OnAnxiety: +Jitters}
+            //variant C {OnHysteria: Mutate + root, OnAnxiety: +Jitters}
             if (ConductorTreeRngPath == 2)
             {
                 return new CardUpgradeDataBuilder
@@ -767,6 +767,23 @@ namespace Void.Champions
                                     EffectStateName = "CardEffectAddStatusEffect",
                                     TargetMode = TargetMode.Room,
                                     TargetTeamType = Team.Type.Heroes,
+                                    TargetModeStatusEffectsFilter = new string[] { "BEYONDER_FILTER_BY_EXCLUDE_MUTATED" }, //See Mass Hysteria
+
+                                    ParamStatusEffects = new StatusEffectStackData[]
+                                    {
+                                        new StatusEffectStackData
+                                        {
+                                            statusId = VanillaStatusEffectIDs.Rooted,
+                                            count = 1 + (upgradeLevel > 1 ? 1 : 0),
+                                        }
+                                    }
+                                },
+                                new CardEffectDataBuilder
+                                {
+                                    EffectStateName = "CardEffectAddStatusEffect",
+                                    TargetMode = TargetMode.Room,
+                                    TargetTeamType = Team.Type.Heroes,
+                                    TargetModeStatusEffectsFilter = new string[] { "BEYONDER_FILTER_BY_EXCLUDE_MUTATED" }, //See Mass Hysteria
 
                                     ParamStatusEffects = new StatusEffectStackData[]
                                     {
@@ -990,7 +1007,7 @@ namespace Void.Champions
             }
             */
 
-            //variant C {Sweep, Stalker, Anxiety: Escape}
+            //variant C {Sweep, Stalker, Resolve: Escape}
             if (HorrorTreeRngPath == 2)
             {
                 List<StatusEffectStackData> HorrorVariantCStatusEffectUpgrades = new List<StatusEffectStackData>()

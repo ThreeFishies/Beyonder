@@ -111,7 +111,14 @@ namespace Void.Spells
 
                 return false;
             }
+            if (targetModeStatusEffectsFilter[0] == "BEYONDER_FILTER_BY_EXCLUDE_MUTATED")
+            {
+                //Beyonder.Log("Loco Motive Conductor Variant C Hysteria Effect Detected");
 
+                __result = CheckTargetFiltered2(target, targetModeStatusEffectsFilter, targetModeHealthFilter, targetIgnoreBosses, targetIgnorePyre, inCombat, ignoreDead, targetSubtype);
+
+                return false;
+            }
             return true;
         }
 
@@ -146,6 +153,31 @@ namespace Void.Spells
             }
             return !TargetHelper.TargetPassesHealthFilter(target, targetModeHealthFilter) || (targetIgnoreBosses && (target.IsMiniboss() || target.IsOuterTrainBoss())) || (targetIgnorePyre && target.IsPyreHeart()) || (targetSubtype != null && !targetSubtype.IsNone && !target.GetCharacterManager().DoesCharacterPassSubtypeCheck(target, targetSubtype));
         }
+
+        private static bool CheckTargetFiltered2(CharacterState target, List<string> targetModeStatusEffectsFilter, CardEffectData.HealthFilter targetModeHealthFilter, bool targetIgnoreBosses, bool targetIgnorePyre, bool inCombat, bool ignoreDead, SubtypeData targetSubtype)
+        {
+            if (ignoreDead && target.IsDead)
+            {
+                return true;
+            }
+            List<CharacterState.StatusEffectStack> list;
+            target.GetStatusEffects(out list, false);
+            using (List<CharacterState.StatusEffectStack>.Enumerator enumerator2 = list.GetEnumerator())
+            {
+                while (enumerator2.MoveNext())
+                {
+                    if (!enumerator2.Current.State.GetUnitIsTargetable(inCombat))
+                    {
+                        return true;
+                    }
+                    if (enumerator2.Current.State.GetStatusId() == StatusEffectMutated.statusId && enumerator2.Current.Count > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return !TargetHelper.TargetPassesHealthFilter(target, targetModeHealthFilter) || (targetIgnoreBosses && (target.IsMiniboss() || target.IsOuterTrainBoss())) || (targetIgnorePyre && target.IsPyreHeart()) || (targetSubtype != null && !targetSubtype.IsNone && !target.GetCharacterManager().DoesCharacterPassSubtypeCheck(target, targetSubtype));
+        }
     }
 
     [HarmonyPatch(typeof(TooltipContainer), "InstantiateTooltipStatusEffect")]
@@ -153,7 +185,7 @@ namespace Void.Spells
     { 
         public static bool Prefix(string statusId, ref TooltipUI __result) 
         {
-            if (statusId == "BEYONDER_FILTER_BY_EXCLUDE_HYSTERIA_TRIGGER" || statusId == "BEYONDER_FILTER_BY_EXCLUDE_LAST_TARGET") 
+            if (statusId == "BEYONDER_FILTER_BY_EXCLUDE_HYSTERIA_TRIGGER" || statusId == "BEYONDER_FILTER_BY_EXCLUDE_LAST_TARGET" || statusId == "BEYONDER_FILTER_BY_EXCLUDE_MUTATED")
             {
                 __result = null;
                 return false;

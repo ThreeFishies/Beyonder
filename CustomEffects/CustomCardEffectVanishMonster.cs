@@ -39,6 +39,12 @@ namespace CustomEffects
         // Token: 0x06000737 RID: 1847 RVA: 0x00021E66 File Offset: 0x00020066
         public override IEnumerator ApplyEffect(CardEffectState cardEffectState, CardEffectParams cardEffectParams)
         {
+            isPreview = false;
+            if (cardEffectParams != null && cardEffectParams.saveManager != null) 
+            {
+                isPreview = cardEffectParams.saveManager.PreviewMode;
+            }
+
             this.despawnCounter--;
             if (this.despawnCounter <= 0 && cardEffectParams != null)
             {
@@ -89,6 +95,7 @@ namespace CustomEffects
         // Token: 0x0400044A RID: 1098
         private int despawnCounter = -1;
         private CardPile cardPile = CardPile.DiscardPile;
+        private bool isPreview = false;
 
         // StatusEffectEndlessState
         // Token: 0x06002BC6 RID: 11206 RVA: 0x000AB4F7 File Offset: 0x000A96F7
@@ -100,7 +107,7 @@ namespace CustomEffects
                 yield break;
             }
             CardState spawnerCard = character.GetSpawnerCard();
-            if (spawnerCard != null)
+            if (spawnerCard != null && !this.isPreview)
             {
                 spawnerCard.SetRemoveFromStandByPileOverride(cardPile);
                 character.ShowNotification("CardEffectDespawnCharacter_Activated".Localize(null), PopupNotificationUI.Source.General, null);
