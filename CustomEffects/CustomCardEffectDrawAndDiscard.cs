@@ -22,6 +22,8 @@ namespace CustomEffects
                 yield break;
             }
 
+            //Beyonder.Log("Starting " + discardCardParams.discardCard.GetTitleKey().Localize() + " effect. " + discardCardParams.discardCard.GetID());
+
             lastKnownSelectedRoom = -1;
 
             if (ManiaManager.SetSelectedRoomFlag == false)
@@ -35,9 +37,45 @@ namespace CustomEffects
 
             int additionalCards = this.GetAdditionalCards(cardManager.GetCardStatistics(), false);
 
+            bool hasReshuffledFlag = false;
+            int deckToZeroCount = cardManager.GetDrawPile().Count;
+            int cardsInDeck = cardManager.GetDrawPile().Count + cardManager.GetDiscardPile().Count;
+            int cycledCardsCount = 0;
+            bool shouldCycleFlag = false;
+
+            if (cardsInDeck <= 0) 
+            {
+                Beyonder.Log("There are no cards left. Aborting Mental Disorder.");
+                yield break;
+            }
+
+            if (additionalCards >= cardManager.GetDiscardPile().Count + cardManager.GetDrawPile().Count)
+            {
+                //Beyonder.Log("Warning. Deck may be shuffled twice or more! This may cause issues.", BepInEx.Logging.LogLevel.Warning);
+                shouldCycleFlag = true;
+            }
+
             while (additionalCards > 0)
             {
                 cardManager.DrawCards(1, discardCardParams.discardCard, CardType.Invalid);
+                deckToZeroCount--;
+
+                if (deckToZeroCount < 0)
+                {
+                    hasReshuffledFlag = true;
+                }
+
+                cardsInDeck = cardManager.GetDrawPile().Count + cardManager.GetDiscardPile().Count;
+
+                //Beyonder.Log("Cards left to drop: " + additionalCards);
+                //Beyonder.Log("Deck size is: " + cardsInDeck);
+
+                if (cardsInDeck <= 0) 
+                {
+                    Beyonder.Log("There are no cards left! Aborting Mental Disorder.");
+                    yield break; 
+                }
+
                 yield return new WaitForSeconds(0.5f);
                 if (cardManager.GetLastDrawnCard().HasTrait(typeof(CardTraitTreasure)))
                 {
@@ -51,20 +89,42 @@ namespace CustomEffects
                     yield return AdjustMania(cardManager.GetLastDrawnCard());
                 }
 
+                CardState lastDrawnCard = cardManager.GetLastDrawnCard();
+
                 yield return cardManager.DiscardCard(new CardManager.DiscardCardParams 
                 { 
-                    discardCard = cardManager.GetLastDrawnCard(),
+                    discardCard = lastDrawnCard,
                     effectDelay = discardCardParams.effectDelay,
                     wasPlayed = false,
                     triggeredByCard = true,
                     triggeredCard = discardCardParams.discardCard,
                     characterSummoned = discardCardParams.characterSummoned,
                     handDiscarded = discardCardParams.handDiscarded,
-                    outSuppressTraitOnDiscard = discardCardParams.outSuppressTraitOnDiscard
+                    outSuppressTraitOnDiscard = discardCardParams.outSuppressTraitOnDiscard                    
                 });
+
+                if (shouldCycleFlag && hasReshuffledFlag)
+                {
+                    cardManager.GetDiscardBufferPile().Remove(lastDrawnCard);
+                    cardManager.GetDiscardPile().Remove(lastDrawnCard);
+                    cardManager.GetDrawPile().Insert(0,lastDrawnCard);
+                    cycledCardsCount++;
+
+                    if (cycledCardsCount >= cardsInDeck) 
+                    {
+                        cycledCardsCount = 0;
+                        cardManager.GetDrawPile().Shuffle(RngId.Battle);
+                        //Beyonder.Log("Simulating a reshuffle event.");
+                    }
+
+                    //Beyonder.Log("Cycling deck. " + lastDrawnCard.GetTitleKey().Localize() + " has been returned to the draw pile.");
+                }
 
                 additionalCards--;
             }
+
+            //Beyonder.Log("Ending " + discardCardParams.discardCard.GetTitleKey().Localize() + " effect. " + discardCardParams.discardCard.GetID());
+
             yield break;
         }
 
@@ -72,7 +132,6 @@ namespace CustomEffects
         {
             //Beyonder.Log("Dropping Card: " + droppedCard.GetTitleKey().Localize());
             bool flag = false;
-
 
             if (droppedCard.HasTrait(typeof(BeyonderCardTraitCompulsive))) 
             {

@@ -13,7 +13,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 using Void.Init;
 using Void.Status;
 
-namespace Void.Patches 
+namespace Void.Patches
 {
     //Traitor's Quill is not working on cards that have more than one card effect outside of preview mode. Reason unknown.
     //Testing: targetsRoom => true on effeted cards
@@ -71,6 +71,38 @@ namespace Void.Patches
         public static void Prefix(CardState cardState, ref RoomManager ___roomManager) 
         {
             Beyonder.Log($"Testing PlayAnyCard on card: {cardState.GetTitle()}. .");
+        }
+    }
+    */
+
+    //This isn't working properly. It's capturing most card traits, but isn't picking up on "CustomCardTraitScalingAddCardsAndDropThem" or "CardTraitSelfPurge", making this useless for testing.
+    /*
+    [HarmonyPatch(typeof(CardTraitState), "OnCardDiscarded")]
+    public class DebugManicDisorder
+    {
+        public static void Prefix(ref CardTraitState __instance, ref CardManager.DiscardCardParams discardCardParams) 
+        {
+            if (__instance is CardTraitSelfPurge)
+            {
+                Beyonder.Log("Purge triggered on " + discardCardParams.discardCard.GetTitleKey().Localize() + " : " + discardCardParams.wasPlayed);
+            }
+            else 
+            {
+                Beyonder.Log("Trait is not Purge: " + __instance.GetType());
+            }
+        }
+    }
+    */
+    /*
+    [HarmonyPatch(typeof(CardManager), "RemoveCardFromHandUI")]
+    public static class DebugMentalDisorderTwo 
+    {
+        public static void Prefix(ref CardManager __instance, ref CardManager.DiscardCardParams discardCardParams) 
+        {
+            //This triggers prior to the Manic Disorder effect.
+            //A visual is displayed for the purge effect, but the purge fails for some reason...
+            //Okay. Looking at it, the purge copy is placed in the discard pile until the spell effect resolves, but if the deck is reshuffled during the cast, the spell gets moved to the draw pile before the purge effect takes place and this causes the removal to fail for some reason.
+            Beyonder.Log("Removing " + discardCardParams.discardCard.GetTitleKey().Localize() + " from hand. " + discardCardParams.discardCard.GetID());
         }
     }
     */

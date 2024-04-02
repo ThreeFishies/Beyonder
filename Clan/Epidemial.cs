@@ -328,7 +328,7 @@ namespace Void.Champions
                 List<int> list = new List<int>(3) { 0, 1, 2 };
                 list.Shuffle(rngId);
                 InnumerableTreeRngPath = list[0];
-                //InnumerableTreeRngPath = 2;
+                //InnumerableTreeRngPath = 1;
             }
 
             //variant A {Draw}

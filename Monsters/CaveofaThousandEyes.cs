@@ -167,7 +167,7 @@ namespace Void.Monsters
                         { 
                             new CardEffectDataBuilder
                             { 
-                                EffectStateType = typeof(CardEffectDamage),
+                                EffectStateType = typeof(CustomCardEffectFixedDamage),
                                 ParamInt = 5,
                                 TargetMode = TargetMode.Pyre,
                                 TargetTeamType = Team.Type.Monsters | Team.Type.Heroes,
