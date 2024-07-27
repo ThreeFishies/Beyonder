@@ -123,7 +123,7 @@ namespace Void.Chaos
 
             foreach (CardUpgradeData ii in list) 
             {
-                if (ii.GetUpgradeTitleKey() == UpgradeTitleKey) 
+                if (ii.GetUpgradeTitleKey() == UpgradeTitleKey || ii.name == UpgradeTitleKey)
                 {
                     return index;
                 }

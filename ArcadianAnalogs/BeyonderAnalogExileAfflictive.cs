@@ -25,7 +25,7 @@ namespace Void.Arcadian
                 NameKey = "Arcadian_Spell_BeyonderAnalogExileAfflictive_Name_Key",
                 OverrideDescriptionKey = "Arcadian_Spell_BeyonderAnalogExileAfflictive_Description_Key",
                 Cost = 1,
-                Rarity = CollectableRarity.Starter,
+                Rarity = CollectableRarity.Common,
                 CardType = CardType.Spell,
                 TargetsRoom = true,
                 Targetless = false,

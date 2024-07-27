@@ -126,6 +126,7 @@ namespace Void.Chaos.NewRun
             //if (PurloinedHeavensSeal.Artifact != null) { __instance.AddRelic(PurloinedHeavensSeal.Artifact); }
             //if (Preservatives.Artifact != null) { __instance.AddRelic(Preservatives.Artifact); }
             //if (ScourgeMagnet.Artifact != null) { __instance.AddRelic(ScourgeMagnet.Artifact); }
+            //if (HelleopathicRemedy.Artifact != null) { __instance.AddRelic(HelleopathicRemedy.Artifact); }
             /*
             if (UnSeeingEye.HasIt()) 
             {

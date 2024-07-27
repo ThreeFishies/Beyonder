@@ -62,7 +62,6 @@ namespace Void.Artifacts
                 {
                     new RelicEffectDataBuilder
                     {
-                        //RelicEffectClassType = typeof(RelicEffectModifyStatusMagnitude),
                         RelicEffectClassType = typeof(RelicEffectNull),
                         ParamInt = 2,
                         ParamSourceTeam = Team.Type.Monsters,

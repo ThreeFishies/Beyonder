@@ -80,7 +80,7 @@ namespace Void.BeyonderStory
 
         public static void BuildEventData()
         {
-            CardRewardData caveReward = new CardRewardDataBuilder()
+            CardRewardData caveReward = new Void.Builders.CardRewardDataBuilder()
             {
                 overrideID = Beyonder.GUID + "_BeyonderCavernReward",
                 name = "BeyonderCavernReward",

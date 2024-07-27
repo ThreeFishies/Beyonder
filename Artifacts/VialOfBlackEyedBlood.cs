@@ -66,6 +66,7 @@ namespace Void.Artifacts
                         ParamSourceTeam = Team.Type.Monsters,
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
                         { 
+                            UpgradeTitleKey = "Vial of Black-Eyed Blood Upgrade",
                             StatusEffectUpgrades = new List<StatusEffectStackData>
                             { 
                                 new StatusEffectStackData

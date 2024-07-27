@@ -562,6 +562,8 @@ namespace Void.Champions
                 //ConductorTreeRngPath = 2;
             }
 
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_LocoMotive_Conductor_{upgradeLevel}_TitleKey");
+
             //Beyonder.Log($"Building Conductor Variant Path: {ConductorTreeRngPath} at upgrade level: {upgradeLevel}.");
 
             //variant A {Mutated and OnHysteria: +Attack, +Jitters}
@@ -863,6 +865,8 @@ namespace Void.Champions
                 //HorrorTreeRngPath = 2;
             }
 
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_LocoMotive_Horror_{upgradeLevel}_TitleKey");
+
             //Beyonder.Log($"Building Horror Variant Path: {HorrorTreeRngPath} at upgrade level: {upgradeLevel}.");
 
             //variant A {Sweep, OnHysteria: +Jitters}
@@ -1075,6 +1079,8 @@ namespace Void.Champions
             }
 
             //Beyonder.Log($"Building Formless Variant Path: {FormlessTreeRngPath} at upgrade level: {upgradeLevel}.");
+
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_LocoMotive_Formless_{upgradeLevel}_TitleKey");
 
             //variant A {+/- Attack}
             if (FormlessTreeRngPath == 0)

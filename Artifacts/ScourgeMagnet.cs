@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using StateMechanic;
 using Trainworks.AssetConstructors;
-using Trainworks.Builders;
+using Trainworks.BuildersV2;
 using System.Runtime.CompilerServices;
 using UnityEngine.AddressableAssets;
 using System.Text.RegularExpressions;
@@ -21,6 +21,7 @@ using Void.Triggers;
 using CustomEffects;
 using RunHistory;
 using Void.Spells;
+using Void.Artifacts;
 
 namespace Void.Artifacts
 {
@@ -80,7 +81,7 @@ namespace Void.Artifacts
                 FromStoryEvent = false,
                 IsBossGivenRelic = false,
                 UnlockLevel = 1,
-                LinkedClass = clan,
+                //LinkedClass = clan,
                 Rarity = CollectableRarity.Common,
                 RelicActivatedKey = "EmptyString-0000000000000000-00000000000000000000000000000000-v2",
 
@@ -88,64 +89,66 @@ namespace Void.Artifacts
                 {
                     new RelicEffectDataBuilder
                     {
-                        RelicEffectClassName = "RelicEffectAddTempUpgrade",
+                        RelicEffectClassType = typeof(RelicEffectAddTempUpgrade),
                         ParamSourceTeam = Team.Type.Monsters,
                         ParamCharacterSubtype = "SubtypesData_None",
                         ParamExcludeCharacterSubtypes = new string[] {},
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
                         { 
-                            UpgradeTitleKey = "MagneticForBLightCards",
+                            UpgradeID = "MagneticForBLightCards",
                             TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
                             { 
                                 new CardTraitDataBuilder
                                 { 
-                                    TraitStateName = "CardTraitMagneticState",
+                                    TraitStateType = typeof(CustomCardTraitMagnetizedState),
                                 }
                             },
                             FiltersBuilders = new List<CardUpgradeMaskDataBuilder>
                             { 
                                 new CardUpgradeMaskDataBuilder
-                                { 
+                                {
+                                    CardUpgradeMaskID = "ScourgeMagnetBlightFilter",
                                     CardType = CardType.Blight
                                 }
                             }
                         }.Build(),
                         ParamTargetMode = TargetMode.FrontInRoom,
-                        AdditionalTooltips = new AdditionalTooltipData[]
-                        { 
-                            new AdditionalTooltipData
-                            { 
-                                titleKey = "CardTraitMagneticState_CardText",
-                                descriptionKey = "CardTraitMagneticState_TooltipText_Verbose",
-                                isStatusTooltip = false,
-                                statusId = "",
-                                isTriggerTooltip = false,
-                                trigger = CharacterTriggerData.Trigger.OnDeath,
-                                isTipTooltip = false,
-                                style = TooltipDesigner.TooltipDesignType.Keyword
-                            }
-                        }
+                        //AdditionalTooltips = new List<AdditionalTooltipData>
+                        //{ 
+                        //    new AdditionalTooltipData
+                        //    { 
+                        //        titleKey = "CardTraitMagneticState_CardText",
+                        //        descriptionKey = "CardTraitMagneticState_TooltipText_Verbose",
+                        //        isStatusTooltip = false,
+                        //        statusId = "",
+                        //        isTriggerTooltip = false,
+                        //        trigger = CharacterTriggerData.Trigger.OnDeath,
+                        //        isTipTooltip = false,
+                        //        style = TooltipDesigner.TooltipDesignType.Keyword
+                        //    }
+                        //}
                     },
                     new RelicEffectDataBuilder
                     {
-                        RelicEffectClassName = "RelicEffectAddTempUpgrade",
+                        RelicEffectClassType = typeof(RelicEffectAddTempUpgrade),
                         ParamSourceTeam = Team.Type.Monsters,
                         ParamCharacterSubtype = "SubtypesData_None",
                         ParamExcludeCharacterSubtypes = new string[] {},
                         ParamCardUpgradeData = new CardUpgradeDataBuilder
                         {
-                            UpgradeTitleKey = "MagneticForScourgeCards",
+                            UpgradeID = "MagneticForScourgeCards",
                             TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
                             {
                                 new CardTraitDataBuilder
                                 {
-                                    TraitStateName = "CardTraitMagneticState",
+                                    TraitStateType = typeof(CustomCardTraitMagnetizedState),
                                 }
                             },
                             FiltersBuilders = new List<CardUpgradeMaskDataBuilder>
                             {
                                 new CardUpgradeMaskDataBuilder
                                 {
+                                    CardUpgradeMaskID = "ScourgeMagnetJunkFilter",
                                     CardType = CardType.Junk
                                 }
                             }
@@ -153,12 +156,57 @@ namespace Void.Artifacts
                         ParamTargetMode = TargetMode.FrontInRoom,
                     },
                 },
+
+                RelicLoreTooltipStyle = RelicData.RelicLoreTooltipStyle.Malicka,
+                RequiredDLC = ShinyShoe.DLC.Hellforged,
             }.BuildAndRegister();
 
-            AccessTools.Field(typeof(RelicData), "relicLoreTooltipStyle").SetValue(Artifact, RelicData.RelicLoreTooltipStyle.Malicka);
-            AccessTools.Field(typeof(CollectableRelicData), "requiredDLC").SetValue(Artifact, ShinyShoe.DLC.Hellforged);
+            //AccessTools.Field(typeof(RelicData), "relicLoreTooltipStyle").SetValue(Artifact, RelicData.RelicLoreTooltipStyle.Malicka);
+            //AccessTools.Field(typeof(CollectableRelicData), "requiredDLC").SetValue(Artifact, ShinyShoe.DLC.Hellforged);
 
             return Artifact;
+        }
+    }
+}
+
+namespace Void.HarmonyPatches 
+{
+    [HarmonyPatch(typeof(CardManager), "AddCard")]
+    public static class MakeBlightScourgeBounceToHand 
+    {
+        public static void Postfix(ref CardState __result, ref CardManager __instance, ref CardPile targetPile) 
+        {
+            if (ScourgeMagnet.HasIt()) 
+            {
+                if (__result == null)
+                {
+                    return;
+                }
+
+                if (targetPile != CardPile.HandPile) 
+                {
+                    if (__result.GetCardType() == CardType.Blight || __result.GetCardType() == CardType.Junk) 
+                    {
+                        HandUI.DrawSource drawSource = HandUI.DrawSource.Deck;
+                        switch (targetPile) 
+                        {
+                            case CardPile.DiscardPile:
+                                drawSource = HandUI.DrawSource.Discard;
+                                break;
+                            case CardPile.EatenPile:
+                                drawSource = HandUI.DrawSource.Eaten;
+                                break;
+                            case CardPile.ExhaustedPile:
+                                drawSource = HandUI.DrawSource.Consume;
+                                break;
+                            default:
+                                break;                                
+                        };
+
+                        __instance.DrawSpecificCard(__result, 0.1f, drawSource, null, 1, 1);
+                    }
+                }
+            }
         }
     }
 }

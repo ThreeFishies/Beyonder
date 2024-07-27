@@ -24,6 +24,7 @@ using RunHistory;
 using Malee;
 using Void.Spells;
 using System;
+using Void.Chaos.BackCompatability;
 
 namespace Void.Champions
 {
@@ -331,6 +332,8 @@ namespace Void.Champions
                 //InnumerableTreeRngPath = 1;
             }
 
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_Epidemial_Innumerable_{upgradeLevel}_TitleKey");
+
             //variant A {Draw}
             if (InnumerableTreeRngPath == 0)
             {
@@ -444,7 +447,7 @@ namespace Void.Champions
                                     ParamCardPool = SelfPool,
                                     CopyModifiersFromSource = true,
                                     //IgnoreTemporaryModifiersFromSource = true,
-                                    ParamCardUpgradeData = new CardUpgradeDataBuilder { UpgradeTitleKey = "Fail_0" }.Build(),
+                                    ParamCardUpgradeData = new CardUpgradeDataBuilder { UpgradeTitleKey = "Fail_1" }.Build(),
                                 }
                             }
                         },
@@ -517,7 +520,7 @@ namespace Void.Champions
                                     ParamCardPool = SelfPool,
                                     CopyModifiersFromSource = true,
                                     //IgnoreTemporaryModifiersFromSource = true,
-                                    ParamCardUpgradeData = new CardUpgradeDataBuilder { UpgradeTitleKey = "Fail_0" }.Build(),
+                                    ParamCardUpgradeData = new CardUpgradeDataBuilder { UpgradeTitleKey = "Fail_2" }.Build(),
                                 }
                             }
                         },
@@ -553,6 +556,8 @@ namespace Void.Champions
                 ContagiousTreeRngPath = list[0];
                 //ContagiousTreeRngPath = 2;
             }
+
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_Epidemial_Contagious_{upgradeLevel}_TitleKey");
 
             //variant A {OnSummon: +Jitters, +Chronic}
             if (ContagiousTreeRngPath == 0)
@@ -759,6 +764,8 @@ namespace Void.Champions
                 list.Shuffle(rngId);
                 SoundlessTreeRngPath = list[0];
             }
+
+            Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.Unregister($"Beyonder_Champ_Epidemial_Soundless_{upgradeLevel}_TitleKey");
 
             //variant A {OnAnxiety: -Attack, +Health}
             if (SoundlessTreeRngPath == 0)

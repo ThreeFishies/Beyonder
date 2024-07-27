@@ -123,16 +123,23 @@ namespace Void.Init
     
     //For testing only. Debugging dynamic sysnthesis data.
     //Actually, this can be a fallback mechanism if the run history is tampered with.
-
     [HarmonyPatch(typeof(AllGameData), "FindCardUpgradeData")]
     public static class CheckLoadingDetails 
     {
         public static void Postfix(string id, ref CardUpgradeData __result, ref AllGameData __instance)
         {
-            if (__result == null && id != string.Empty)
+            if (__result == null && id != string.Empty && !Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.ShouldIgnore(id))
             {
                 Beyonder.Log("Seeking upgrade: " + id);
                 Beyonder.Log("Current result: NULL");
+
+                string ID2 = Chaos.BackCompatability.CardUpgradeDataBackwardsCompatability.GetUpgradeTitleKey(id);
+
+                if (ID2 != id) 
+                {
+                    Beyonder.Log($"{id} -> {ID2}");
+                    id = ID2;
+                }
 
                 //Vexation
                 if (id.StartsWith("VexationEssenceBase_"))
@@ -152,6 +159,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Vboons", Vexation.EssenceVboonIndex, vBoon);
 
                             __result = Vexation.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Vexation Synthesis {ChaosManager.Vboons[Vexation.EssenceVboonIndex]}.x");
                             return;
@@ -177,6 +185,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Vbanes", Malevolence.EssenceVbaneIndex, vBane);
 
                             __result = Malevolence.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Malevolence Synthesis x.{ChaosManager.Vbanes[Malevolence.EssenceVbaneIndex]}");
                             return;
@@ -202,6 +211,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Uboons", HairyPotty.EssenceUboonIndex, uBoon);
 
                             __result = HairyPotty.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Hairy Potty Synthesis {ChaosManager.Uboons[HairyPotty.EssenceUboonIndex]}.x");
                             return;
@@ -227,6 +237,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Ubanes", FurryBeholder.EssenceUbaneIndex, uBane);
 
                             __result = FurryBeholder.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Furry Beholder Synthesis x.{ChaosManager.Ubanes[FurryBeholder.EssenceUbaneIndex]}");
                             return;
@@ -261,6 +272,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Ubanes", ApostleoftheVoid.EssenceUbaneIndex, uBane);
 
                             __result = ApostleoftheVoid.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Apostle of the Void Synthesis {ChaosManager.Vboons[ApostleoftheVoid.EssenceVboonIndex]}.{ChaosManager.Vbanes[ApostleoftheVoid.EssenceVbaneIndex]}.{ChaosManager.Uboons[ApostleoftheVoid.EssenceUboonIndex]}.{ChaosManager.Ubanes[ApostleoftheVoid.EssenceUbaneIndex]}");
                             return;
@@ -282,6 +294,7 @@ namespace Void.Init
                             ChaosManager.SetIndex("Vbanes", FormlessHorror.EssenceVbaneIndex, vBane);
 
                             __result = FormlessHorror.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
                             Beyonder.Log($"New result: Formless Horror Synthesis {ChaosManager.Vboons[FormlessHorror.EssenceVboonIndex]}.{ChaosManager.Vbanes[FormlessHorror.EssenceVbaneIndex]}");
                             return;
@@ -290,7 +303,7 @@ namespace Void.Init
                 }
 
                 //Undretch_Boon_
-                if (id.StartsWith("Veilritch_Boon_"))
+                if (id.StartsWith("Undretch_Boon_")) //Why was this 'Veilritch_Boon_'? Did this ever work ...? (It did not. Fixed now.)
                 {
                     string[] elements = id.Replace("_merge_", "|").Split('|');
 
@@ -298,11 +311,11 @@ namespace Void.Init
                     {
                         Beyonder.Log("Soundless Swarm Essence detected.");
 
-                        int uBoon = ChaosManager.FindValue(ref ChaosManager.UBoonsData, elements[2]);
-                        int uBane = ChaosManager.FindValue(ref ChaosManager.UBanesData, elements[3]);
+                        int uBoon = ChaosManager.FindValue(ref ChaosManager.UBoonsData, elements[0]);
+                        int uBane = ChaosManager.FindValue(ref ChaosManager.UBanesData, elements[1]);
 
-                        Beyonder.Log($"uBoon: {elements[2]} is {uBoon}.");
-                        Beyonder.Log($"uBane: {elements[3]} is {uBane}.");
+                        Beyonder.Log($"uBoon: {elements[0]} is {uBoon}.");
+                        Beyonder.Log($"uBane: {elements[1]} is {uBane}.");
 
                         if (uBoon != -1 && uBane != -1)
                         {
@@ -310,8 +323,9 @@ namespace Void.Init
                             ChaosManager.SetIndex("Ubanes", SoundlessSwarm.EssenceUbaneIndex, uBane);
 
                             __result = SoundlessSwarm.GetSynthesis();
+                            Void.Chaos.ChaosLocalizationManager.ProcessQueue();
 
-                            Beyonder.Log($"New result: Apostle of the Void Synthesis {ChaosManager.Uboons[SoundlessSwarm.EssenceUboonIndex]}.{ChaosManager.Ubanes[SoundlessSwarm.EssenceUbaneIndex]}");
+                            Beyonder.Log($"New result: Soundless Swarm Synthesis {ChaosManager.Uboons[SoundlessSwarm.EssenceUboonIndex]}.{ChaosManager.Ubanes[SoundlessSwarm.EssenceUbaneIndex]}");
                             return;
                         }
                     }

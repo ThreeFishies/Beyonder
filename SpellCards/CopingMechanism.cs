@@ -29,7 +29,7 @@ namespace Void.Spells
                 LinkedClass = Beyonder.BeyonderClanData,
                 AssetPath = "SpellCards/Assets/CopingMechanism.png",
                 CardPoolIDs = new List<string> { VanillaCardPoolIDs.MegaPool },
-                Rarity = CollectableRarity.Rare,
+                Rarity = CollectableRarity.Uncommon,
                 NameKey = "Beyonder_Spell_CopingMechanism_Name_Key",
                 OverrideDescriptionKey = "Beyonder_Spell_CopingMechanism_Description_Key",
                 UnlockLevel = 1,

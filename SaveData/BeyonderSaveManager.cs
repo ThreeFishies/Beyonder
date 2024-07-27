@@ -137,6 +137,7 @@ namespace Void.Init
         public static Dictionary<string,RunSetupData> RunHistoryData = new Dictionary<string,RunSetupData>();
         public const string CurrentRunPath = "SaveData/CurrentRun/ActiveRunData.json";
         public const string RunHistoryPath = "SaveData/RunHistory.json";
+        public const int MaxRunHistoryItems = 1000;
 
         public static RunSetupData CurrentRunSetupData = new RunSetupData { };
 
@@ -206,6 +207,11 @@ namespace Void.Init
                 foreach (KeyValuePair<string, RunSetupData> pair in RunHistoryData) 
                 {
                     items.Add(pair.Value.ToString());
+                }
+
+                while (items.Count > MaxRunHistoryItems) 
+                { 
+                    items.RemoveAt(0);
                 }
 
                 try

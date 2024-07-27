@@ -24,7 +24,6 @@ namespace Void.Monsters
         public static readonly string CharID = Beyonder.GUID + "_CaveofaThousandEyes_Character";
         public static CharacterData Character;
         public static CardData Card;
-        public static CardUpgradeData Synthesis;
 
         public static void BuildAndRegister()
         {
@@ -89,7 +88,6 @@ namespace Void.Monsters
                             Key = "Beyonder_Unit_CaveofaThousandEyes_Chatter_Key_Resolve_2",
                         }
                     }
-
                 }.Build(),
 
                 RoomModifierBuilders = new List<RoomModifierDataBuilder> 
@@ -124,6 +122,30 @@ namespace Void.Monsters
                             }
                         }
                     },
+                },
+
+                UnitSynthesisBuilder = new CardUpgradeDataBuilder 
+                {
+                    UpgradeID = "CaveofaThousandEyesEssence",
+                    SourceSynthesisUnit = Character,
+                    UpgradeDescriptionKey = "Beyonder_Unit_CaveofaThousandEyes_Essence_Key",
+                    BonusHP = 10,
+
+                    RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
+                    {
+                        new RoomModifierDataBuilder
+                        {
+                            RoomModifierID = "CaveofaThousandEyesCustomRoomStateSelfDamagePerGoldModifierEssence",
+                            RoomModifierClassType = typeof(CustomRoomStateSelfDamagePerGoldModifier),
+                            ParamInt = 5, //X coins per 1 damage (rounded down)
+                            IconPath = "ClanAssets/coin.png",
+                            ParamStatusEffects = new List<StatusEffectStackData> { },
+                            //DescriptionKey = "",
+                            //DescriptionKeyInPlay = "",
+                        }
+                    },
+
+                    LinkedPactDuplicateRarity = CollectableRarity.Rare
                 }
             }.BuildAndRegister();
 
@@ -138,7 +160,7 @@ namespace Void.Monsters
                 Targetless = false,
                 AssetPath = "Monsters/Assets/CaveofaThousandEyes_Card.png",
                 ClanID = null,
-                CardPoolIDs = new List<string> { VanillaCardPoolIDs.UnitsAllBanner },
+                CardPoolIDs = new List<string> {  },
                 CardLoreTooltipKeys = new List<string>
                 {
                     "Beyonder_Unit_CaveofaThousandEyes_Lore_Key"
@@ -176,29 +198,6 @@ namespace Void.Monsters
                     }
                 }
             }.BuildAndRegister();
-
-            Synthesis = new CardUpgradeDataBuilder
-            {
-                UpgradeID = "CaveofaThousandEyesEssence",
-                SourceSynthesisUnit = Character,
-                UpgradeDescriptionKey = "Beyonder_Unit_CaveofaThousandEyes_Essence_Key",
-                BonusHP = 10,
-
-                RoomModifierUpgradeBuilders = new List<RoomModifierDataBuilder>
-                {
-                    new RoomModifierDataBuilder
-                    {
-                        RoomModifierID = "CaveofaThousandEyesCustomRoomStateSelfDamagePerGoldModifierEssence",
-                        RoomModifierClassType = typeof(CustomRoomStateSelfDamagePerGoldModifier),
-                        ParamInt = 5, //X coins per 1 damage (rounded down)
-                        IconPath = "ClanAssets/coin.png",
-                        ParamStatusEffects = new List<StatusEffectStackData> { },
-                        //DescriptionKey = "",
-                        //DescriptionKeyInPlay = "",
-                    }
-                }
-            }.Build();
-            Synthesis.InternalSetLinkedPactDuplicateRarity(CollectableRarity.Rare);
         }
     }
 }

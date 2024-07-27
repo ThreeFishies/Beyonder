@@ -47,7 +47,7 @@ namespace Void.Enhancers
                     BonusHeal = 0,
                     CostReduction = 0,
                     XCostReduction = 0,
-
+                    
                     TraitDataUpgradeBuilders = new List<CardTraitDataBuilder>
                     {
                         new CardTraitDataBuilder
@@ -62,6 +62,25 @@ namespace Void.Enhancers
                         typeof(BeyonderCardTraitCompulsive).AssemblyQualifiedName
                     },
 
+                    CardTriggerUpgradeBuilders = new List<CardTriggerEffectDataBuilder> 
+                    { 
+                        new CardTriggerEffectDataBuilder
+                        {
+                            TriggerID = "StonedStoneDrawEffectID",
+                            Trigger = CardTriggerType.OnCast,
+                            DescriptionKey = "Beyonder_Enhancer_Sanitystone_Description_On_Card_Key",
+
+                            CardEffectBuilders = new List<CardEffectDataBuilder>
+                            { 
+                                new CardEffectDataBuilder
+                                { 
+                                    EffectStateType = typeof(CardEffectDrawAdditionalNextTurn),
+                                    ParamInt = 1,
+                                }
+                            },
+                        }
+                    },
+
                     FiltersBuilders = new List<CardUpgradeMaskDataBuilder>
                     {
                         new CardUpgradeMaskDataBuilder
@@ -72,7 +91,8 @@ namespace Void.Enhancers
                             ExcludedCardTraits = new List<string>
                             {
                                 "CardTraitUnplayable",
-                                typeof(BeyonderCardTraitTherapeutic).AssemblyQualifiedName
+                                typeof(BeyonderCardTraitTherapeutic).AssemblyQualifiedName,
+                                typeof(BeyonderCardTraitTherapeutic).Name
                             },
                             DisallowedCardPools = new List<CardPool> 
                             {

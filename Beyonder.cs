@@ -65,7 +65,7 @@ namespace Void.Init
 
         public const string GUID = "mod.beyonder.clan.monstertrain";
         public const string NAME = "Beyonder Clan";
-        public const string VERSION = "0.9.9";
+        public const string VERSION = "0.9.10";
 
         public void Initialize()
         {
@@ -303,6 +303,8 @@ namespace Void.Init
             //Beyonder.Log("[Equestrian] Memory Jewel");
             ScourgeMagnet.BuildAndRegister(); //Succubus
             Beyonder.Log("[Succubus] Scourge Magnet");
+            HelleopathicRemedy.BuildAndRegister();
+            Beyonder.Log("[Hellborne Pathogens] Helleopathic Remedy");
 
             //Champions
             LocoMotive.BuildAndRegister();

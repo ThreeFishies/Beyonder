@@ -150,6 +150,15 @@
     <None Update="ArtifactAssets\GenIMP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ArtifactAssets\HelleopathicRemedy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\HelleopathicRemedyIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ArtifactAssets\HelleopathicRemedyTooltipIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ArtifactAssets\LingeringChaos.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

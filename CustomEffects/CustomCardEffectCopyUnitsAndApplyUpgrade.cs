@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Trainworks.Builders;
+using Trainworks.ManagersV2;
 using UnityEngine;
 using Void.Champions;
 using Void.Init;
@@ -33,10 +34,14 @@ namespace CustomEffects
         {
             base.Setup(cardEffectState);
             numCopiesOfEachUnit = cardEffectState.GetParamInt();
-            cardUpgradeData = new CardUpgradeDataBuilder
+            cardUpgradeData = CustomUpgradeManager.GetCardUpgradeByID("EpidemialDuplicatedUnitDeathTrigger");
+
+            if (cardUpgradeData == null)
             {
-                UpgradeTitleKey = "EpidemialDuplicatedUnitDeathTrigger",
-                TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
+                cardUpgradeData = new CardUpgradeDataBuilder
+                {
+                    UpgradeTitleKey = "EpidemialDuplicatedUnitDeathTrigger",
+                    TriggerUpgradeBuilders = new List<CharacterTriggerDataBuilder>
                 {
                     new CharacterTriggerDataBuilder
                     {
@@ -53,7 +58,8 @@ namespace CustomEffects
                         },
                     }
                 }
-            }.Build();
+                }.Build();
+            }
         }
 
         // Token: 0x0600071C RID: 1820 RVA: 0x00021094 File Offset: 0x0001F294
